@@ -1,5 +1,5 @@
 <?php
-namespace eMacros\Runtime\Collection;
+namespace eMacros\Runtime\Logical;
 
 use eMacros\Applicable;
 use eMacros\GenericList;

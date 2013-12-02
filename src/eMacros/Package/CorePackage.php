@@ -13,6 +13,7 @@ use eMacros\Runtime\Logical\LogicalNot;
 use eMacros\Runtime\Logical\LogicalAnd;
 use eMacros\Runtime\Logical\LogicalOr;
 use eMacros\Runtime\Logical\LogicalIf;
+use eMacros\Runtime\Logical\Cond;
 use eMacros\Runtime\Binary\BinaryOr;
 use eMacros\Runtime\Binary\BinaryAnd;
 use eMacros\Runtime\Arithmetic\Addition;
@@ -47,7 +48,6 @@ use eMacros\Runtime\Argument\ArgumentGet;
 use eMacros\Runtime\Argument\ArgumentExists;
 use eMacros\Runtime\Environment\EnvironmentUse;
 use eMacros\Runtime\Environment\EnvironmentImport;
-use eMacros\Runtime\Collection\Cond;
 use eMacros\Runtime\String\Concatenation;
 use eMacros\Runtime\Output\OutputEcho;
 

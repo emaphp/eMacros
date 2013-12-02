@@ -330,19 +330,7 @@ class MathPackageTest extends eMacrosTest {
 	
 	/**
 	 * TYPES
-	 */
-	public function testIsFinite1() {
-		$program = new SimpleProgram('(Math::is-finite Math::PI)');
-		$result = $program->execute(self::$xenv);
-		$this->assertTrue($result);
-	}
-	
-	public function testIsFinite2() {
-		$program = new SimpleProgram('(Math::is-finite (Math::log 0))');
-		$result = $program->execute(self::$xenv);
-		$this->assertFalse($result);
-	}
-	
+	 */	
 	public function testFinite1() {
 		$program = new SimpleProgram('(Math::finite? Math::PI)');
 		$result = $program->execute(self::$xenv);
@@ -351,18 +339,6 @@ class MathPackageTest extends eMacrosTest {
 	
 	public function testFinite2() {
 		$program = new SimpleProgram('(Math::finite? (Math::log 0))');
-		$result = $program->execute(self::$xenv);
-		$this->assertFalse($result);
-	}
-	
-	public function testIsInfinite1() {
-		$program = new SimpleProgram('(Math::is-infinite (Math::log 0))');
-		$result = $program->execute(self::$xenv);
-		$this->assertTrue($result);
-	}
-	
-	public function testIsInfinite2() {
-		$program = new SimpleProgram('(Math::is-infinite 0)');
 		$result = $program->execute(self::$xenv);
 		$this->assertFalse($result);
 	}
@@ -377,18 +353,6 @@ class MathPackageTest extends eMacrosTest {
 		$program = new SimpleProgram('(Math::infinite? 0)');
 		$result = $program->execute(self::$xenv);
 		$this->assertFalse($result);
-	}
-	
-	public function testIsNan1() {
-		$program = new SimpleProgram('(Math::is-nan 0)');
-		$result = $program->execute(self::$xenv);
-		$this->assertFalse($result);
-	}
-	
-	public function testIsNan2() {
-		$program = new SimpleProgram('(Math::is-nan (Math::acos 1.01))');
-		$result = $program->execute(self::$xenv);
-		$this->assertTrue($result);
 	}
 	
 	public function testNan1() {

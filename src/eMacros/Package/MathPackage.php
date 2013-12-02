@@ -57,10 +57,6 @@ class MathPackage extends Package {
 		/**
 		 * MACROS
 		 */
-		$this->macro('/^is-(finite|infinite|nan)$/', function ($matches) {
-			return new PHPFunction('is_' . $matches[1]);
-		});
-		
 		$this->macro('/^(finite|infinite|nan)\?$/', function ($matches) {
 			return new IsType('is_' . $matches[1]);
 		});

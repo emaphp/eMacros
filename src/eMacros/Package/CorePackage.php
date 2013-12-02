@@ -168,10 +168,10 @@ class CorePackage extends Package {
 		
 		/**
 		 * Returns the number of arguments received by the program
-		 * Examples: (:= _nargs (%*))
+		 * Examples: (:= _nargs (%#))
 		 * Returns: Integer
 		 */
-		$this['%*'] = new ArgumentCount();
+		$this['%#'] = new ArgumentCount();
 		
 		/**
 		 * Returns program arguments as an array

@@ -8,7 +8,7 @@ use eMacros\GenericList;
 class ArgumentCount implements Applicable {
 	/**
 	 * Returns the number of available arguments
-	 * Usage: (%*)
+	 * Usage: (%#)
 	 * (non-PHPdoc)
 	 * @see \eMacros\Applicable::apply()
 	 */

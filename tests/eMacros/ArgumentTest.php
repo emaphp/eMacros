@@ -94,13 +94,13 @@ class ArgumentTest extends eMacrosTest {
 	 */
 	
 	public function testArgumentCount0() {
-		$program = new SimpleProgram('(%*)');
+		$program = new SimpleProgram('(%#)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(0, $result);
 	}
 	
 	public function testArgumentCount1() {
-		$program = new SimpleProgram('(%*)');
+		$program = new SimpleProgram('(%#)');
 		$result = $program->execute(self::$env, 1, 2, 3);
 		$this->assertEquals(3, $result);
 	}

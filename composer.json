@@ -1,6 +1,6 @@
 {
 	"name" : "emacros/emacros",
-	"description" : "The Extensible Macros Package for PHP",
+	"description" : "The Extensible Macros Library for PHP",
 	"authors" : [{
 			"name" : "Emmanuel Antico",
 			"email" : "emmanuel.antico@gmail.com"

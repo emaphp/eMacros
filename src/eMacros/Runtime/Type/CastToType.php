@@ -4,12 +4,23 @@ namespace eMacros\Runtime\Type;
 use eMacros\Runtime\GenericFunction;
 
 class CastToType extends GenericFunction {
+	/**
+	 * Expected type
+	 * @var string
+	 */
 	public $type;
 	
 	public function __construct($type) {
 		$this->type = $type;
 	}
 	
+	/**
+	 * Casts a value to a especified type
+	 * Usage: (as-string 2)
+	 * Returns: the casted value 
+	 * (non-PHPdoc)
+	 * @see \eMacros\Runtime\GenericFunction::execute()
+	 */
 	public function execute(array $arguments) {
 		if (empty($arguments)) {
 			throw new \BadFunctionCallException("CastToType: No parameters found.");

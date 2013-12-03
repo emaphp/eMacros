@@ -1,5 +1,4 @@
 <?php
-
 namespace eMacros\Runtime\Value;
 
 use eMacros\Applicable;
@@ -8,6 +7,13 @@ use eMacros\GenericList;
 use eMacros\Symbol;
 
 class ValueAppend implements Applicable {
+	/**
+	 * Appends a list of values to an array
+	 * Usage: (@+ "Hello" " " "World" _array)
+	 * Return: the amount of elements in the array
+	 * (non-PHPdoc)
+	 * @see \eMacros\Applicable::apply()
+	 */
 	public function apply(Scope $scope, GenericList $arguments) {
 		$nargs = count($arguments);
 		

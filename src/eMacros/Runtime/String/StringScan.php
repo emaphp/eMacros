@@ -7,6 +7,13 @@ use eMacros\GenericList;
 use eMacros\Symbol;
 
 class StringScan implements Applicable {
+	/**
+	 * Interprets a string with a given format
+	 * Usage: (sscanf "SN/2350001", "SN/%d") (sscanf "24\tLewis Carroll" "%d\t%s %s" _id _first _last)
+	 * Returns: array | int
+	 * (non-PHPdoc)
+	 * @see \eMacros\Applicable::apply()
+	 */
 	public function apply(Scope $scope, GenericList $arguments) {
 		$nargs = count($arguments);
 		

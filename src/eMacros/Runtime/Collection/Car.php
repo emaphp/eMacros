@@ -5,12 +5,13 @@ use eMacros\Runtime\GenericFunction;
 
 class Car extends GenericFunction {
 	/**
-	 * Returns a list first element
+	 * Returns the head element on a list
 	 * Usage: (Array:car (array 1 2 3))
+	 * Returns: mixed
 	 * (non-PHPdoc)
 	 * @see \eMacros\Runtime\GenericFunction::execute()
 	 */
-    protected function execute(array $arguments) {
+    public function execute(array $arguments) {
     	if (empty($arguments)) {
     		throw new \BadFunctionCallException("Car: No parameters found.");
     	}

@@ -6,7 +6,14 @@ use eMacros\Runtime\GenericFunction;
 abstract class ComparisonPredicate extends GenericFunction {
 	protected $logicalOr = false;
 	
-	protected function execute(array $operands) {
+	/**
+	 * Compares various operands
+	 * Usage: (== 1 2) (>= 4 3) (=== "1" 1)
+	 * Returns: boolean
+	 * (non-PHPdoc)
+	 * @see \eMacros\Runtime\GenericFunction::execute()
+	 */
+	public function execute(array $operands) {
 		if (empty($operands)) {
 			throw new \BadFunctionCallException(sprintf("%s: No objects to compare.", get_class($this)));
 		}

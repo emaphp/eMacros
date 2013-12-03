@@ -10,6 +10,7 @@ class RegexMatchAll implements Applicable {
 	/**
 	 * Returns the amount of matches found on the given subject
 	 * Usage: (Regex::match-all "/([\d]{2})/" "34,4,12,52" _matches Regex::SET_ORDER 3)
+	 * Returns: int
 	 * (non-PHPdoc)
 	 * @see \eMacros\Runtime\GenericFunction::apply()
 	 */

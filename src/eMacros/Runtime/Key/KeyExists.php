@@ -1,30 +1,33 @@
 <?php
-
-namespace eMacros\Runtime\Value;
+namespace eMacros\Runtime\Key;
 
 use eMacros\Applicable;
 use eMacros\Scope;
 use eMacros\GenericList;
 
-class ValueExists implements Applicable {
-	public $index;
+class KeyExists implements Applicable {
+	/**
+	 * Key/property to find
+	 * @var mixed
+	 */
+	public $key;
 	
-	public function __construct($index = null) {
-		$this->index = $index;
+	public function __construct($key = null) {
+		$this->key = $key;
 	}
 	
 	public function apply(Scope $scope, GenericList $arguments) {
 		//get index and value
-		if (is_null($this->index)) {
+		if (is_null($this->key)) {
 			if (count($arguments) == 0) {
-				throw new \BadFunctionCallException("ValueExists: No parameters found.");
+				throw new \BadFunctionCallException("KeyExists: No parameters found.");
 			}
 				
-			$index = $arguments[0]->evaluate($scope);
+			$key = $arguments[0]->evaluate($scope);
 				
 			if (count($arguments) == 1) {
 				if (!array_key_exists(0, $scope->arguments)) {
-					throw new \BadFunctionCallException("ValueExists: Expected value of type array/object as second parameter but none found.");
+					throw new \BadFunctionCallException("KeyExists: Expected value of type array/object as second parameter but none found.");
 				}
 		
 				$value = $scope->arguments[0];
@@ -34,11 +37,11 @@ class ValueExists implements Applicable {
 			}
 		}
 		else {
-			$index = $this->index;
+			$key = $this->key;
 				
 			if (count($arguments) == 0) {
 				if (!array_key_exists(0, $scope->arguments)) {
-					throw new \BadFunctionCallException("ValueExists: Expected value of type array/object as first parameter but none found.");
+					throw new \BadFunctionCallException("KeyExists: Expected value of type array/object as first parameter but none found.");
 				}
 		
 				$value = $scope->arguments[0];
@@ -50,17 +53,17 @@ class ValueExists implements Applicable {
 		
 		//get index/property
 		if (is_array($value)) {
-			return array_key_exists($index, $value);
+			return array_key_exists($key, $value);
 		}
 		elseif ($value instanceof \ArrayObject || $value instanceof \ArrayAccess) {
-			return $value->offsetExists($index);
+			return $value->offsetExists($key);
 		}
 		elseif (is_object($value)) {
 			//check property existence
-			if (!property_exists($value, $index)) {
+			if (!property_exists($value, $key)) {
 				//check existence through __isset
 				if (method_exists($value, '__isset')) {
-					return $value->__isset($index);
+					return $value->__isset($key);
 				}
 		
 				return false;
@@ -69,7 +72,7 @@ class ValueExists implements Applicable {
 			return true;
 		}
 		
-		throw new \InvalidArgumentException(sprintf("ValueExists: Expected value of type array/object but %s found instead", gettype($value)));
+		throw new \InvalidArgumentException(sprintf("KeyExists: Expected value of type array/object but %s found instead", gettype($value)));
 	}
 }
 

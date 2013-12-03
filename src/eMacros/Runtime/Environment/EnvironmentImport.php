@@ -9,6 +9,13 @@ use eMacros\Environment\Environment;
 use eMacros\Package\Package;
 
 class EnvironmentImport implements Applicable {
+	/**
+	 * Imports a package into current environment
+	 * Usage: (import eMacros\Package\MathPackage) (import eMacros\Package\PasswordPackage Pwd) 
+	 * Returns: NULL
+	 * (non-PHPdoc)
+	 * @see \eMacros\Applicable::apply()
+	 */
 	public function apply(Scope $scope, GenericList $arguments) {
 		if (!($scope instanceof Environment)) {
 			throw new \RuntimeException("EnvironmentImport: Cannot import package from outside of main context.");

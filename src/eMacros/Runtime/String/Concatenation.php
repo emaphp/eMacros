@@ -7,10 +7,11 @@ class Concatenation extends GenericFunction {
 	/**
 	 * Concatenates a list of strings
 	 * Usage: (. 'Hello ' 'World')
+	 * Returns: string
 	 * (non-PHPdoc)
 	 * @see \eMacros\Runtime\GenericFunction::execute()
 	 */
-    protected function execute(array $arguments) {
+    public function execute(array $arguments) {
         if (isset($arguments[0])) {
         	return implode('', $arguments);
         }

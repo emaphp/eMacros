@@ -1,5 +1,4 @@
 <?php
-
 namespace eMacros\Runtime\Collection;
 
 use eMacros\Applicable;
@@ -8,12 +7,23 @@ use eMacros\GenericList;
 use eMacros\Symbol;
 
 class ArraySort implements Applicable {
+	/**
+	 * Callback to invoke
+	 * @var callable
+	 */
 	public $callback;
 	
 	public function __construct($callback) {
 		$this->callback = $callback;
 	}
 	
+	/**
+	 * Array sort wrapper callback
+	 * Usage: (Array::sort _array) (Array::arsort _arr)
+	 * Returns: boolean
+	 * (non-PHPdoc)
+	 * @see \eMacros\Applicable::apply()
+	 */
 	public function apply(Scope $scope, GenericList $arguments) {
 		if (count($arguments) == 0) {
 			throw new \BadFunctionCallException("ArraySort: No array specified.");

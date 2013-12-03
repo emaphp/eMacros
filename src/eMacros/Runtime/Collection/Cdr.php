@@ -5,8 +5,9 @@ use eMacros\Runtime\GenericFunction;
 
 class Cdr extends GenericFunction {
 	/**
-	 * Returns a list without the first element
+	 * Returns a list without its first element
 	 * Usage: (Array::cdr (array 1 2 3))
+	 * Returns: array
 	 * (non-PHPdoc)
 	 * @see \eMacros\Runtime\GenericFunction::execute()
 	 */

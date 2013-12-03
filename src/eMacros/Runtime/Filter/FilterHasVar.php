@@ -11,7 +11,9 @@ class FilterHasVar extends GenericFunction {
 	public static $filter_types = array(INPUT_GET, INPUT_POST, INPUT_COOKIE, INPUT_SERVER, INPUT_ENV, INPUT_SESSION);
 	
 	/**
+	 * Checks whether a given index is defined on a global array
 	 * Usage: (has-var POST 'message')
+	 * Returns: boolean
 	 * (non-PHPdoc)
 	 * @see \eMacros\Runtime\GenericFunction::execute()
 	 */

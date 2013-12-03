@@ -19,6 +19,7 @@ class ArgumentGet implements Applicable {
 	/**
 	 * Obtains argument at given index
 	 * Usage: (%0) (% _num)
+	 * Returns: mixed
 	 * (non-PHPdoc)
 	 * @see \eMacros\Applicable::apply()
 	 */

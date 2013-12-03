@@ -10,6 +10,7 @@ class ObjectBuilder implements Applicable {
 	/**
 	 * Creates a new instance from a symbol
 	 * Usage: (new ArrayObject (array 1 2 3))
+	 * Returns: object
 	 * (non-PHPdoc)
 	 * @see \eMacros\Applicable::apply()
 	 */

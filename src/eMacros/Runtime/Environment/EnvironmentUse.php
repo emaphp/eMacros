@@ -8,6 +8,12 @@ use eMacros\Symbol;
 use eMacros\Runtime\PHPFunction;
 
 class EnvironmentUse implements Applicable {
+	/**
+	 * Imports a function into current environment
+	 * Usage: (use utf8_decode) (use utf8_encode utf8enc)
+	 * (non-PHPdoc)
+	 * @see \eMacros\Applicable::apply()
+	 */
 	public function apply(Scope $scope, GenericList $arguments) {
 		foreach ($arguments as $name) {
 			if ($name instanceof Symbol) {

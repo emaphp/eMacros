@@ -3,8 +3,13 @@ namespace eMacros\Program;
 
 use eMacros\Parser;
 use eMacros\Environment\Environment;
+use eMacros\GenericList;
 
 abstract class Program {
+	/**
+	 * Program internal expressions
+	 * @var \eMacros\GenericList
+	 */
 	public $expressions;
 	
 	public function __construct($program) {

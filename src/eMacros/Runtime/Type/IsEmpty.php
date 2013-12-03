@@ -6,7 +6,8 @@ use eMacros\Runtime\GenericFunction;
 class IsEmpty extends GenericFunction {
 	/**
 	 * Determines if a value evaluates to empty
-	 * Usage: (is-empty value)
+	 * Usage: (empty value)
+	 * Returns: boolean
 	 * (non-PHPdoc)
 	 * @see \eMacros\Runtime\GenericFunction::execute()
 	 */

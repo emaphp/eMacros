@@ -7,10 +7,11 @@ class Count extends GenericFunction {
 	/**
 	 * Counts the elements on an array
 	 * Usage: (Array::count (array 1 2 3 4 5))
+	 * Returns: int
 	 * (non-PHPdoc)
 	 * @see \eMacros\Runtime\GenericFunction::execute()
 	 */
-	protected function execute(array $arguments) {
+	public function execute(array $arguments) {
 		if (empty($arguments)) {
 			throw new \InvalidArgumentException("Count: No parameters found.");
 		}

@@ -7,6 +7,13 @@ use eMacros\GenericList;
 use eMacros\Symbol;
 
 class ValueSet implements Applicable {
+	/**
+	 * Sets a symbol value
+	 * Usage: (:= _var "Hello World")
+	 * Returns: the assigned value
+	 * (non-PHPdoc)
+	 * @see \eMacros\Applicable::apply()
+	 */
 	public function apply(Scope $scope, GenericList $arguments) {
 		if (count($arguments) == 0) {
 			throw new \BadFunctionCallException("ValueSet: No parameters found.");

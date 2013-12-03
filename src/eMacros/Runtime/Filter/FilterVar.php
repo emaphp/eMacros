@@ -7,6 +7,7 @@ class FilterVar extends GenericFunction {
 	/**
 	 * Filters a value according to a specified filter
 	 * Usage: (var 'yes' 'boolean')
+	 * Returns: mixed
 	 * (non-PHPdoc)
 	 * @see \eMacros\Runtime\GenericFunction::execute()
 	 */

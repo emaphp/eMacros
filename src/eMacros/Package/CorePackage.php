@@ -24,24 +24,20 @@ use eMacros\Runtime\Arithmetic\Modulus;
 use eMacros\Runtime\Type\IsInstanceOf;
 use eMacros\Runtime\Type\IsType;
 use eMacros\Runtime\Type\TypeOf;
-use eMacros\Runtime\Type\IsNull;
 use eMacros\Runtime\Type\IsEmpty;
 use eMacros\Runtime\Type\CastToType;
 use eMacros\Runtime\Type\IsA;
 use eMacros\Runtime\PHPFunction;
 use eMacros\Runtime\Method\MethodInvoke;
 use eMacros\Runtime\Index\IndexGet;
-use eMacros\Runtime\Index\IndexHas;
+use eMacros\Runtime\Index\IndexExists;
 use eMacros\Runtime\Builder\ArrayBuilder;
 use eMacros\Runtime\Builder\ObjectBuilder;
 use eMacros\Runtime\Builder\InstanceBuilder;
 use eMacros\Runtime\Value\ValueSet;
-use eMacros\Runtime\Value\ValueGet;
 use eMacros\Runtime\Value\ValueUnset;
-use eMacros\Runtime\Value\ValueExists;
 use eMacros\Runtime\Value\ValueReturn;
 use eMacros\Runtime\Value\ValueAppend;
-use eMacros\Runtime\Value\ValueAssign;
 use eMacros\Runtime\Argument\ArgumentCount;
 use eMacros\Runtime\Argument\ArgumentList;
 use eMacros\Runtime\Argument\ArgumentGet;
@@ -50,6 +46,9 @@ use eMacros\Runtime\Environment\EnvironmentUse;
 use eMacros\Runtime\Environment\EnvironmentImport;
 use eMacros\Runtime\String\Concatenation;
 use eMacros\Runtime\Output\OutputEcho;
+use eMacros\Runtime\Key\KeyGet;
+use eMacros\Runtime\Key\KeyExists;
+use eMacros\Runtime\Key\KeyAssign;
 
 class CorePackage extends Package {
 	public function __construct() {
@@ -104,28 +103,21 @@ class CorePackage extends Package {
 		 * Examples: (@ "name" _obj) (@ 0 (%1))
 		 * Returns: Mixed
 		 */
-		$this['@'] = new ValueGet();
+		$this['@'] = new KeyGet();
 		
 		/**
 		 * Checks if a given property/index exists in an object/array
 		 * Examples: (@? "name" _obj) (@? 0 (%1))
 		 * Returns: Boolean
 		 */
-		$this['@?'] = new ValueExists();
-		
-		/**
-		 * Appends an element to an array (only arrays)
-		 * Examples: (@+ "Hello" _arr) (@+ 1 _arr)
-		 * Returns: The value appended
-		 */
-		$this['@+'] = new ValueAppend();
+		$this['@?'] = new KeyExists();
 		
 		/**
 		 * Stores a value on an array/object with the given key/property
 		 * Examples: (@= "name" _arr "Emma") (@= _newProperty _obj 10)
-		 * Returns: The assigned value  
+		 * Returns: The assigned value
 		 */
-		$this['@='] = new ValueAssign();
+		$this['@='] = new KeyAssign();
 		
 		/**
 		 * Sets a symbol value
@@ -140,6 +132,13 @@ class CorePackage extends Package {
 		 * Returns: NULL
 		 */
 		$this['unset'] = new ValueUnset();
+		
+		/**
+		 * Appends an element to an array (only arrays)
+		 * Examples: (@+ "Hello" _arr) (@+ 1 _arr)
+		 * Returns: The value appended
+		 */
+		$this['@+'] = new ValueAppend();
 		
 		/**
 		 * Returns a symbol/literal value
@@ -324,7 +323,7 @@ class CorePackage extends Package {
 		 * Returns: mixed
 		 */
 		$this->macro('/^#([+|-]?[0-9]+)$/', function ($matches) {
-			return new ValueGet(intval($matches[1])); 
+			return new IndexGet(intval($matches[1])); 
 		});
 		
 		/**
@@ -334,7 +333,7 @@ class CorePackage extends Package {
 		 * Returns: boolean
 		 */
 		$this->macro('/^#([+|-]?[0-9]+)\?$/', function ($matches) {
-			return new ValueExists(intval($matches[1]));
+			return new IndexExists(intval($matches[1]));
 		});
 		
 		/**
@@ -344,7 +343,7 @@ class CorePackage extends Package {
 		 * Returns: mixed
 		 */
 		$this->macro('/^@([\w]+)$/', function ($matches) {
-			return new ValueGet($matches[1]);
+			return new KeyGet($matches[1]);
 		});
 		
 		/**
@@ -354,7 +353,7 @@ class CorePackage extends Package {
 		 * Returns: boolean
 		 */
 		$this->macro('/^@([\w]+)\?$/', function ($matches) {
-			return new ValueExists($matches[1]);
+			return new KeyExists($matches[1]);
 		});
 		
 		/**
@@ -364,7 +363,7 @@ class CorePackage extends Package {
 		 * Returns: Assigned value
 		 */
 		$this->macro('/^@([\w]+)\=$/', function ($matches) {
-			return new ValueAssign($matches[1]);
+			return new KeyAssign($matches[1]);
 		});
 		
 		/**
@@ -374,7 +373,7 @@ class CorePackage extends Package {
 		 * Returns: Assigned value
 		 */
 		$this->macro('/^#([+|-]?[\d]+)\=$/', function ($matches) {
-			return new ValueAssign(intval($matches[1]));
+			return new KeyAssign(intval($matches[1]));
 		});
 		
 		/**
@@ -391,16 +390,16 @@ class CorePackage extends Package {
 		/**
 		 * CONSTANTS
 		 */
-		$this['PHP_VERSION'] = PHP_VERSION;
-		$this['PHP_MAJOR_VERSION'] = PHP_MAJOR_VERSION;
-		$this['PHP_MINOR_VERSION'] = PHP_MINOR_VERSION;
+		$this['PHP_VERSION']         = PHP_VERSION;
+		$this['PHP_MAJOR_VERSION']   = PHP_MAJOR_VERSION;
+		$this['PHP_MINOR_VERSION']   = PHP_MINOR_VERSION;
 		$this['PHP_RELEASE_VERSION'] = PHP_RELEASE_VERSION;
-		$this['PHP_EXTRA_VERSION'] = PHP_EXTRA_VERSION;
-		$this['PHP_VERSION_ID'] = PHP_VERSION_ID;
-		$this['PHP_OS'] = PHP_OS;
-		$this['PHP_SAPI'] = PHP_SAPI;
-		$this['PHP_INT_MAX'] = PHP_INT_MAX;
-		$this['PHP_INT_SIZE'] = PHP_INT_SIZE;
+		$this['PHP_EXTRA_VERSION']   = PHP_EXTRA_VERSION;
+		$this['PHP_VERSION_ID']      = PHP_VERSION_ID;
+		$this['PHP_OS']              = PHP_OS;
+		$this['PHP_SAPI']            = PHP_SAPI;
+		$this['PHP_INT_MAX']         = PHP_INT_MAX;
+		$this['PHP_INT_SIZE']        = PHP_INT_SIZE;
 	}
 }
 ?>

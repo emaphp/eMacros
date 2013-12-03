@@ -10,6 +10,7 @@ class ArrayBuilder implements Applicable {
 	/**
 	 * Builds an array with the specified elements
 	 * Usage: (array 1 null "Hello" (-7 56.25) ("key" "val"))
+	 * Returns: array
 	 * (non-PHPdoc)
 	 * @see \eMacros\Applicable::apply()
 	 */

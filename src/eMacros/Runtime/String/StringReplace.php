@@ -1,5 +1,4 @@
 <?php
-
 namespace eMacros\Runtime\String;
 
 use eMacros\Applicable;
@@ -8,12 +7,23 @@ use eMacros\GenericList;
 use eMacros\Symbol;
 
 class StringReplace implements Applicable {
+	/**
+	 * Callback to invoke
+	 * @var callable
+	 */
 	public $callback;
 	
 	public function __construct($callback) {
 		$this->callback = $callback;
 	}
 	
+	/**
+	 * Replace ocurrences of a tring in another
+	 * Usage: (String::replace _str1 _str2 _subject) (String::ireplace _str1 _str2 _subject)
+	 * Returns: string
+	 * (non-PHPdoc)
+	 * @see \eMacros\Applicable::apply()
+	 */
 	public function apply(Scope $scope, GenericList $arguments) {
 		$nargs = count($arguments);
 		

@@ -4,13 +4,24 @@ namespace eMacros\Runtime\Method;
 use eMacros\Runtime\GenericFunction;
 
 class MethodInvoke extends GenericFunction {
+	/**
+	 * Method name
+	 * @var string
+	 */
 	public $method;
 	
 	public function __construct($method = null) {
 		$this->method = $method;
 	}
 	
-	public function execute($arguments) {
+	/**
+	 * Invokes a method with the given arguments
+	 * Usage: (->format (new Datetime) "Y-m-d")
+	 * Returns: mixed
+	 * (non-PHPdoc)
+	 * @see \eMacros\Runtime\GenericFunction::execute()
+	 */
+	public function execute(array $arguments) {
 		if (empty($arguments)) {
 			throw new \BadFunctionCallException('MethodInvoke: No parameters found.');
 		}

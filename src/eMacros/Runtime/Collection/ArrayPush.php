@@ -10,6 +10,7 @@ class ArrayPush implements Applicable {
 	/**
 	 * Pushes the given parameter onto the end of an array
 	 * Usage: (Array::push _arr 20 10)
+	 * Returns: int
 	 * (non-PHPdoc)
 	 * @see \eMacros\Applicable::apply()
 	 */

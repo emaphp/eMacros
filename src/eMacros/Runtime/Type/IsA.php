@@ -4,6 +4,13 @@ namespace eMacros\Runtime\Type;
 use eMacros\Runtime\GenericFunction;
 
 class IsA extends GenericFunction {
+	/**
+	 * Determines if a given value is an instance of a specified class
+	 * Usage: (is-a "ArrayObject" _value)
+	 * Returns: boolean 
+	 * (non-PHPdoc)
+	 * @see \eMacros\Runtime\GenericFunction::execute()
+	 */
 	public function execute(array $arguments) {
 		if (empty($arguments)) {
 			throw new \BadFunctionCallException("IsA: No parameters found.");

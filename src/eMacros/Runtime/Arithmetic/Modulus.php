@@ -7,10 +7,11 @@ class Modulus extends GenericFunction {
 	/**
 	 * Caculates the modulus between 2 values
 	 * Usage: (mod -1 5)
+	 * Returns: number
 	 * (non-PHPdoc)
 	 * @see \eMacros\Runtime\GenericFunction::execute()
 	 */
-    protected function execute(array $arguments) {
+    public function execute(array $arguments) {
     	if (empty($arguments)) {
     		//no arguments
     		throw new \BadFunctionCallException("Modulus: No arguments found.");

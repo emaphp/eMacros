@@ -28,7 +28,7 @@ class PasswordPackage extends Package {
 		
 		if (version_compare(phpversion(), '5.5', '>=')) {
 			$this['PASSWORD_DEFAULT'] = PASSWORD_DEFAULT;
-			$this['PASSWORD_BCRYPT'] = PASSWORD_BCRYPT;
+			$this['PASSWORD_BCRYPT']  = PASSWORD_BCRYPT;
 		}
 	}
 }

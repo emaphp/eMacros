@@ -10,6 +10,7 @@ class RegexMatch implements Applicable {
 	/**
 	 * Returns the amount of matches found on the given subject
 	 * Usage: (Regex::match "/([\d]{4})-([\d]{2})-([\d]{2})/" "2013-11-20" _matches Regex::OFFSET_CAPTURE 4)
+	 * Returns: int
 	 * (non-PHPdoc)
 	 * @see \eMacros\Runtime\GenericFunction::apply()
 	 */

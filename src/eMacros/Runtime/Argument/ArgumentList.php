@@ -9,6 +9,7 @@ class ArgumentList implements Applicable {
 	/**
 	 * Returns argument list
 	 * Usage: (%_)
+	 * Returns: array
 	 * (non-PHPdoc)
 	 * @see \eMacros\Applicable::apply()
 	 */

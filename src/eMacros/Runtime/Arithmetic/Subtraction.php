@@ -7,10 +7,11 @@ class Subtraction extends GenericFunction {
 	/**
 	 * Obtains the result of subtracting the first element on a list by the rest of the elements.
 	 * Usage: (- 120 30 50)
+	 * Returns: number
 	 * (non-PHPdoc)
 	 * @see \eMacros\Runtime\GenericFunction::execute()
 	 */
-    protected function execute(array $arguments) {
+    public function execute(array $arguments) {
     	if (empty($arguments)) {
     		throw new \InvalidArgumentException("Subtraction: At least 1 argument is required");
     	}

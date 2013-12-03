@@ -10,6 +10,7 @@ class ArrayUnshift implements Applicable {
 	/**
 	 * Prepends passed elements to the front of the array
 	 * Usage: (Array::unshift _arr "apple" "raspberry")
+	 * Returns: int
 	 * (non-PHPdoc)
 	 * @see \eMacros\Applicable::apply()
 	 */

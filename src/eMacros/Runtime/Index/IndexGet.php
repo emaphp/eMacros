@@ -6,12 +6,23 @@ use eMacros\Scope;
 use eMacros\GenericList;
 
 class IndexGet implements Applicable {
+	/**
+	 * Index to obtain
+	 * @var int
+	 */
 	public $index;
 	
 	public function __construct($index) {
 		$this->index = $index;
 	}
 	
+	/**
+	 * Obtains a value with the given index
+	 * Usage: (#1 _arr) (#0 _arr)
+	 * Returns: mixed
+	 * (non-PHPdoc)
+	 * @see \eMacros\Applicable::apply()
+	 */
 	public function apply(Scope $scope, GenericList $arguments) {
 		if (count($arguments) == 0) {
 			if (empty($scope->arguments)) {
@@ -23,7 +34,6 @@ class IndexGet implements Applicable {
 		else {
 			$value = $arguments[0]->evaluate($scope);
 		}
-		
 		
 		if ($value instanceof \ArrayObject || $value instanceof \ArrayAccess) {
 			//array_key_exists does not call offsetExists

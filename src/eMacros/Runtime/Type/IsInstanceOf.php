@@ -6,7 +6,14 @@ use eMacros\Symbol;
 use eMacros\Scope;
 use eMacros\GenericList;
 
-class IsInstanceOf implements Applicable {	
+class IsInstanceOf implements Applicable {
+	/**
+	 * Determines if a value is an instance of a given class
+	 * Usage: (instance-of Acme\CustomClass _obj)
+	 * Returns: boolean
+	 * (non-PHPdoc)
+	 * @see \eMacros\Applicable::apply()
+	 */
 	public function apply(Scope $scope, GenericList $arguments) {
 		//check number of parameters
 		if (count($arguments) == 0) {

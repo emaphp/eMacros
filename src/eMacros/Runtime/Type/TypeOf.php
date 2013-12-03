@@ -7,6 +7,7 @@ class TypeOf extends GenericFunction {
 	/**
 	 * Obtains a value type
 	 * Usage: (type-of 4)
+	 * Returns: string
 	 * (non-PHPdoc)
 	 * @see \eMacros\Runtime\GenericFunction::execute()
 	 */

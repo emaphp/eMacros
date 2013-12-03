@@ -10,6 +10,7 @@ class ArrayPop implements Applicable {
 	/**
 	 * Pops and returns the last value of an array
 	 * Usage: (Array::pop _arr)
+	 * Returns: mixed
 	 * (non-PHPdoc)
 	 * @see \eMacros\Applicable::apply()
 	 */

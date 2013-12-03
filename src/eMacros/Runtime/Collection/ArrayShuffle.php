@@ -10,6 +10,7 @@ class ArrayShuffle implements Applicable {
 	/**
 	 * Randomizes the order of the elements in an array
 	 * Usage: (Array::shuffle _arr)
+	 * Returns: boolean
 	 * (non-PHPdoc)
 	 * @see \eMacros\Applicable::apply()
 	 */

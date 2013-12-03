@@ -9,6 +9,7 @@ class ArgumentCount implements Applicable {
 	/**
 	 * Returns the number of available arguments
 	 * Usage: (%#)
+	 * Returns: int
 	 * (non-PHPdoc)
 	 * @see \eMacros\Applicable::apply()
 	 */

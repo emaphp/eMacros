@@ -10,6 +10,7 @@ class ArrayShift implements Applicable {
 	/**
 	 * Shifts the first value of an array off and returns it
 	 * Usage: (Array::shift _arr)
+	 * Returns: mixed
 	 * (non-PHPdoc)
 	 * @see \eMacros\Applicable::apply()
 	 */

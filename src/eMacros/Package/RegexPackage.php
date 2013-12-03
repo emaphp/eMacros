@@ -23,12 +23,12 @@ class RegexPackage extends Package {
 		$this['replace-callback'] = new RegexReplaceCallback();
 		
 		//predefined contants
-		$this['OFFSET_CAPTURE'] = PREG_OFFSET_CAPTURE;
-		$this['GREP_INVERT'] = PREG_GREP_INVERT;
-		$this['PATTERN_ORDER'] = PREG_PATTERN_ORDER;
-		$this['SET_ORDER'] = PREG_SET_ORDER;
-		$this['SPLIT_NO_EMPTY'] = PREG_SPLIT_NO_EMPTY;
-		$this['SPLIT_DELIM_CAPTURE'] = PREG_SPLIT_DELIM_CAPTURE;
+		$this['OFFSET_CAPTURE']       = PREG_OFFSET_CAPTURE;
+		$this['GREP_INVERT']          = PREG_GREP_INVERT;
+		$this['PATTERN_ORDER']        = PREG_PATTERN_ORDER;
+		$this['SET_ORDER']            = PREG_SET_ORDER;
+		$this['SPLIT_NO_EMPTY']       = PREG_SPLIT_NO_EMPTY;
+		$this['SPLIT_DELIM_CAPTURE']  = PREG_SPLIT_DELIM_CAPTURE;
 		$this['SPLIT_OFFSET_CAPTURE'] = PREG_SPLIT_OFFSET_CAPTURE;
 	}
 }

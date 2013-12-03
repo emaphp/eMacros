@@ -8,10 +8,11 @@ class Division extends GenericFunction {
 	 * Obtains the result of dividing the first element on a list by the rest of the elements.
 	 * Usage: (/ 4 2)
 	 * Special case: (/ 5) = 1/5
+	 * Returns: number
 	 * (non-PHPdoc)
 	 * @see \eMacros\Runtime\GenericFunction::execute()
 	 */
-    protected function execute(array $arguments) {
+    public function execute(array $arguments) {
     	if (empty($arguments)) {
     		//no parameters
     		throw new \InvalidArgumentException("Division: At least 1 argument is required.");

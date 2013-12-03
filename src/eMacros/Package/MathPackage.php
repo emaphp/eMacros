@@ -44,15 +44,15 @@ class MathPackage extends Package {
 		$this['atan'] = new PHPFunction('atan');
 		
 		//constants
-		$this['PI'] = M_PI;
-		$this['PI_2'] = M_PI_2;
-		$this['PI_4'] = M_PI_4;
-		$this['E'] = M_E;
-		$this['EULER'] = M_EULER;
-		$this['ROUND_HALF_UP'] = PHP_ROUND_HALF_UP;
+		$this['PI']              = M_PI;
+		$this['PI_2']            = M_PI_2;
+		$this['PI_4']            = M_PI_4;
+		$this['E']               = M_E;
+		$this['EULER']           = M_EULER;
+		$this['ROUND_HALF_UP']   = PHP_ROUND_HALF_UP;
 		$this['ROUND_HALF_DOWN'] = PHP_ROUND_HALF_DOWN;
 		$this['ROUND_HALF_EVEN'] = PHP_ROUND_HALF_EVEN;
-		$this['ROUND_HALF_ODD'] = PHP_ROUND_HALF_ODD;
+		$this['ROUND_HALF_ODD']  = PHP_ROUND_HALF_ODD;
 		
 		/**
 		 * MACROS

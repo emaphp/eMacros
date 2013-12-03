@@ -5,17 +5,28 @@ use eMacros\Applicable;
 use eMacros\GenericList;
 use eMacros\Scope;
 
-class IndexHas implements Applicable {
+class IndexExists implements Applicable {
+	/**
+	 * Index to find
+	 * @var int
+	 */
 	public $index;
 	
 	public function __construct($index) {
 		$this->index = $index;
 	}
 	
+	/**
+	 * Checks if a given index is defined in an array
+	 * Usage: (#3? _arr) (#0? _arr) 
+	 * Returns: boolean
+	 * (non-PHPdoc)
+	 * @see \eMacros\Applicable::apply()
+	 */
 	public function apply(Scope $scope, GenericList $arguments) {
 		if (count($arguments) == 0) {
 			if (empty($scope->arguments)) {
-				throw new \BadFunctionCallException("IndexHas: No parameters found.");
+				throw new \BadFunctionCallException("IndexExists: No parameters found.");
 			}
 			
 			$value = $scope->arguments[0];
@@ -32,7 +43,7 @@ class IndexHas implements Applicable {
 			return array_key_exists($this->index, $value);
 		}
 		
-		throw new \InvalidArgumentException(sprintf("IndexHas: A value of type array was expected but %s found instead.", gettype($value)));
+		throw new \InvalidArgumentException(sprintf("IndexExists: A value of type array was expected but %s found instead.", gettype($value)));
 	}
 }
 ?>

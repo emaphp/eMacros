@@ -8,13 +8,14 @@ use eMacros\GenericList;
 class InstanceBuilder implements Applicable {
 	/**
 	 * Creates a new instance from a string
-	 * Usage: (new "ArrayObject" (array 1 2 3))
+	 * Usage: (instance _class (array 1 2 3))
+	 * Returns: object
 	 * (non-PHPdoc)
 	 * @see \eMacros\Applicable::apply()
 	 */
 	public function apply(Scope $scope, GenericList $arguments) {
 		if (count($arguments) == 0) {
-			throw new \BadFunctionCallException("ObjectBuilder: No arguments found.");
+			throw new \BadFunctionCallException("InstanceBuilder: No arguments found.");
 		}
 		
 		$class = $arguments[0]->evaluate($scope);

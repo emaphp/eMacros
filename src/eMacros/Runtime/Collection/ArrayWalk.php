@@ -10,6 +10,7 @@ class ArrayWalk implements Applicable {
 	/**
 	 * Applies the user-defined callback function to each element of an array.
 	 * Usage: (Array::walk _arr _callback)
+	 * Returns: boolean
 	 * (non-PHPdoc)
 	 * @see \eMacros\Applicable::apply()
 	 */

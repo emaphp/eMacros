@@ -2,6 +2,10 @@
 namespace eMacros\Runtime;
 
 class PHPFunction extends GenericFunction {
+	/**
+	 * Internal callback
+	 * @var callable
+	 */
 	public $callback;
 	
 	public function __construct($callback) {

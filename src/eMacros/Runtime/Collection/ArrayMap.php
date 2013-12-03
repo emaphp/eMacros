@@ -10,6 +10,7 @@ class ArrayMap implements Applicable {
 	/**
 	 * Applies a callback to a given array
 	 * Usage: (Array::map "strtoupper" (array "a" "b" "c"))
+	 * Returns: array
 	 * (non-PHPdoc)
 	 * @see \eMacros\Applicable::apply()
 	 */

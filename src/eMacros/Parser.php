@@ -10,16 +10,41 @@ class Parser {
 	 */
 	public static $map = array();
 	
+	/*
+	 * SYMBOL REGEX
+	 */
 	const PARENTHESES = '()';
 	const COMMENT_PREFIX = ';';
 	const WHITESPACES = " \t\n\r\f\v\0";
-	const REAL_PATTERN = '{^
-        [+-]? ((\d+ | (\d* \. \d+ | \d+ \. \d*)) e [+-]? \d+
-              | \d* \. \d+ | \d+ \. \d*)
-    }ix';
+	
+	/**
+	 * Float validation regex
+	 * @var string
+	 */
+	const REAL_PATTERN = '{^[+-]?((\d+|(\d*\.\d+|\d+\.\d*))e[+-]?\d+|\d*\.\d+|\d+\.\d*)}i';
+	
+	/**
+	 * Integer validation regex
+	 * @var unknown
+	 */
 	const INTEGER_PATTERN = '/^([+-]?)(0x([0-9a-f]+)|0([0-7]+)|[1-9]\d*|0)/i';
+	
+	/**
+	 * String validation regex
+	 * @var string
+	 */
 	const STRING_PATTERN = '/^"([^"\\\\]|\\\\.)*"|^\'([^\'\\\\]|\\\\.)*\'/';
+	
+	/**
+	 * Escape string replacement regex
+	 * @var string
+	 */
     const STRING_ESCAPE_PATTERN = '/\\\\(([0-7]{1,3})|x([0-9A-Fa-f]{1,2})|.)/';
+    
+    /**
+     * Symbol validation regex
+     * @var string
+     */
     const SYMBOL_PATTERN = '{^[^\s\d(){}\[\]"\';][^\s\'"(){}\[\];]*}';
 	
     /**

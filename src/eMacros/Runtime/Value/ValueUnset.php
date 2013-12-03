@@ -8,6 +8,13 @@ use eMacros\GenericList;
 use eMacros\Symbol;
 
 class ValueUnset implements Applicable {
+	/**
+	 * Removes a symbol from scope
+	 * Usage: (unset _var)
+	 * Returns: null
+	 * (non-PHPdoc)
+	 * @see \eMacros\Applicable::apply()
+	 */
 	public function apply(Scope $scope, GenericList $arguments) {
 		if (count($arguments) == 0) {
 			throw new \BadFunctionCallException("ValueUnset: No parameters found.");

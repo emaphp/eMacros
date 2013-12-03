@@ -6,6 +6,13 @@ use eMacros\Scope;
 use eMacros\GenericList;
 
 class RegexReplaceCallback implements Applicable {
+	/**
+	 * Replaces all matches specified by a pattern on a given subject
+	 * Usage: see RegexPackageTest class
+	 * Returns: array | string
+	 * (non-PHPdoc)
+	 * @see \eMacros\Applicable::apply()
+	 */
 	public function apply(Scope $scope, GenericList $arguments) {
 		$nargs = count($arguments);
 		

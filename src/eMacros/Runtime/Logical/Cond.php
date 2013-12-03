@@ -9,6 +9,7 @@ class Cond implements Applicable {
 	/**
 	 * Returns a value depending on a condition
 	 * Usage: (cond ((is-integer? (%0)) 'Integer') ((is-string? (%0)) 'String') (true 'Unexpected type'))
+	 * Returns: mixed
 	 * (non-PHPdoc)
 	 * @see \eMacros\Applicable::apply()
 	 */

@@ -4,6 +4,10 @@ namespace eMacros\Runtime\Type;
 use eMacros\Runtime\GenericFunction;
 
 class IsType extends GenericFunction {
+	/**
+	 * Callback to invoke
+	 * @var callable
+	 */
 	public $callback;
 		
 	public function __construct($callback) {
@@ -12,7 +16,8 @@ class IsType extends GenericFunction {
 	
 	/**
 	 * Determines if a value is of a given type
-	 * Usage: (is-type 'hey')
+	 * Usage: (integer? 'hey') (string? _val) (null? _val1 _val2)
+	 * Returns: boolean
 	 * (non-PHPdoc)
 	 * @see \eMacros\Runtime\GenericFunction::execute()
 	 */

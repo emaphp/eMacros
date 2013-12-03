@@ -12,14 +12,14 @@ class JSONPackage extends Package {
 		$this['encode'] = new PHPFunction('json_encode');
 		
 		//constants
-		$this['HEX_TAG'] = JSON_HEX_TAG;
-		$this['HEX_AMP'] = JSON_HEX_AMP;
-		$this['HEX_APOS'] = JSON_HEX_APOS;
-		$this['HEX_QUOT'] = JSON_HEX_QUOT;
-		$this['FORCE_OBJECT'] = JSON_FORCE_OBJECT;
-		$this['NUMERIC_CHECK'] = JSON_NUMERIC_CHECK;
-		$this['BIGINT_AS_STRING'] = JSON_BIGINT_AS_STRING;
-		$this['PRETTY_PRINT'] = JSON_PRETTY_PRINT;
+		$this['HEX_TAG']           = JSON_HEX_TAG;
+		$this['HEX_AMP']           = JSON_HEX_AMP;
+		$this['HEX_APOS']          = JSON_HEX_APOS;
+		$this['HEX_QUOT']          = JSON_HEX_QUOT;
+		$this['FORCE_OBJECT']      = JSON_FORCE_OBJECT;
+		$this['NUMERIC_CHECK']     = JSON_NUMERIC_CHECK;
+		$this['BIGINT_AS_STRING']  = JSON_BIGINT_AS_STRING;
+		$this['PRETTY_PRINT']      = JSON_PRETTY_PRINT;
 		$this['UNESCAPED_SLASHES'] = JSON_UNESCAPED_SLASHES;
 		$this['UNESCAPED_UNICODE'] = JSON_UNESCAPED_UNICODE;
 	}

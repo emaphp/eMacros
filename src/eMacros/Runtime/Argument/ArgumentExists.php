@@ -20,6 +20,7 @@ class ArgumentExists implements Applicable {
 	/**
 	 * Checks if a given argument has been provided
 	 * Usage: (%1?) (%? _num)
+	 * Returns: boolean
 	 * (non-PHPdoc)
 	 * @see \eMacros\Applicable::apply()
 	 */

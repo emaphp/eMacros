@@ -58,9 +58,9 @@ class StringPackage extends Package {
 		$this['sscanf'] = new StringScan();
 		
 		//pad constants
-		$this['PAD_LEFT'] = STR_PAD_LEFT;
+		$this['PAD_LEFT']  = STR_PAD_LEFT;
 		$this['PAD_RIGHT'] = STR_PAD_RIGHT;
-		$this['PAD_BOTH'] = STR_PAD_BOTH;
+		$this['PAD_BOTH']  = STR_PAD_BOTH;
 	}
 }
 ?>

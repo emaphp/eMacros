@@ -2,6 +2,10 @@
 namespace eMacros;
 
 class Literal implements Expression {
+	/**
+	 * Literal value
+	 * @var mixed
+	 */
 	public $value;
 
     public function __construct($value) {

@@ -7,6 +7,13 @@ use eMacros\GenericList;
 use eMacros\Symbol;
 
 class RegexReplace implements Applicable {
+	/**
+	 * Replaces all matches specified by a pattern on a given subject
+	 * Usage: (Regex::replace "/(\\w+) (\\d+), (\\d+)/i" "${1}1,$3" "April 15, 2003")
+	 * Returns: array | string
+	 * (non-PHPdoc)
+	 * @see \eMacros\Applicable::apply()
+	 */
 	public function apply(Scope $scope, GenericList $arguments) {
 		$nargs = count($arguments);
 		

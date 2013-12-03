@@ -49,19 +49,25 @@ use eMacros\Runtime\Output\OutputEcho;
 use eMacros\Runtime\Key\KeyGet;
 use eMacros\Runtime\Key\KeyExists;
 use eMacros\Runtime\Key\KeyAssign;
+use eMacros\Runtime\Symbol\SymbolSet;
+use eMacros\Runtime\Symbol\SymbolLookup;
+use eMacros\Runtime\Symbol\SymbolExists;
 
 class CorePackage extends Package {
 	public function __construct() {
 		parent::__construct('Core');
 		
 		/**
-		 * BASIC OPERATIONS
+		 * DEFAULT SYMBOLS
 		 */
 		
-		//default symbols
 		$this['null'] = null;
 		$this['true'] = true;
 		$this['false'] = false;
+		
+		/**
+		 * COMMON OPERATORS
+		 */
 		
 		//comparison operators
 		$this['==='] = new Identical();
@@ -95,7 +101,15 @@ class CorePackage extends Package {
 		$this['.'] = new Concatenation();
 		
 		/**
-		 * VALUE MACROS
+		 * SYMBOL FUNCTIONS
+		 */
+		
+		$this['sym'] = new SymbolSet();
+		$this['sym-exists'] = new SymbolExists();
+		$this['lookup'] = new SymbolLookup();
+		
+		/**
+		 * KEY FUNCTIONS
 		 */
 		
 		/**
@@ -118,6 +132,10 @@ class CorePackage extends Package {
 		 * Returns: The assigned value
 		 */
 		$this['@='] = new KeyAssign();
+		
+		/**
+		 * VALUE FUNCTIONS
+		 */
 		
 		/**
 		 * Sets a symbol value
@@ -148,7 +166,7 @@ class CorePackage extends Package {
 		$this['<-'] = new ValueReturn();
 
 		/**
-		 * ARGUMENT MACROS
+		 * ARGUMENT FUNCTIONS
 		 */
 		
 		/**
@@ -180,7 +198,7 @@ class CorePackage extends Package {
 		$this['%_'] = new ArgumentList();
 		
 		/**
-		 * METHOD MACROS
+		 * METHOD FUNCTIONS
 		 */
 		
 		/**
@@ -191,7 +209,7 @@ class CorePackage extends Package {
 		$this['->'] = new MethodInvoke();
 		
 		/**
-		 * TYPE MACROS
+		 * TYPE FUNCTIONS
 		 */
 		
 		/**
@@ -223,8 +241,9 @@ class CorePackage extends Package {
 		$this['is-a'] = new IsA();
 		
 		/**
-		 * TYPE FUNCTIONS
+		 * CONVERSION FUNCTIONS
 		 */
+		
 		$this['strval'] = new PHPFunction('strval');
 		
 		//PHP 5.5
@@ -238,6 +257,7 @@ class CorePackage extends Package {
 		/**
 		 * CLASS/OBJECT FUNCTIONS
 		 */
+		
 		$this['property-exists'] = new PHPFunction('property_exists');
 		$this['method-exists'] = new PHPFunction('method_exists');
 		$this['is-subclass-of'] = new PHPFunction('is_subclass_of');
@@ -251,6 +271,7 @@ class CorePackage extends Package {
 		/**
 		 * BUILDER FUNCTIONS
 		 */
+		
 		$this['array'] = new ArrayBuilder();
 		$this['new'] = new ObjectBuilder();
 		$this['instance'] = new InstanceBuilder();
@@ -258,12 +279,14 @@ class CorePackage extends Package {
 		/**
 		 * ENVIRONMENT FUNCTIONS
 		 */
+		
 		$this['use'] = new EnvironmentUse();
 		$this['import'] = new EnvironmentImport();
 		
 		/**
 		 * OUTPUT FUNCTIONS
 		 */
+		
 		$this['echo'] = new OutputEcho();
 		$this['var-dump'] = new PHPFunction('var_dump');
 		$this['print-r'] = new PHPFunction('print_r');

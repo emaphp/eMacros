@@ -2,115 +2,125 @@
 namespace eMacros;
 
 use eMacros\Program\SimpleProgram;
+
 /**
  * 
  * @author emaphp
  * @group symbol
  */
 class SymbolTest extends eMacrosTest {
-	public function testEmpty() {
-		$program = new SimpleProgram('');
+	/**
+	 * @expectedException BadFunctionCallException
+	 */
+	public function testSymbolSet0() {
+		$program = new SimpleProgram('(sym)');
 		$result = $program->execute(self::$env);
-		$this->assertNull($result);
 	}
 	
 	/**
-	 * @expectedException \BadFunctionCallException
+	 * @expectedException InvalidArgumentException
 	 */
-	public function testEmpty2() {
-		$program = new SimpleProgram('()');
+	public function testSymbolSet1() {
+		$program = new SimpleProgram('(sym null)');
 		$result = $program->execute(self::$env);
-		$this->assertNull($result);
 	}
 	
 	/**
-	 * @expectedException \BadFunctionCallException
+	 * @expectedException InvalidArgumentException
 	 */
-	public function testEmpty3() {
-		$program = new SimpleProgram('( )');
+	public function testSymbolSet2() {
+		$program = new SimpleProgram('(sym "")');
 		$result = $program->execute(self::$env);
-		$this->assertNull($result);
-	}
-	
-	public function testNotDefined() {
-		$program = new SimpleProgram('not-defined');
-		$result = $program->execute(self::$env);
-		$this->assertNull($result);
-	}
-	
-	public function testNull() {
-		$program = new SimpleProgram('null');
-		$result = $program->execute(self::$env);
-		$this->assertNull($result);
 	}
 	
 	/**
-	 * @expectedException \UnexpectedValueException
+	 * @expectedException UnexpectedValueException
 	 */
-	public function testNull2() {
-		$program = new SimpleProgram('(null)');
+	public function testSymbolSet3() {
+		$program = new SimpleProgram('(sym ";")');
+		$result = $program->execute(self::$env);
+	}
+	
+	public function testSymbolSet4() {
+		$program = new SimpleProgram('(sym "_val")');
 		$result = $program->execute(self::$env);
 		$this->assertNull($result);
 	}
 	
-	public function testBoolean() {
-		$program = new SimpleProgram('true');
+	public function testSymbolSet5() {
+		$program = new SimpleProgram('(sym "_val" 10)');
+		$result = $program->execute(self::$env);
+		$this->assertNull($result);
+	}
+	
+	public function testSymbolSet6() {
+		$program = new SimpleProgram('(sym "_val" 10)(<- _val)');
+		$result = $program->execute(self::$env);
+		$this->assertEquals(10, $result);
+	}
+	
+	/**
+	 * @expectedException BadFunctionCallException
+	 */
+	public function testSymbolLookup0() {
+		$program = new SimpleProgram('(lookup)');
+		$result = $program->execute(self::$env);
+	}
+	
+	/**
+	 * @expectedException InvalidArgumentException
+	 */
+	public function testSymbolLookup1() {
+		$program = new SimpleProgram('(lookup null)');
+		$result = $program->execute(self::$env);
+	}
+	
+	/**
+	 * @expectedException InvalidArgumentException
+	 */
+	public function testSymbolLookup2() {
+		$program = new SimpleProgram('(lookup "")');
+		$result = $program->execute(self::$env);
+	}
+	
+	/**
+	 * @expectedException InvalidArgumentException
+	 */
+	public function testSymbolLookup3() {
+		$program = new SimpleProgram('(lookup "_valsl3")');
+		$result = $program->execute(self::$env);
+	}
+	
+	public function testSymbolLookup4() {
+		$program = new SimpleProgram('(sym "_valsl4" "test")(lookup "_valsl4")');
+		$result = $program->execute(self::$env);
+		$this->assertEquals("test", $result);
+	}
+	
+	/**
+	 * @expectedException BadFunctionCallException
+	 */
+	public function testSymbolExists0() {
+		$program = new SimpleProgram('(sym-exists)');
+		$result = $program->execute(self::$env);
+	}
+	
+	public function testSymbolExists1() {
+		$program = new SimpleProgram('(sym-exists "_se1")');
+		$result = $program->execute(self::$env);
+		$this->assertFalse($result);
+	}
+	
+	public function testSymbolExists2() {
+		$program = new SimpleProgram('(sym "_se2" 30)(sym-exists "_se2")');
 		$result = $program->execute(self::$env);
 		$this->assertTrue($result);
 	}
 	
-	/**
-	 * @expectedException \UnexpectedValueException
-	 */
-	public function testBoolean2() {
-		$program = new SimpleProgram('(true)');
+	public function testSymbolExists3() {
+		$program = new SimpleProgram('(:= _se3 100)(sym-exists "_se3")');
 		$result = $program->execute(self::$env);
 		$this->assertTrue($result);
-	}
-	
-	public function testInteger() {
-		$program = new SimpleProgram('4');
-		$result = $program->execute(self::$env);
-		$this->assertEquals(4, $result);
-	}
-	
-	/**
-	 * @expectedException \UnexpectedValueException
-	 */
-	public function testInteger2() {
-		$program = new SimpleProgram('(4)');
-		$result = $program->execute(self::$env);
-		$this->assertEquals(4, $result);
-	}
-	
-	public function testFloat() {
-		$program = new SimpleProgram('5.75');
-		$result = $program->execute(self::$env);
-		$this->assertEquals(5.75, $result);
-	}
-	
-	/**
-	 * @expectedException \UnexpectedValueException
-	 */
-	public function testFloat2() {
-		$program = new SimpleProgram('(5.75)');
-		$result = $program->execute(self::$env);
-		$this->assertEquals(5.75, $result);
-	}
-	
-	public function testString() {
-		$program = new SimpleProgram("'Sup'");
-		$result = $program->execute(self::$env);
-		$this->assertEquals('Sup', $result);
-	}
-	
-	/**
-	 * @expectedException \UnexpectedValueException
-	 */
-	public function testString2() {
-		$program = new SimpleProgram("('Sup')");
-		$result = $program->execute(self::$env);
-		$this->assertEquals(5.75, $result);
 	}
 }
 ?>

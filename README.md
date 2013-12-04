@@ -151,7 +151,112 @@ La clase DefaultEnvironment incorpora los paquetes para funciones de cadenas, ar
 
 <br/>
 
+##Corriendo programas desde archivos
+
+<br/>
+
+Los programas también pueden cargarse desde archivos en caso de que resulte más comodo. Tener el código de la aplicación en otro archivo resulta provechoso a la hora de agregar comentarios, lo que mejora la legibilidad del mismo. Este programa de ejemplo es similar al anterior, excepto que también retorna la versión de PHP corriendo en sistema.
+
+```lisp
+; hello_world.em
+; Esto es un comentario
+(. "Hola" " Mundo!" "\n") ; otro comentario
+(. "Este script corre bajo PHP " PHP_VERSION "\n") 
+; FIN
+```
+
+La única modificación a agregar es utilizar la función *file_get_contents* para obtener el código fuente.
+
+```php
+<?php
+include 'vendor/autoload.php';
+
+use eMacros\Program\TextProgram;
+use eMacros\Environment\DefaultEnvironment;
+
+$program = new TextProgram(file_get_contents('hello_world.em'));
+$result = $program->execute(new DefaultEnvironment);
+
+echo $result;
+?>
+```
+
+<br/>
+
 ##La clase CorePackage
+
+<br/>
+
+La clase *eMacros\Package\CorePackage* resulta esencial para la generación de ambientes de ejecución de programas. Entre los elementos que se agregan con este paquete se encuentran:
+
+* Los símbolos *null*, *true* y *false*.
+* Operadores de comparación, aritméticos y lógicos.
+* Funciones de manejo de variables y símbolos.
+* Funciones de clases y objetos.
+* Funciones para manejo de argumentos.
+* Funciones para manejos de tipos.
+* Etc.
+
+<br/>
+Como se observa, la funcionalidad de este paquete es muy básica por lo que se recomienda contar con la misma en el caso de definir un entorno customizado. A continuación se hará una breve reseña de las capacidades de este paquete.
+
+<br/>
+
+#####Operadores de comparación
+
+
+```lisp
+; comparison.em
+; Los operadores de comparación devuelven siempre un valor booleano
+
+; igual
+(== 1 "1") ; igual a
+(!= 1 2) ; distinto a
+
+; identico
+(=== 1 1) ; identico a
+(!== 1 "1") ; no identico a
+
+; mayor
+(> 6 4) ; mayor que
+(>= 4 4) ; mayor igual que
+
+; menor
+(< 3 4) ; menor que
+(<= 3 3) ; menor igual que
+```
+
+<br/>
+
+#####Operadores lógicos
+
+```lisp
+; logical.em
+
+; AND y OR
+(and true true) ; AND lógico
+(or false true) ; OR lógico
+
+; pueden evaluarse varios parámetros
+(and true true false true)
+
+; NOT
+(not true)
+
+; IF
+; if [CONDITION] [VALUE_TRUE]
+; if [CONDITION] [VALUE_TRUE] [VALUE_FALSE]
+(if true 'Es verdadero') ; devuelve 'Es verdadero'
+(if false 'Es verdadero' 'Es falso') ; devuelve 'Es falso'
+(if false 'Es verdadero') ; devuelve NULL
+
+; COND
+; cond busca el primer elemento no falso de un listado y devuelve el valor asociado
+(cond (false 1)) ; devuelve NULL
+(cond (false 1) (true 2) (false 3) (true 4)) ; devuelve 2
+```
+
+
 
 <br/>
 

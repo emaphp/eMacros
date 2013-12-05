@@ -246,9 +246,9 @@ Como se observa, la funcionalidad de este paquete es muy básica por lo que se r
 ; IF
 ; if [CONDITION] [VALUE_TRUE]
 ; if [CONDITION] [VALUE_TRUE] [VALUE_FALSE]
-(if true 'Es verdadero') ; devuelve 'Es verdadero'
-(if false 'Es verdadero' 'Es falso') ; devuelve 'Es falso'
-(if false 'Es verdadero') ; devuelve NULL
+(if true "Es verdadero") ; devuelve "Es verdadero"
+(if false "Es verdadero" "Es falso") ; devuelve "Es falso"
+(if false "Es verdadero") ; devuelve NULL
 
 ; COND
 ; cond busca el primer elemento no falso de un listado y devuelve el valor asociado
@@ -256,7 +256,82 @@ Como se observa, la funcionalidad de este paquete es muy básica por lo que se r
 (cond (false 1) (true 2) (false 3) (true 4)) ; devuelve 2
 ```
 
+<br/>
 
+#####Operadores aritméticos
+
+```lisp
+; arithmetic.em
+
+; suma y resta
+(+ (- 10 6) 6  1) ; 11
+
+; multiplicación y división
+(* 4 (/ 10 5)) ; 8
+
+; modulo
+(mod 10 3) ; 1
+```
+
+<br/>
+
+#####Operadores binarios
+
+```lisp
+; binary.em
+
+; OR
+; 1010 | 0110
+(| 10 6) ; 14
+
+; AND
+; 0101 & 1110
+(& 5 14) ; 4
+```
+
+<br/>
+
+##Variables
+
+<br/>
+La declaración de una variable agrega un símbolo a la tabla del símbolos del entono de ejecución. Para agregar una variable con un valor de inicialización utilizamos el operador de asignación.
+
+
+```lisp
+; variables.em
+
+(:= _nulo null) ; _nulo = null
+(:= _falso false) ; _falso = false
+(:= _verdadero true)
+
+; numeros
+(:= _dos 1) ; declarar _dos = 1
+(:= _cinco (+ 2 3)) ; declarar _cinco = 2 + 3
+(+ _dos _cinco) ; 7
+
+; cadenas
+(:= _nombre "pepe")
+(:= _mensaje (. "Hola " _nombre)) ; construir mensaje
+(<- _mensaje) ; retornar valor de _mensaje
+```
+Alternativamente podemos utilizar las funciones de maipulación de simbolos: *sym*, *sym-exists* y *lookup*.
+
+```lisp
+; variables.em
+; la función sym espera una cadena con el nombre del símbolo y su valor
+(sym "_program" "variables.em") ; agrega el símbolo _program con el valor "variables.em"
+(. 'Corriendo programa ' _program)
+
+; sym-exists verifica si el símbolo está declarado en la tabla de símbolos
+(if (sym-exists "_program") "El símbolo \"_program\" ya existe")
+
+; lookup recupera el valor del símbolo
+(. "Finalizando ejecución de " (lookup "_program"))
+```
+
+<br/>
+
+##Arreglos y objetos
 
 <br/>
 

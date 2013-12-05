@@ -291,6 +291,54 @@ Como se observa, la funcionalidad de este paquete es muy básica por lo que se r
 
 <br/>
 
+#####Funciones de tipo
+
+```lisp
+; types.em
+
+; obtener tipo
+(type-of 4) ; "integer"
+
+; comprobar tipo
+(int? 4) ; true
+
+; múltiples parametros
+(string? "" "hola" "mundo") ; true
+(int? 5 3 "x") ; false
+
+; vacio
+(empty "") ; true
+(empty 1) ; false
+(empty false 0) ; true
+```
+
+
+<br/>
+
+#####Conversión
+
+```lisp
+; casting.em
+
+; as-TYPE
+(as-int "123") ; 123
+(as-float "345.25") ; 345.25
+
+; strval
+(strval true) ; "1"
+
+; intval
+(intval 34.55) ; 34
+
+; floatval
+(floatval "13.45") ; 13.45
+
+; boolval (solo PHP 5.5)
+(boolval 0) ; false
+```
+
+<br/>
+
 ##Variables
 
 <br/>
@@ -313,11 +361,15 @@ La declaración de una variable agrega un símbolo a la tabla del símbolos del 
 (:= _nombre "pepe")
 (:= _mensaje (. "Hola " _nombre)) ; construir mensaje
 (<- _mensaje) ; retornar valor de _mensaje
+
+; unset
+(unset _nombre)
+(<- _nombre) ; NULL
 ```
 Alternativamente podemos utilizar las funciones de maipulación de simbolos: *sym*, *sym-exists* y *lookup*.
 
 ```lisp
-; variables.em
+; symbols.em
 ; la función sym espera una cadena con el nombre del símbolo y su valor
 (sym "_program" "variables.em") ; agrega el símbolo _program con el valor "variables.em"
 (. 'Corriendo programa ' _program)
@@ -337,18 +389,18 @@ Alternativamente podemos utilizar las funciones de maipulación de simbolos: *sy
 Los arreglos se crean a través de la función *array*. Es posible definir sus valores mediante pares clave-valor.
 
 ```lisp
-; arreglos.em
+; arrays.em
 ; crear arreglo de enteros
 (:= _lista (array 1 2 3 4 5))
 (. "_lista posee " (count _lista) " elementos")
 
 ; setear claves
-(:= _data (array ("nombre" "juan") ("apellido" "perez") ("ocupacion" "desarrollador"))
+(:= _data (array ("nombre" "juan") ("apellido" "perez") ("ocupacion" "desarrollador")))
 ```
 Para la creación de objectos contamos con 2 funciones: *new* y *instance*. La diferencia entre estas 2 es que *new* esperea el nombre de la clase definido como símbolo mientras que *instance* espera una cadena.
 
 ```lisp
-; objetos.em
+; objects.em
 ; declarar instancia de stdClass
 (:= _obj (new stdClass))
 
@@ -423,6 +475,83 @@ La clase *CorePackage* define un método abreviado para el acceso a claves en ar
 ; comprobar existencia de clave
 (if (@estado? _arr) (. "Estado de programa: " (@estado _arr)) "Estado desconocido")
 ```
+Para el caso particular de índices numéricos debe reemplazarse '@' por '#'.
+
+```lisp
+; numeric_keys.em
+(:= _arr (array))
+(#0= "Primer elemento")
+(#-2= "Indice -2")
+
+(if (not (#1? _arr)) "No se encontró ningún elemento en la posición 1")
+
+(. "El primer elemento es " (#0 _arr))
+```
+
+<br/>
+
+#####Funciones de clase y objetos
+
+```lisp
+; class_functions.em
+(:= _song (new stdClass))
+(@name= _song "Meditango")
+(@artist= _song "Astor Piazzolla")
+(@genre= _song "Tango")
+
+; get-object-vars
+(get-object-vars _song) ; ["name" => "Meditango", "artist" => "Astor Piazzolla", "genre" => "Tango"]
+
+; get-class
+(get-class _song) ; "stdClass"
+
+; instance-of
+(instance-of _obj stdClass) ; true
+(instance-of _obj ArrayObject) ; false
+
+; is-a
+(is-a _obj "stdClass") ; true
+(is-a _obj "ArrayObject") ; false
+
+; property-exists
+(property-exists "eMacros\Symbol" "package") ; true
+
+; method-exists
+(method-exists "ArrayObject" "count") ; true
+
+; is-subclass-of
+(is-subclass-of "eMacros\Environment\DefaultEnvironment" "eMacros\Scope") ; true
+
+; get-parent-class
+(get-parent-class "eMacros\Environment\DefaultEnvironment") ; "eMacros\Environment\Environment"
+
+; get-class-vars
+(get-class-vars "eMacros\Literal") ; ["value" => NULL]
+
+; get-class-methods
+(get-class-methods "eMacros\Expression") ; ["evaluate"]
+
+; class-alias
+(class-alias "stdClass" "song")
+(:= _song (new song))
+```
+<br/>
+
+#####Invocación de métodos
+```lisp
+; methods.em
+(:= _nombres (new ArrayObject (array "juan" "carlos" "pedro"))
+(-> "count" _nombres) ; 3
+
+; forma abreviada
+(->count _nombres)
+
+; parámetros
+; (now) obtiene un objeto Datetime con la fecha actual (ver DatePackage)
+(->format (now) "Y-m-d H:i") ; fecha actual con formato
+; abreviado
+```
+
 <br/>
 
 ##Pasaje de parámetros

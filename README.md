@@ -339,6 +339,21 @@ Como se observa, la funcionalidad de este paquete es muy básica por lo que se r
 
 <br/>
 
+#####Constantes
+
+* PHP_VERSION (igual a *PHP_VERSION*)
+* PHP_MAJOR_VERSION (igual a *PHP_MAJOR_VERSION*)
+* PHP_MINOR_VERSION (igual a *PHP_MINOR_VERSION*)
+* PHP_RELEASE_VERSION (igual a *PHP_RELEASE_VERSION*)
+* PHP_EXTRA_VERSION (igual a *PHP_EXTRA_VERSION*)
+* PHP_VERSION_ID (igual a *PHP_VERSION_ID*)
+* PHP_OS (igual a *PHP_OS*)
+* PHP_SAPI (igual a *PHP_SAPI*)
+* PHP_INT_MAX (igual a *PHP_INT_MAX*)
+* PHP_INT_SIZE (igual a *PHP_INT_SIZE*)
+
+<br/>
+
 ##Variables
 
 <br/>
@@ -372,7 +387,7 @@ Alternativamente podemos utilizar las funciones de maipulación de simbolos: *sy
 ; symbols.em
 ; la función sym espera una cadena con el nombre del símbolo y su valor
 (sym "_program" "variables.em") ; agrega el símbolo _program con el valor "variables.em"
-(. 'Corriendo programa ' _program)
+(. "Corriendo programa " _program)
 
 ; sym-exists verifica si el símbolo está declarado en la tabla de símbolos
 (if (sym-exists "_program") "El símbolo \"_program\" ya existe")
@@ -555,6 +570,102 @@ Para el caso particular de índices numéricos debe reemplazarse '@' por '#'.
 <br/>
 
 ##Pasaje de parámetros
+
+<br/>
+Un programa puede recibir un número arbitrario de parámetros. Estos deben ir especificados luego de la instancia de entorno al realizar la ejecución del mismo.
+
+```lisp
+; arguments.em
+; Este programa realiza el conteo de parametros recibidos
+
+; conteo de parámetros (%#)
+(. "Se encontraron un total de " (%#) "parámetros\n")
+
+; obtener parámetros como arreglo (%_)
+(. "Parámetros: " (implode "," %_))
+```
+Este script realiza la ejecución del programa especificado con 3 argumentos.
+
+```php
+<?php
+include 'vendor/autoload.php';
+
+use eMacros\Program\TextProgram;
+use eMacros\Environment\DefaultEnvironment;
+
+//instanciar programa
+$program = new TextProgram(fie_get_contents('arguments.em'));
+
+//ejecutar programa
+$result = $program->execute(new DefaultEnvironment, 1, "hola", 5.5);
+
+//mostrar resultados
+echo $result;
+?>
+```
+
+La salida producida es la siguiente:
+```bash
+Se encontraron un total de 3 parámetros
+Parámetros: 1, hola, 5.5
+```
+Podemos acceder a cada parámetro individualmente con las funciones correspondientes:
+
+```lisp
+; args_functions.em
+
+; obtener parámetro (%)
+(+ 5 (% 0)) ; 5 + 1
+
+; verficar existencia de argumento (%?)
+(if (%? 1) (. (% 1) " mundo")) ; "hola mundo"
+
+; forma abreviada (%ARGN) (%ARGN?)
+(if (%1?) (. (%1) " mundo")) ; "hola mundo"
+``` 
+<br/>
+
+##Paquetes
+
+<br/>
+
+eMacros cuenta con varios paquetes a disposición organizados por tipo dentro del namespace *eMacros\Package*. El siguiente script muestra el uso de funciones declaradas dentro del paquete 'String'.
+
+```lisp
+; string_functions.em
+; len (strlen)
+(len "hello") ; 5
+
+; explode
+(explode "." "198.123.12.45") ; ["198", "123", "12", "45"]
+
+; reverse (strrev)
+(reverse "Hello") ; "olleH"
+
+; str (strstr)
+(str "email@example.com" "@") ; "@"
+```
+En ocasiones 2 paquetes definen el mismo símbolo haciendo que la utilización de una función o valor resulte ambiguo. Este es el caso de *shuffle* y *reverse*, ambos declarados en *StringPackage* y *ArrayPackage*. Este problema puede solventarse utilizando el nombre del paquete como prefijo del símbolo.
+
+```lisp
+; ambiguos.em
+
+; reverse
+(reverse "abcde") ; "edcba"
+(Array::reverse (array "uno" "dos" "tres")) ; ["tres" "dos" "uno"]
+(String::reverse "xyz") ; "zyx"
+
+; arreglo auxiliar
+(:= _arr (array 1 2 3))
+
+; shuffle
+(shuffle "abcde") ; shuffle en paquete String
+(Array::shuffle _arr) ; shuffle en paquete Array
+(String::shuffle "xyz") ; shuffle en paquete String
+```
+<br/>
+
+##Use e Import
 
 <br/>
 

@@ -4,7 +4,7 @@ eMacros
 The Extensible Macros Library for PHP
 
 **Author**: Emmanuel Antico<br/>
-**Last Modification**: 04/12/2013
+**Last Modification**: 05/12/2013
 
 <br/>
 *Documentation still in progress...*
@@ -333,6 +333,96 @@ Alternativamente podemos utilizar las funciones de maipulación de simbolos: *sy
 
 ##Arreglos y objetos
 
+<br/>
+Los arreglos se crean a través de la función *array*. Es posible definir sus valores mediante pares clave-valor.
+
+```lisp
+; arreglos.em
+; crear arreglo de enteros
+(:= _lista (array 1 2 3 4 5))
+(. "_lista posee " (count _lista) " elementos")
+
+; setear claves
+(:= _data (array ("nombre" "juan") ("apellido" "perez") ("ocupacion" "desarrollador"))
+```
+Para la creación de objectos contamos con 2 funciones: *new* y *instance*. La diferencia entre estas 2 es que *new* esperea el nombre de la clase definido como símbolo mientras que *instance* espera una cadena.
+
+```lisp
+; objetos.em
+; declarar instancia de stdClass
+(:= _obj (new stdClass))
+
+; crear instancia de ArrayObject con parámetro
+(:= _arr (instance "ArrayObject" (array "uno" "dos" "tres")))
+
+; crear instancia de DOMDocument
+(:= _xml (new DOMDocument "1.0" "ISO-8859-1"))
+```
+Para trabajar con las claves y propiedades de arreglos/objetos contamos con 3 operadores de asignación, comprobación y obtención.
+
+```lisp
+; properties.em
+; declarar instancia
+(:= _os (new stdClass))
+
+; asignar valores (@=)
+(@= "nombre" _os "GNU/Linux") ; _os->nombre = "GNU/Linux"
+(@= "familia" _os "Unix-like") ; _os->familia = "Unix-like"
+
+; obtener valores (@)
+(. "El sistema " (@ "nombre" _os) " es de la familia " (@ "familia" _os))
+
+; comprobar existencia de propiedad (@?)
+(if (not (@? "empresa" _os)) " y es libre")
+```
+
+Los arreglos cuentan con un operador adicional para agregación de elementos.
+```lisp
+; keys.em
+(:= _arr (array ("program" "keys.em") ("language" "eMacros")))
+(. "El programa " (@ "program" _arr) " está escrito en " (@ "language" _arr))
+
+; guardar estado de programa en arreglo
+(@= "estado" _arr "Ejecutando")
+
+; comprobar existencia de clave
+(if (@? "estado" _arr) (. "Estado de programa: " (@ "estado" _arr)) "Estado desconocido")
+
+; agregar elementos (@+)
+(:= _numeros (array))
+(@+ 1 2 3 4 5 _numeros) ; la referencia va siempre al final
+(. "Numeros: " (implode "," _numeros))
+```
+La clase *CorePackage* define un método abreviado para el acceso a claves en arreglos y objetos.
+
+```lisp
+; short_keys.em
+
+;; OBJETOS
+
+; declarar instancia
+(:= _os (new stdClass))
+
+; asignar valores (@PROPIEDAD=)
+(@nombre= _os "GNU/Linux") ; _os->nombre = "GNU/Linux"
+(@familia= _os "Unix-like") ; _os->familia = "Unix-like"
+
+; obtener valores (@PROPIEDAD)
+(. "El sistema " (@nombre _os) " es de la familia " (@familia _os))
+
+; comprobar existencia de propiedad (@PROPIEDAD?)
+(if (not (@empresa? _os)) " y es libre")
+
+;; ARREGLOS
+(:= _arr (array ("program" "keys.em") ("language" "eMacros")))
+(. "El programa " (@program _arr) " está escrito en " (@language _arr))
+
+; guardar estado de programa en arreglo
+(@estado= _arr "Ejecutando")
+
+; comprobar existencia de clave
+(if (@estado? _arr) (. "Estado de programa: " (@estado _arr)) "Estado desconocido")
+```
 <br/>
 
 ##Pasaje de parámetros

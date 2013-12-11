@@ -9,7 +9,7 @@ use eMacros\Symbol;
 class ValueAppend implements Applicable {
 	/**
 	 * Appends a list of values to an array
-	 * Usage: (@+ "Hello" " " "World" _array)
+	 * Usage: (@+ _array "Hello" " " "World")
 	 * Return: the amount of elements in the array
 	 * (non-PHPdoc)
 	 * @see \eMacros\Applicable::apply()
@@ -21,28 +21,28 @@ class ValueAppend implements Applicable {
 			throw new \BadFunctionCallException("ValueAppend: No parameters found.");
 		}
 		elseif ($nargs == 1) {
-			throw new \BadFunctionCallException("ValueAppend: No target specified.");
+			throw new \BadFunctionCallException("ValueAppend: No values to append.");
 		}
 		
-		//check if last parameter is symbol
-		$target = $arguments[$nargs - 1];
+		//check if first parameter is a symbol
+		$target = $arguments[0];
 		
 		if (!($target instanceof Symbol)) {
-			throw new \InvalidArgumentException(sprintf("ValueAppend: Expected symbol as last argument but %s was found instead.", substr(strtolower(strstr(get_class($arguments[$nargs - 1]), '\\')), 1)));
+			throw new \InvalidArgumentException(sprintf("ValueAppend: A symbol was expected as first argument but %s was found instead.", substr(strtolower(strstr(get_class($arguments[0]), '\\')), 1)));
 		}
 		
 		$ref = $target->symbol;
 		
 		//check symbol type
 		if (is_array($scope->symbols[$ref]) || $scope->symbols[$ref] instanceof \ArrayAccess || $scope->symbols[$ref] instanceof \ArrayObject) {
-			for ($i = 0; $i < $nargs - 1; $i++) {
+			for ($i = 1; $i < $nargs; $i++) {
 				$scope->symbols[$ref][] = $arguments[$i]->evaluate($scope);
 			}
 			
 			return count($scope->symbols[$ref]);
 		}
 		
-		throw new \InvalidArgumentException(sprintf("ValueAppend: Expected array as last argument but %s was found instead.", gettype($scope->symbols[$ref])));
+		throw new \InvalidArgumentException(sprintf("ValueAppend: Cannot append values to a %s.", gettype($scope->symbols[$ref])));
 	}
 }
 ?>

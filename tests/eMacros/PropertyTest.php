@@ -351,18 +351,18 @@ class PropertyTest extends eMacrosTest {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function testValueAppend3() {
-		$program = new SimpleProgram('(@+ null (%0))');
+		$program = new SimpleProgram('(@+ (%0) null)');
 		$result = $program->execute(self::$env, new \stdClass());
 	}
 	
 	public function testValueAppend4() {
-		$program = new SimpleProgram('(:= _arr (array))(@+ 10 _arr)(<- _arr)');
+		$program = new SimpleProgram('(:= _arr (array))(@+ _arr 10)(<- _arr)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(array(10), $result);
 	}
 	
 	public function testValueAppend5() {
-		$program = new SimpleProgram('(:= _arr (%0))(@+ 10 _arr)(<- _arr)');
+		$program = new SimpleProgram('(:= _arr (%0))(@+ _arr 10)(<- _arr)');
 		$result = $program->execute(self::$env, new Fizz());
 		$this->assertTrue(is_object($result));
 		$this->assertEquals('Foo\\Fizz', get_class($result));
@@ -370,13 +370,13 @@ class PropertyTest extends eMacrosTest {
 	}
 	
 	public function testValueAppend6() {
-		$program = new SimpleProgram('(:= _arr (array))(@+ 10 20 30 _arr)(<- _arr)');
+		$program = new SimpleProgram('(:= _arr (array))(@+ _arr 10 20 30)(<- _arr)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(array(10, 20, 30), $result);
 	}
 	
 	public function testValueAppend7() {
-		$program = new SimpleProgram('(:= _arr (%0))(@+ 30 40 _arr)(<- _arr)');
+		$program = new SimpleProgram('(:= _arr (%0))(@+ _arr 30 40)(<- _arr)');
 		$result = $program->execute(self::$env, new Fizz(array(10, 20)));
 		$this->assertTrue(is_object($result));
 		$this->assertEquals('Foo\\Fizz', get_class($result));
@@ -417,7 +417,7 @@ class PropertyTest extends eMacrosTest {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function testValueAssign3() {
-		$program = new SimpleProgram('(:= _arr (array))(@= "name" "Test" 3)');
+		$program = new SimpleProgram('(:= _arr (array))(@= "name" 3 "Test")');
 		$result = $program->execute(self::$env);
 	}
 	
@@ -441,86 +441,86 @@ class PropertyTest extends eMacrosTest {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function testValueAssign6() {
-		$program = new SimpleProgram('(:= _arr (array))(@name= "emma" 2)');
+		$program = new SimpleProgram('(:= _arr (array))(@name= 2 "emma")');
 		$result = $program->execute(self::$env);
 	}
 	
 	public function testValueAssign7() {
-		$program = new SimpleProgram('(:= _arr (array))(@= "name" "emma" _arr)(<- _arr)');
+		$program = new SimpleProgram('(:= _arr (array))(@= "name" _arr "emma")(<- _arr)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(array('name' => "emma"), $result);
 	}
 	
 	public function testValueAssign8() {
-		$program = new SimpleProgram('(:= _arr (array))(@= -1 1 _arr)(<- _arr)');
+		$program = new SimpleProgram('(:= _arr (array))(@= -1 _arr 1)(<- _arr)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(array(-1 => 1), $result);
 	}
 	
 	public function testValueAssign9() {
 		$o = new \stdClass; $o->test = "testValueAssign9"; 
-		$program = new SimpleProgram('(:= _obj (%0))(@= "test" "testValueAssign9" _obj)(<- _obj)');
+		$program = new SimpleProgram('(:= _obj (%0))(@= "test" _obj "testValueAssign9")(<- _obj)');
 		$result = $program->execute(self::$env, new \stdClass());
 		$this->assertEquals($o, $result);
 	}
 	
 	public function testValueAssign10() {
 		$o = new FizzBuzz(); $o->publicProperty = "test";
-		$program = new SimpleProgram('(:= _obj (%0))(@= "publicProperty" "test" _obj)(<- _obj)');
+		$program = new SimpleProgram('(:= _obj (%0))(@= "publicProperty" _obj "test")(<- _obj)');
 		$result = $program->execute(self::$env, new FizzBuzz());
 		$this->assertEquals($o, $result);
 	}
 	
 	public function testValueAssign11() {
 		$o = new Fizz(); $o['publicProperty'] = "testValueAssign11";
-		$program = new SimpleProgram('(:= _obj (%0))(@= "publicProperty" "testValueAssign11" _obj)(<- _obj)');
+		$program = new SimpleProgram('(:= _obj (%0))(@= "publicProperty" _obj "testValueAssign11")(<- _obj)');
 		$result = $program->execute(self::$env, new Fizz());
 		$this->assertEquals($o, $result);
 	}
 	
 	public function testValueAssign12() {
 		$o = new Fizz(); $o[4] = "testValueAssign12";
-		$program = new SimpleProgram('(:= _obj (%0))(@= 4 "testValueAssign12" _obj)(<- _obj)');
+		$program = new SimpleProgram('(:= _obj (%0))(@= 4 _obj "testValueAssign12")(<- _obj)');
 		$result = $program->execute(self::$env, new Fizz());
 		$this->assertEquals($o, $result);
 	}
 	
 	public function testValueAssign13() {
-		$program = new SimpleProgram('(:= _arr (array))(@name= "emma" _arr)(<- _arr)');
+		$program = new SimpleProgram('(:= _arr (array))(@name= _arr "emma")(<- _arr)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(array('name' => "emma"), $result);
 	}
 	
 	public function testValueAssign14() {
-		$program = new SimpleProgram('(:= _arr (array))(#-1= 1 _arr)(<- _arr)');
+		$program = new SimpleProgram('(:= _arr (array))(#-1= _arr 1)(<- _arr)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(array(-1 => 1), $result);
 	}
 	
 	public function testValueAssign15() {
 		$o = new \stdClass; $o->test = "testValueAssign9"; 
-		$program = new SimpleProgram('(:= _obj (%0))(@test= "testValueAssign9" _obj)(<- _obj)');
+		$program = new SimpleProgram('(:= _obj (%0))(@test= _obj "testValueAssign9")(<- _obj)');
 		$result = $program->execute(self::$env, new \stdClass());
 		$this->assertEquals($o, $result);
 	}
 	
 	public function testValueAssign16() {
 		$o = new FizzBuzz(); $o->publicProperty = "test";
-		$program = new SimpleProgram('(:= _obj (%0))(@publicProperty= "test" _obj)(<- _obj)');
+		$program = new SimpleProgram('(:= _obj (%0))(@publicProperty= _obj "test")(<- _obj)');
 		$result = $program->execute(self::$env, new FizzBuzz());
 		$this->assertEquals($o, $result);
 	}
 	
 	public function testValueAssign17() {
 		$o = new Fizz(); $o['publicProperty'] = "testValueAssign11";
-		$program = new SimpleProgram('(:= _obj (%0))(@publicProperty= "testValueAssign11" _obj)(<- _obj)');
+		$program = new SimpleProgram('(:= _obj (%0))(@publicProperty= _obj "testValueAssign11")(<- _obj)');
 		$result = $program->execute(self::$env, new Fizz());
 		$this->assertEquals($o, $result);
 	}
 	
 	public function testValueAssign18() {
 		$o = new Fizz(); $o[4] = "testValueAssign12";
-		$program = new SimpleProgram('(:= _obj (%0))(#4= "testValueAssign12" _obj)(<- _obj)');
+		$program = new SimpleProgram('(:= _obj (%0))(#4= _obj "testValueAssign12")(<- _obj)');
 		$result = $program->execute(self::$env, new Fizz());
 		$this->assertEquals($o, $result);
 	}

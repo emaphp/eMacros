@@ -16,6 +16,13 @@ class KeyExists implements Applicable {
 		$this->key = $key;
 	}
 	
+	/**
+	 * Checks if the given key/property is available in a array/object
+	 * Usage: (@? 5 _array) (@? "name" _obj) (@name? _obj)
+	 * Returns: boolean
+	 * (non-PHPdoc)
+	 * @see \eMacros\Applicable::apply()
+	 */
 	public function apply(Scope $scope, GenericList $arguments) {
 		//get index and value
 		if (is_null($this->key)) {
@@ -75,5 +82,4 @@ class KeyExists implements Applicable {
 		throw new \InvalidArgumentException(sprintf("KeyExists: Expected value of type array/object but %s found instead", gettype($value)));
 	}
 }
-
 ?>

@@ -16,6 +16,13 @@ class KeyGet implements Applicable {
 		$this->key = $key;
 	}
 	
+	/**
+	 * Obtains a key/property in an array/object
+	 * Usage: (@ 'name' _obj) (@ 3 _array) (@name _obj)
+	 * Returns: Key/property value
+	 * (non-PHPdoc)
+	 * @see \eMacros\Applicable::apply()
+	 */
 	public function apply(Scope $scope, GenericList $arguments) {
 		//get index and value
 		if (is_null($this->key)) {

@@ -34,7 +34,15 @@ class EnvironmentImport implements Applicable {
 		$package = $arguments[0]->symbol;
 		
 		if (!class_exists($package, true)) {
-			throw new \InvalidArgumentException("EnvironmentImport: Package '$package' not found.");
+			//try finding a compatible package in eMacros\\Package namespace
+			$xpackage = sprintf("eMacros\\Package\\%sPackage", $package);
+			
+			if (class_exists($xpackage, true)) {
+				$package = $xpackage;
+			}
+			else {
+				throw new \InvalidArgumentException("EnvironmentImport: Package '$package' not found.");
+			}
 		}
 
 		$rc = new \ReflectionClass($package);

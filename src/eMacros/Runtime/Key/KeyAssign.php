@@ -19,7 +19,7 @@ class KeyAssign implements Applicable {
 	
 	/**
 	 * Sets a key/property value
-	 * Usage: (@ 'name' "emma" _array) (@surname "doe" _obj)
+	 * Usage: (@= 'name' _obj "emma") (@surname= _obj "doe")
 	 * Returns: the assigned value
 	 * (non-PHPdoc)
 	 * @see \eMacros\Applicable::apply()
@@ -29,41 +29,41 @@ class KeyAssign implements Applicable {
 		
 		if (is_null($this->key)) {
 			if ($nargs == 0) {
-				throw new \BadFunctionCallException("KeyAssign: No parameters found.");
+				throw new \BadFunctionCallException("KeyAssign: No key defined.");
 			}
 			elseif ($nargs == 1) {
-				throw new \BadFunctionCallException("KeyAssign: No value specified.");
-			}
-			elseif ($nargs == 2) {
 				throw new \BadFunctionCallException("KeyAssign: No target specified.");
 			}
+			elseif ($nargs == 2) {
+				throw new \BadFunctionCallException("KeyAssign: No value specified.");
+			}
 			
-			$target = $arguments[2];
+			$target = $arguments[1];
 			
 			if (!($target instanceof Symbol)) {
-				throw new \InvalidArgumentException(sprintf("KeyAssign: Expected symbol as last argument but %s was found instead.", substr(strtolower(strstr(get_class($arguments[2]), '\\')), 1)));
+				throw new \InvalidArgumentException(sprintf("KeyAssign: Expected symbol as second argument but %s was found instead.", substr(strtolower(strstr(get_class($arguments[1]), '\\')), 1)));
 			}
 			
 			$property = $arguments[0]->evaluate($scope);
-			$value = $arguments[1]->evaluate($scope);
+			$value = $arguments[2]->evaluate($scope);
 			$ref = $target->symbol;
 		}
 		else {
 			if ($nargs == 0) {
-				throw new \BadFunctionCallException("KeyAssign: No parameters found.");
+				throw new \BadFunctionCallException("KeyAssign: No target found.");
 			}
 			elseif ($nargs == 1) {
-				throw new \BadFunctionCallException("KeyAssign: No target specified.");
+				throw new \BadFunctionCallException("KeyAssign: No value specified.");
 			}
 			
-			$target = $arguments[1];
+			$target = $arguments[0];
 				
 			if (!($target instanceof Symbol)) {
-				throw new \InvalidArgumentException(sprintf("KeyAssign: Expected symbol as last argument but %s was found instead.", substr(strtolower(strstr(get_class($arguments[1]), '\\')), 1)));
+				throw new \InvalidArgumentException(sprintf("KeyAssign: Expected symbol as last argument but %s was found instead.", substr(strtolower(strstr(get_class($arguments[0]), '\\')), 1)));
 			}
 			
 			$property = $this->key;
-			$value = $arguments[0]->evaluate($scope);
+			$value = $arguments[1]->evaluate($scope);
 			$ref = $target->symbol;
 		}
 		

@@ -51,8 +51,7 @@ class IndexGet implements Applicable {
 			return $value[$this->index];
 		}
 		
-		throw new \InvalidArgumentException(sprintf("IndexHas: A value of type array was expected but %s found instead.", gettype($value)));
+		throw new \InvalidArgumentException(sprintf("IndexGet: A value of type array was expected but %s found instead.", gettype($value)));
 	}
 }
-
 ?>

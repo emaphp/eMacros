@@ -368,7 +368,7 @@ La declaración de una variable agrega un símbolo a la tabla del símbolos del 
 (:= _verdadero true)
 
 ; numeros
-(:= _dos 1) ; declarar _dos = 1
+(:= _dos 2) ; declarar _dos = 2
 (:= _cinco (+ 2 3)) ; declarar _cinco = 2 + 3
 (+ _dos _cinco) ; 7
 
@@ -457,7 +457,7 @@ Los arreglos cuentan con un operador adicional para agregación de elementos.
 
 ; agregar elementos (@+)
 (:= _numeros (array))
-(@+ 1 2 3 4 5 _numeros) ; la referencia va siempre al final
+(@+ _numeros 1 2 3 4 5 )
 (. "Numeros: " (implode "," _numeros))
 ```
 La clase *CorePackage* define un método abreviado para el acceso a claves en arreglos y objetos.
@@ -495,8 +495,8 @@ Para el caso particular de índices numéricos debe reemplazarse '@' por '#'.
 ```lisp
 ; numeric_keys.em
 (:= _arr (array))
-(#0= "Primer elemento")
-(#-2= "Indice -2")
+(#0= _arr "Primer elemento")
+(#-2= _arr "Indice -2")
 
 (if (not (#1? _arr)) "No se encontró ningún elemento en la posición 1")
 
@@ -547,15 +547,15 @@ Para el caso particular de índices numéricos debe reemplazarse '@' por '#'.
 (get-class-methods "eMacros\Expression") ; ["evaluate"]
 
 ; class-alias
-(class-alias "stdClass" "song")
-(:= _song (new song))
+(class-alias "eMacros\\Symbol" "symbol")
+(:= _song (new symbol "song"))
 ```
 <br/>
 
 #####Invocación de métodos
 ```lisp
 ; methods.em
-(:= _nombres (new ArrayObject (array "juan" "carlos" "pedro"))
+(:= _nombres (new ArrayObject (array "juan" "carlos" "pedro")))
 (-> "count" _nombres) ; 3
 
 ; forma abreviada
@@ -563,8 +563,7 @@ Para el caso particular de índices numéricos debe reemplazarse '@' por '#'.
 
 ; parámetros
 ; (now) obtiene un objeto Datetime con la fecha actual (ver DatePackage)
-(->format (now) "Y-m-d H:i") ; fecha actual con formato
-; abreviado
+(->format (now) "Y-m-d H:i") ; fecha actual con formato abreviado
 ```
 
 <br/>
@@ -582,7 +581,7 @@ Un programa puede recibir un número arbitrario de parámetros. Estos deben ir e
 (. "Se encontraron un total de " (%#) "parámetros\n")
 
 ; obtener parámetros como arreglo (%_)
-(. "Parámetros: " (implode "," %_))
+(. "Parámetros: " (implode "," (%_)))
 ```
 Este script realiza la ejecución del programa especificado con 3 argumentos.
 
@@ -607,12 +606,12 @@ echo $result;
 La salida producida es la siguiente:
 ```bash
 Se encontraron un total de 3 parámetros
-Parámetros: 1, hola, 5.5
+Parámetros: 1,hola,5.5
 ```
 Podemos acceder a cada parámetro individualmente con las funciones correspondientes:
 
 ```lisp
-; args_functions.em
+; arg_functions.em
 
 ; obtener parámetro (%)
 (+ 5 (% 0)) ; 5 + 1
@@ -643,7 +642,7 @@ eMacros cuenta con varios paquetes a disposición organizados por tipo dentro de
 (reverse "Hello") ; "olleH"
 
 ; str (strstr)
-(str "email@example.com" "@") ; "@"
+(str "email@example.com" "@") ; "@example.com"
 ```
 En ocasiones 2 paquetes definen el mismo símbolo haciendo que la utilización de una función o valor resulte ambiguo. Este es el caso de *shuffle* y *reverse*, ambos declarados en *StringPackage* y *ArrayPackage*. Este problema puede solventarse utilizando el nombre del paquete como prefijo del símbolo.
 
@@ -694,7 +693,7 @@ La función *call-func-array* espera un arreglo conteniendo el listado de argume
 <br/>
 Las funciones *use* e *import* permiten importar funciones directamente desde PHP o desde otros paquetes a la tabla de símbolos del entorno de ejecución.
 ```lips
-; use_ex.em
+; use_example.em
 ; Ejemplos de utilización de use
 
 ; importar utf8_encode a la tabla de símbolos
@@ -706,12 +705,12 @@ Las funciones *use* e *import* permiten importar funciones directamente desde PH
 (:= _decoded (utf8dec _encoded))
 
 ; multiples símbolos
-(use bbcode_create bbcode_destroy (bbcode_parse bbparse))
+(use mb_detect_encoding mb_internal_encoding (mb_get_info mbinfo))
 ```
 La función *import* espera como parámetro un símbolo con el nombre de clase a importar.
 
 ```lips
-; import_ex.em
+; import_example.em
 ; Ejemplos de uso de import
 
 ; import MathPackage class
@@ -720,7 +719,7 @@ La función *import* espera como parámetro un símbolo con el nombre de clase a
 
 ; si la clase no existe import intenta recuperarla del paquete eMacros\Package (agregando Package al final)
 (import CType)
-(if (digit (%0)) "El parámetro es un dígito" "El parámetro no es un dígito)
+(if (digit (%0)) "El parámetro es un dígito" "El parámetro no es un dígito")
 ```
 
 <br/>

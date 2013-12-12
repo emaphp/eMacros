@@ -4,6 +4,7 @@ namespace eMacros;
 use eMacros\Program\TextProgram;
 use eMacros\Program\ListProgram;
 use eMacros\Program\SimpleProgram;
+use Acme\CustomEnvironment;
 
 /**
  * 
@@ -223,6 +224,36 @@ class ExamplesTest extends eMacrosTest {
 		
 		$this->assertEquals(1, $result[1]);
 		$this->assertEquals("El parámetro es un dígito", $result[3]);
+	}
+	
+	public function testCustomEnvironment() {
+		$program = new ListProgram(file_get_contents(__DIR__ . '/source/custom.em'));
+		$result = $program->execute(new CustomEnvironment(), "14");
+		$this->assertInternalType('array', $result);
+		$this->assertCount(3, $result);
+		
+		$this->assertEquals(42, $result[0]);
+		$this->assertEquals(21, $result[1]);
+		$this->assertEquals("This is a custom package", $result[2]);
+	}
+	
+	public function testIncrement() {
+		$program = new ListProgram(file_get_contents(__DIR__ . '/source/inc.em'));
+		$result = $program->execute(self::$env, "14");
+		$this->assertInternalType('array', $result);
+		$this->assertCount(4, $result);
+		
+		$this->assertEquals(5, self::$env->symbols['_x']);
+	}
+	
+	public function testMacro() {
+		$program = new ListProgram(file_get_contents(__DIR__ . '/source/distance.em'));
+		$result = $program->execute(self::$env, "14");
+		$this->assertInternalType('array', $result);
+		$this->assertCount(3, $result);
+		
+		$this->assertEquals(sqrt(20), $result[1]);
+		$this->assertEquals(sqrt(26), $result[2]);
 	}
 }
 ?>

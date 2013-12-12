@@ -529,22 +529,22 @@ Para el caso particular de índices numéricos debe reemplazarse '@' por '#'.
 (is-a _obj "ArrayObject") ; false
 
 ; property-exists
-(property-exists "eMacros\Symbol" "package") ; true
+(property-exists "eMacros\\Symbol" "package") ; true
 
 ; method-exists
 (method-exists "ArrayObject" "count") ; true
 
 ; is-subclass-of
-(is-subclass-of "eMacros\Environment\DefaultEnvironment" "eMacros\Scope") ; true
+(is-subclass-of "eMacros\\Environment\\DefaultEnvironment" "eMacros\\Scope") ; true
 
 ; get-parent-class
-(get-parent-class "eMacros\Environment\DefaultEnvironment") ; "eMacros\Environment\Environment"
+(get-parent-class "eMacros\\Environment\\DefaultEnvironment") ; "eMacros\Environment\Environment"
 
 ; get-class-vars
-(get-class-vars "eMacros\Literal") ; ["value" => NULL]
+(get-class-vars "eMacros\\Literal") ; ["value" => NULL]
 
 ; get-class-methods
-(get-class-methods "eMacros\Expression") ; ["evaluate"]
+(get-class-methods "eMacros\\Expression") ; ["evaluate"]
 
 ; class-alias
 (class-alias "eMacros\\Symbol" "symbol")
@@ -692,7 +692,7 @@ La función *call-func-array* espera un arreglo conteniendo el listado de argume
 
 <br/>
 Las funciones *use* e *import* permiten importar funciones directamente desde PHP o desde otros paquetes a la tabla de símbolos del entorno de ejecución.
-```lips
+```lisp
 ; use_example.em
 ; Ejemplos de utilización de use
 
@@ -709,7 +709,7 @@ Las funciones *use* e *import* permiten importar funciones directamente desde PH
 ```
 La función *import* espera como parámetro un símbolo con el nombre de clase a importar.
 
-```lips
+```lisp
 ; import_example.em
 ; Ejemplos de uso de import
 
@@ -739,7 +739,7 @@ use eMacros\Package\Package;
 class CustomPackage extends Package {
     public function __construct() {
         //debemos especificar un ID de paquete
-        parent::__construct('User');
+        parent::__construct('Custom');
         
         $this['MY_CONSTANT'] = 42;
         $this['message'] = "this is a custom package";
@@ -799,6 +799,8 @@ La creación de macros y funciones se realiza a través de 3 tipos de clases y u
 * GenericFunction
 * Applicable
 
+<br/>
+
 #####PHPFunction
 
 La clase *PHPFunction* actua como un wrapper de funciones PHP. El único parámetro requerido para su creación es el nombre de la función a encapsular.
@@ -822,6 +824,15 @@ class UserPackage extends Package {
     }
 }
 ```
+Al utilizar *PHPFunction* omitimos realizar el chequeo de cantidad y tipo de parámetros. Aún así, resulta la manera más simple de importar funciones del lenguaje a un paquete.
+
+```lisp
+; phpfunction.em
+; comprimir un string
+(compress "some string")
+```
+
+<br/>
 
 #####Closures
 
@@ -848,6 +859,8 @@ class UserPackage extends Package {
 }
 ```
 
+<br/>
+
 #####GenericFunction
 
 Las clases que extiendan de *GenericFunction* deben implementar el método *execute*. Este método recibe un arreglo con todos los argumentos recibidos.
@@ -872,10 +885,32 @@ class PlusMin extends GenericFunction {
     }
 }
 ```
+El paquete se debe encargar de instanciar la clase y definir el símbolo al cual se asociará.
+```php
+<?php
+namespace Acme;
+
+use eMacros\Package\Package;
+use Acme\Runtime\PlusMin;
+
+class UserPackage extends Package {
+    public function __construct() {
+        parent::__construct('User');
+        
+        /**
+         * Suma y resta
+         * Uso: (+- 6 7 3) ; 10
+         */
+        $this['+-'] = new PlusMin;
+    }
+}
+```
+
+<br/>
 
 #####La interfaz Applicable
 
-El último método para la implementación de funciones es a través de la interfaz *Applicable*. Esta interfaz resulta útil en caso de necesitar acceder a valores declarados dentro del entorno de ejecución (contantes, funciones, parámetros, etc) o si es necesario determinar si un parámetro se definió como un símbolo o valor literal. El método *apply* recibe 2 argumentos: una instancia de *Scope* con el entorno de ejecución actual y una instancia de *GenericList* con los argumentos suministrados. Para recuperar el valor de cada expresión presente en el listado de argumentos es necesario invocar al método *evaluate* pasando como parámetro la instancia de *Scope*. Este ejemplo implementa una clase *Increment* que incrementa el valor de un símbolo en 1 o en un valor auxiliar definido en la invocación.
+El método restante para la declaración de funciones consiste en la implementación de la interfaz *Applicable*. Esta interfaz resulta útil en caso de necesitar acceder a valores declarados dentro del entorno de ejecución (contantes, funciones, parámetros, etc) o si es necesario determinar si un parámetro se definió como un símbolo o valor literal. El método *apply* recibe 2 argumentos: una instancia de *Scope* con el entorno de ejecución actual y una instancia de *GenericList* con los argumentos suministrados. Para recuperar el valor de cada expresión presente en el listado de argumentos es necesario invocar al método *evaluate* pasando como parámetro la instancia de *Scope*. Este ejemplo implementa una clase *Increment* que incrementa el valor de un símbolo en 1 o en un valor auxiliar definido en la invocación.
 ```php
 <?php
 namespace Acme\Runtime;
@@ -957,6 +992,7 @@ class UserPackage extends Package {
 Las macros son funciones que en vez de estar asociadas a un símbolo se definen a través de una expresión regular. Los paquetes implementan macros a través del método *macro*. Este método espera una cadena de texto con la expresión a comparar y una función anónima. Esta función recibe las coincidencias obtenidas al comparar la expresión regular contra el símbolo entrante. Por lo general, la funciones devueltas por una macro deben implementar un constructor que es invocado dentro de la función anónima con las coincidencias encontradas. El siguiente ejemplo muestra la implementación de una macro para calcular la distancia entre 2 puntos. Las coordenadas del punto inicial son declaradas como parte del operador y luego capturadas por la función anónima.
 
 ```php
+<?php
 namespace Acme\Runtime;
 
 use eMacros\Runtime\GenericFunction;
@@ -991,6 +1027,7 @@ class Distance extends GenericFunction {
 La macro *dist* puede ser invocada directamente sin la necesidad de especificar coordenadas de origen. En ese caso, la distancia será calculada a partír de las coordenadas (0,0). El siguiente código muestra la implementación de la clase *GeometryPackage*. Esta clase agrega *dist* a la tabla de símbolos y define la macro para el calculo de distancias customizable.
 
 ```php
+<?php
 namespace Acme;
 
 use eMacros\Package\Package;
@@ -1014,7 +1051,7 @@ El siguiente programa muestra el funcionamiento de la función *dist* en ambos m
 
 ```lisp
 ; distance.em
-; Example of user-defined macro "dist"
+; Ejemplo de macro definida por usuario
 (import Acme\GeometryPackage)
 
 ; distance from (0,0)

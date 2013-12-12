@@ -3,3 +3,4 @@ $loader = require __DIR__ . '/../vendor/autoload.php';
 $loader->add('eMacros', __DIR__);
 $loader->add('Foo', __DIR__);
 $loader->add('Test', __DIR__);
+$loader->add('Acme', __DIR__);

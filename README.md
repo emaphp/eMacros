@@ -4,38 +4,38 @@ eMacros
 The Extensible Macros Library for PHP
 
 **Author**: Emmanuel Antico<br/>
-**Last Modification**: 10/12/2013
-
-<br/>
-*Documentation still in progress...*
+**Last Modification**: 15/12/2013
 
 <br/>
 
-##Descripción
+##About
 <br/>
 
-eMacros es una librería escrita en PHP y basada en [lisphp](https://github.com/lisphp/lisphp "") que incorpora un intérprete de dialecto LISP customizable.
-
-<br/>
-
-##Caraterísticas
-<br/>
-
-A diferencia de lisphp, eMacros está orientada a aplicaciones embebidas dentro de PHP, por lo que no cuenta con un comando de consola. eMacros fue desarrollado con la idea de poder generar texto dinamicamente en los casos donde la funciones de formato de texto no fueran lo suficientemente complejas, pero puede resultar de utilidad en otros escenarios.
+eMacros is a PHP library based on [lisphp] (https://github.com/lisphp/lisphp "") which incorporates a customizable LISP dialect interpreter library.
 
 <br/>
 
-##Requerimientos
-<br/>
-Es neceario contar con una versión actualizada de PHP 5.4.
+##Features
 
 <br/>
 
-##Instalación
+Unlike lisphp, eMacros is aimed for embedded applications, so no console command is available. eMacros main purpose was to be able to generate text dynamically where text formatting functions were not complex enough, but it can be useful in other scenarios.
+
+<br/>
+
+##Requirements
+
+<br/>
+
+An updated version of PHP 5.4 is required tu run this library.
+
+<br/>
+
+##Installation
+
 <br>
 
-
-La instalación de eMacros se realiza a través de Composer. Agregar el siguiente archivo a la carpeta del proyecto y realizar la instalación habitual [descrita aquí](http://getcomposer.org/doc/00-intro.md#installation-nix "").
+eMacros installation is performed via Composer. Add the following file to the project folder and perform the usual installation which is [described here] (http://getcomposer.org/doc/00-intro.md # installation-nix "").
 
 **composer.json**
 
@@ -48,10 +48,11 @@ La instalación de eMacros se realiza a través de Composer. Agregar el siguient
 ```
 <br/>
 
-##Primeros pasos
+##First steps
 
 <br/>
-El siguiente ejemplo muestra la implementación de un programa en eMacros sencillo que calcula la suma de 2 números.
+
+The following example shows the implementation of a simple program that calculates the sum of 2 numbers.
 
 ```php
 <?php
@@ -60,29 +61,30 @@ include 'vendor/autoload.php';
 use eMacros\Program\SimpleProgram;
 use eMacros\Environment\DefaultEnvironment;
 
-//instanciar programa
+//create program instance
 $program = new SimpleProgram('(+ 3 7)');
 
-//ejecutar programa
+//run program
 $result = $program->execute(new DefaultEnvironment);
 
-//mostrar resultados
-echo $result; //imprime el número 10 por pantalla
+//show results
+echo $result; //prints 10
 ?>
 ```
-Este script comienza creando una nueva instancia de programa a la cual se le pasa el código a ser interpretado y "compilado". Para realizar la ejecución de un programa es necesario definir el entorno donde se ejecutará. El método *execute* realiza la ejecución de un programa en el entorno pasado como parámetro. El resultado obtenido es luego devuelto.
+This script begins by creating a new instance of a program which receives the code to be interpreted and *compiled*. For being able to run a program is necessary to define an environment instance. The *execute* method performs the execution of a program using the environment provided as a parameter. The result obtained is then returned.
 
 <br/>
-En caso de que el código fuentes del programa sea inválido una excepción de tipo *eMacros\Exception\ParseException* será lanzada al interpretarlo. Existen varios tipos de programas, cada uno de estos programas puede generar distintos tipos de resultados de acuerdo a las instrucciones ejecutadas. La clase *SimpleProgram* define el tipo más sencillo de programa. Esta clase devuelve el resultado de la última instrucción ejecutada. En caso de que hubieramos instanciado el programa de la siguiente manera, el resultado hubiera sido diferente.
+
+If the source code of the program is invalid then a *eMacros\Exception\ParseException* is thrown. There are several types of programs, each one of these can generate different types of results based on the executed instructions. The class *SimpleProgram* defines the simplest type of program. This class returns the result of the last executed instruction. In case we would have instantiated the program as follows, the result would have been different.
 
 ```php
 $program = new SimpleProgram('(+ 3 7)(- 6 3)');
 ```
 
-Dado que *SimpleProgram* obtiene siempre el último resultado generado, en lugar de 10 la ejecución hubiera mostrado un 3, es decir, el resultado de restar 3 a 6.
+Since *SimpleProgram* always gets the final result generated, instead of 10 we would have obtained a 3, that is, the result of subtracting 3 to 6.
 
 <br/>
-En caso de que se quiera almacenar todos los resultados obtenidos de cada expresión podemos utilizar la clase *ListProgram*. Esta clase va almacenando cada resultado generado en un arreglo. El resultado obtenido de ejecutar un *ListProgram* es un arreglo con tantos valores como expresiones (no anidadas) se hayan evaluado.
+To store all the results obtained from each expression we can use the *ListProgram* class. This class works by storing each result in an array. The result of executing a *ListProgram* is an array with the same amount of values that evaluated instructions.
 
 ```php
 <?php
@@ -99,7 +101,7 @@ echo $result[1]; //imprime 3
 ?>
 ```
 
-Ademas de estas 2 clases también contamos con *TextProgram*. La clase *TextProgram* obtiene el resultado de concatenar el resultado de evaluar cada expresión dentro de un programa. El siguiente programa realiza la concatenación de 2 expresiones para generar un mensaje. Este programa también introduce el operador de concatenación.
+The *TextProgram* class returns the result of concatenating each evaluated expression in a program. The following program performs the concatenation of two expressions to generate a message. This program also introduces the concatenation operator.
 
 ```php
 <?php
@@ -111,16 +113,16 @@ use eMacros\Environment\DefaultEnvironment;
 $program = new TextProgram('(. "Hel" "lo" " ")(. "Wo" "rld")');
 $result = $program->execute(new DefaultEnvironment);
 
-echo $result; //imprime la cadena "Hello World"
+echo $result; //prints "Hello World"
 ?>
 ```
 <br/>
 
-##La clase DefaultEnvironment
+##The DefaultEnvironment class
 
 <br/>
 
-La clase *eMacros\Environment\DefaultEnvironment* define un entorno por defecto donde las aplicaciones eMacros pueden ejecutarse. Un entorno define el listado de operaciones que van a poder interpretarse. Esto va desde las operaciones simples como las aritméticas (+, -, \*, /) hasta las más complejas (if, or, @nombre, Array::reverse). La forma de definir estos símbolos es a través del **importado de paquetes**. Si nos fijamos en la implementación de esta clase veremos lo siguiente:
+The *eMacros\Environment\DefaultEnvironment* class defines a default environment where applications can run. An environment defines the list of symbols and operations that the program will be able to interpret. This ranges from simple operations such as arithmetic (+, -, \*, /) to more complex ones (if, or, @name, Array::reverse). Symbols and operations are added to an environment by *importing packages*. Current implementation of the *DefaultEnvironment* class looks like the following:
 
 ```php
 <?php
@@ -144,28 +146,29 @@ class DefaultEnvironment extends Environment {
 ?>
 ```
 
-Las clases *CorePackage*, *StringPackage*, *ArrayPackage*, etc son clases que definen un listado de símbolos y operaciones a ser usados dentro de un programa. Al importar un paquete dentro de un entorno hacemos posible la utilización de los símbolos y operaciones definidos dentro del paquete en un programa.
-
-<br/>
-La clase DefaultEnvironment incorpora los paquetes para funciones de cadenas, arreglos, fechas y expresiones regulares, por lo que resulta ideal para empezar a experimentar por nuestra cuenta. El resto de los paquetes pueden encontrarse dentro del namespace *eMacros\Package*.
+*CorePackage*, *StringPackage*, *ArrayPackage*, etc are classes that define a list of symbols and operations to be used within a program. By importing a package to an environment we enable the use of symbols and operations defined within that package.
 
 <br/>
 
-##Corriendo programas desde archivos
+The *DefaultEnvironment* class comes with a fair amount of string functions, array functions, date/time functions and regular expression functions, which makes it ideal for start experimenting on our own. The rest of the packages can be found in the *eMacros\Package* namespace.
 
 <br/>
 
-Los programas también pueden cargarse desde archivos en caso de que resulte más comodo. Tener el código de la aplicación en otro archivo resulta provechoso a la hora de agregar comentarios, lo que mejora la legibilidad del mismo. Este programa de ejemplo es similar al anterior, excepto que también retorna la versión de PHP corriendo en sistema.
+##Running programs from files
+
+<br/>
+
+Programs can also be loaded from files. Having the application code in another file turns useful for adding comments, which improves its readability. This program is similar to the previous example, except that it also returns the version of PHP running on the system.
 
 ```lisp
 ; hello_world.em
-; Esto es un comentario
-(. "Hola" " Mundo!" "\n") ; otro comentario
-(. "Este script corre bajo PHP " PHP_VERSION "\n") 
-; FIN
+; This is a comment
+(. "Hello" " World!" "\n") ; Another comment
+(. "This script is running under PHP " PHP_VERSION "\n") 
+; END
 ```
 
-La única modificación a agregar es utilizar la función *file_get_contents* para obtener el código fuente.
+This example uses the *file_get_contents* function to obtain the contents of a source file.
 
 ```php
 <?php
@@ -183,61 +186,62 @@ echo $result;
 
 <br/>
 
-##La clase CorePackage
+##The CorePackage class
 
 <br/>
 
-La clase *eMacros\Package\CorePackage* resulta esencial para la generación de ambientes de ejecución de programas. Entre los elementos que se agregan con este paquete se encuentran:
+The *eMacros\Package\CorePackage* class is extremely important when building a program execution environment. Among the items that are contained on this package are:
 
-* Los símbolos *null*, *true* y *false*.
-* Operadores de comparación, aritméticos y lógicos.
-* Funciones de manejo de variables y símbolos.
-* Funciones de clases y objetos.
-* Funciones para manejo de argumentos.
-* Funciones para manejos de tipos.
+* The *null*, *true* and *false* symbols.
+* Arithmetic, comparison and logic operators.
+* Variables and symbols functions.
+* Class/objects functions.
+* Argument functions.
+* Type handling functions.
 * Etc.
 
 <br/>
-Como se observa, la funcionalidad de este paquete es muy básica por lo que se recomienda contar con la misma en el caso de definir un entorno customizado. A continuación se hará una breve reseña de las capacidades de este paquete.
+
+As noted, the functionality of this package is very basic so it is recommended to have it included in the case of defining a customized environment. Below is a brief overview of the capabilities of this package.
 
 <br/>
 
-#####Operadores de comparación
+#####Comparison operators
 
 
 ```lisp
 ; comparison.em
-; Los operadores de comparación devuelven siempre un valor booleano
+; Comparison operators always return a boolean value
 
-; igual
-(== 1 "1") ; igual a
-(!= 1 2) ; distinto a
+; equal
+(== 1 "1") ; equal to
+(!= 1 2) ; not equal to
 
-; identico
-(=== 1 1) ; identico a
-(!== 1 "1") ; no identico a
+; identical
+(=== 1 1) ; identical to
+(!== 1 "1") ; not identical to
 
-; mayor
-(> 6 4) ; mayor que
-(>= 4 4) ; mayor igual que
+; greater than
+(> 6 4) ; greater than
+(>= 4 4) ; greater than or equal to
 
-; menor
-(< 3 4) ; menor que
-(<= 3 3) ; menor igual que
+; lesser than
+(< 3 4) ; lesser than
+(<= 3 3) ; lesser than or equal to
 ```
 
 <br/>
 
-#####Operadores lógicos
+#####Logic operators
 
 ```lisp
 ; logical.em
 
-; AND y OR
-(and true true) ; AND lógico
-(or false true) ; OR lógico
+; AND OR
+(and true true)
+(or false true)
 
-; pueden evaluarse varios parámetros
+; several parameters
 (and true true false true)
 
 ; NOT
@@ -246,36 +250,36 @@ Como se observa, la funcionalidad de este paquete es muy básica por lo que se r
 ; IF
 ; if [CONDITION] [VALUE_TRUE]
 ; if [CONDITION] [VALUE_TRUE] [VALUE_FALSE]
-(if true "Es verdadero") ; devuelve "Es verdadero"
-(if false "Es verdadero" "Es falso") ; devuelve "Es falso"
-(if false "Es verdadero") ; devuelve NULL
+(if true "is true") ; returns "is true"
+(if false "is true" "is false") ; returns "is false"
+(if false "is true") ; returns NULL
 
 ; COND
-; cond busca el primer elemento no falso de un listado y devuelve el valor asociado
-(cond (false 1)) ; devuelve NULL
-(cond (false 1) (true 2) (false 3) (true 4)) ; devuelve 2
+; cond searchs for the first non-false value on a list and returns the associated value
+(cond (false 1)) ; returns NULL
+(cond (false 1) (true 2) (false 3) (true 4)) ; returns 2
 ```
 
 <br/>
 
-#####Operadores aritméticos
+#####Arithmetic operators
 
 ```lisp
 ; arithmetic.em
 
-; suma y resta
+; add and substract
 (+ (- 10 6) 6  1) ; 11
 
-; multiplicación y división
+; multiplication and division
 (* 4 (/ 10 5)) ; 8
 
-; modulo
+; modulus
 (mod 10 3) ; 1
 ```
 
 <br/>
 
-#####Operadores binarios
+#####Binary operators
 
 ```lisp
 ; binary.em
@@ -291,22 +295,22 @@ Como se observa, la funcionalidad de este paquete es muy básica por lo que se r
 
 <br/>
 
-#####Funciones de tipo
+#####Type functions
 
 ```lisp
 ; types.em
 
-; obtener tipo
+; get type
 (type-of 4) ; "integer"
 
-; comprobar tipo
+; check type
 (int? 4) ; true
 
-; múltiples parametros
+; check types
 (string? "" "hola" "mundo") ; true
 (int? 5 3 "x") ; false
 
-; vacio
+; empty
 (empty "") ; true
 (empty 1) ; false
 (empty false 0) ; true
@@ -315,7 +319,7 @@ Como se observa, la funcionalidad de este paquete es muy básica por lo que se r
 
 <br/>
 
-#####Conversión
+#####Casting
 
 ```lisp
 ; casting.em
@@ -339,173 +343,174 @@ Como se observa, la funcionalidad de este paquete es muy básica por lo que se r
 
 <br/>
 
-#####Constantes
+#####Constants
 
-* PHP_VERSION (igual a *PHP_VERSION*)
-* PHP_MAJOR_VERSION (igual a *PHP_MAJOR_VERSION*)
-* PHP_MINOR_VERSION (igual a *PHP_MINOR_VERSION*)
-* PHP_RELEASE_VERSION (igual a *PHP_RELEASE_VERSION*)
-* PHP_EXTRA_VERSION (igual a *PHP_EXTRA_VERSION*)
-* PHP_VERSION_ID (igual a *PHP_VERSION_ID*)
-* PHP_OS (igual a *PHP_OS*)
-* PHP_SAPI (igual a *PHP_SAPI*)
-* PHP_INT_MAX (igual a *PHP_INT_MAX*)
-* PHP_INT_SIZE (igual a *PHP_INT_SIZE*)
+* PHP_VERSION (same as *PHP_VERSION*)
+* PHP_MAJOR_VERSION (same as *PHP_MAJOR_VERSION*)
+* PHP_MINOR_VERSION (same as *PHP_MINOR_VERSION*)
+* PHP_RELEASE_VERSION (same as *PHP_RELEASE_VERSION*)
+* PHP_EXTRA_VERSION (same as *PHP_EXTRA_VERSION*)
+* PHP_VERSION_ID (same as *PHP_VERSION_ID*)
+* PHP_OS (same as *PHP_OS*)
+* PHP_SAPI (same as *PHP_SAPI*)
+* PHP_INT_MAX (same as *PHP_INT_MAX*)
+* PHP_INT_SIZE (same as *PHP_INT_SIZE*)
 
 <br/>
 
 ##Variables
 
 <br/>
-La declaración de una variable agrega un símbolo a la tabla del símbolos del entono de ejecución. Para agregar una variable con un valor de inicialización utilizamos el operador de asignación.
+Declaring a variable adds a new symbol to the current environment symbol table. In order to declare a variable we use the assignment operator.
 
 
 ```lisp
 ; variables.em
 
-(:= _nulo null) ; _nulo = null
-(:= _falso false) ; _falso = false
-(:= _verdadero true)
+(:= _null null) ; _null = null
+(:= _false false) ; _false = false
+(:= _true true) ; _true = true
 
-; numeros
-(:= _dos 2) ; declarar _dos = 2
-(:= _cinco (+ 2 3)) ; declarar _cinco = 2 + 3
-(+ _dos _cinco) ; 7
+; numbers
+(:= _two 2) ; declares _two = 2
+(:= _five (+ 2 3)) ; declares _five = 2 + 3
+(+ _two _five) ; 7
 
-; cadenas
-(:= _nombre "pepe")
-(:= _mensaje (. "Hola " _nombre)) ; construir mensaje
-(<- _mensaje) ; retornar valor de _mensaje
+; strings
+(:= _name "john")
+(:= _message (. "Hello " _name)) ; build _message
+(<- _message) ; returns _message value
 
 ; unset
-(unset _nombre)
-(<- _nombre) ; NULL
+(unset _name)
+(<- _name) ; NULL
 ```
-Alternativamente podemos utilizar las funciones de maipulación de simbolos: *sym*, *sym-exists* y *lookup*.
+Alternatively, we can use the symbol manipulation functions: *sym*, *sym-exists* and *lookup*.
 
 ```lisp
 ; symbols.em
-; la función sym espera una cadena con el nombre del símbolo y su valor
-(sym "_program" "variables.em") ; agrega el símbolo _program con el valor "variables.em"
-(. "Corriendo programa " _program)
+; the sym functions receives a string and an associated values
+(sym "_program" "variables.em") ; adds _program to the symbol table with the value "symbols.em"
+(. "Running program " _program)
 
-; sym-exists verifica si el símbolo está declarado en la tabla de símbolos
-(if (sym-exists "_program") "El símbolo \"_program\" ya existe")
+; sym-exists verifies if the given symbol exists on the symbol table
+(if (sym-exists "_program") "Symbol \"_program\" already exists")
 
-; lookup recupera el valor del símbolo
-(. "Finalizando ejecución de " (lookup "_program"))
+; lookup obtains a symbol associated value
+(. "Ending execution of " (lookup "_program"))
 ```
 
 <br/>
 
-##Arreglos y objetos
+##Arrays and objects
 
 <br/>
-Los arreglos se crean a través de la función *array*. Es posible definir sus valores mediante pares clave-valor.
+Arrays are created througn the *array* function. It is possible to define key-value pairs using tuples.
 
 ```lisp
 ; arrays.em
-; crear arreglo de enteros
-(:= _lista (array 1 2 3 4 5))
-(. "_lista posee " (count _lista) " elementos")
+; create an int array
+(:= _list (array 1 2 3 4 5))
+(. "_list has " (count _list) " elements")
 
-; setear claves
-(:= _data (array ("nombre" "juan") ("apellido" "perez") ("ocupacion" "desarrollador")))
+; key-value pairs
+(:= _data (array ("name" "john") ("surname" "doe") ("job" "developer")))
 ```
-Para la creación de objectos contamos con 2 funciones: *new* y *instance*. La diferencia entre estas 2 es que *new* espera el nombre de la clase definido como símbolo mientras que *instance* espera una cadena.
+Objects can be created through 2 functions: *new* and *instance*. While *new* expects the class name defined as a symbol, *instance* creates an object instance from a string.
 
 ```lisp
 ; objects.em
-; declarar instancia de stdClass
+; create new stdClass instance
 (:= _obj (new stdClass))
 
-; crear instancia de ArrayObject con parámetro
-(:= _arr (instance "ArrayObject" (array "uno" "dos" "tres")))
+; create ArrayObject instance with a constructor parameter
+(:= _arr (instance "ArrayObject" (array "one" "two" "three")))
 
-; crear instancia de DOMDocument
+; create DOMDocument instance
 (:= _xml (new DOMDocument "1.0" "ISO-8859-1"))
 ```
-Para trabajar con las claves y propiedades de arreglos/objetos contamos con 3 operadores de asignación, comprobación y obtención.
+In order to work with key/properties, *CorePackage* provides 3 operators.
 
 ```lisp
 ; properties.em
-; declarar instancia
+; declare new instance
 (:= _os (new stdClass))
 
-; asignar valores (@=)
-(@= "nombre" _os "GNU/Linux") ; _os->nombre = "GNU/Linux"
-(@= "familia" _os "Unix-like") ; _os->familia = "Unix-like"
+; set key/property value (@=)
+(@= "name" _os "GNU/Linux") ; _os->name = "GNU/Linux"
+(@= "family" _os "Unix-like") ; _os->family = "Unix-like"
 
-; obtener valores (@)
-(. "El sistema " (@ "nombre" _os) " es de la familia " (@ "familia" _os))
+; get key/property value (@)
+(. "System " (@ "name" _os) " is a " (@ "family" _os) " OS")
 
-; comprobar existencia de propiedad (@?)
-(if (not (@? "empresa" _os)) " y es libre")
+; check if key/property exists (@?)
+(if (not (@? "company" _os)) " and is libre")
 ```
 
-Los arreglos cuentan con un operador adicional para agregación de elementos.
+Arrays include an special operator to append elements.
+
 ```lisp
 ; keys.em
 (:= _arr (array ("program" "keys.em") ("language" "eMacros")))
-(. "El programa " (@ "program" _arr) " está escrito en " (@ "language" _arr))
+(. "Program" (@ "program" _arr) " is written in " (@ "language" _arr))
 
-; guardar estado de programa en arreglo
-(@= "estado" _arr "Ejecutando")
+; stores status in array
+(@= "status" _arr "Running")
 
-; comprobar existencia de clave
-(if (@? "estado" _arr) (. "Estado de programa: " (@ "estado" _arr)) "Estado desconocido")
+; check key existence
+(if (@? "status" _arr) (. "Program status: " (@ "status" _arr)) "Unknown status")
 
-; agregar elementos (@+)
-(:= _numeros (array))
-(@+ _numeros 1 2 3 4 5 )
-(. "Numeros: " (implode "," _numeros))
+; append elements (@+)
+(:= _numbers (array))
+(@+ _numbers 1 2 3 4 5 )
+(. "Numbers: " (implode "," _numbers))
 ```
-La clase *CorePackage* define un método abreviado para el acceso a claves en arreglos y objetos.
+The *CorePackage* class also defines an abbreviated way to obtain key/properties through *macros*.
 
 ```lisp
 ; short_keys.em
 
-;; OBJETOS
+;; OBJECTS
 
-; declarar instancia
+; create instance
 (:= _os (new stdClass))
 
-; asignar valores (@PROPIEDAD=)
-(@nombre= _os "GNU/Linux") ; _os->nombre = "GNU/Linux"
-(@familia= _os "Unix-like") ; _os->familia = "Unix-like"
+; assign value (@PROPERTY=)
+(@name= _os "GNU/Linux") ; _os->name = "GNU/Linux"
+(@family= _os "Unix-like") ; _os->family = "Unix-like"
 
-; obtener valores (@PROPIEDAD)
-(. "El sistema " (@nombre _os) " es de la familia " (@familia _os))
+; get value (@PROPERTY)
+(. "System " (@name _os) " is a " (@family _os) " OS")
 
-; comprobar existencia de propiedad (@PROPIEDAD?)
-(if (not (@empresa? _os)) " y es libre")
+; check property (@PROPERTY?)
+(if (not (@company? _os)) " and is libre")
 
-;; ARREGLOS
+;; ARRAYS
 (:= _arr (array ("program" "keys.em") ("language" "eMacros")))
-(. "El programa " (@program _arr) " está escrito en " (@language _arr))
+(. "Program " (@program _arr) " is written in " (@language _arr))
 
-; guardar estado de programa en arreglo
-(@estado= _arr "Ejecutando")
+; stores program status
+(@status= _arr "Running")
 
-; comprobar existencia de clave
-(if (@estado? _arr) (. "Estado de programa: " (@estado _arr)) "Estado desconocido")
+; check key existence
+(if (@status? _arr) (. "Program status: " (@status _arr)) "Unknown status")
 ```
-Para el caso particular de índices numéricos debe reemplazarse '@' por '#'.
+For numeric indexes the '@' should be replaced by '#'.
 
 ```lisp
 ; numeric_keys.em
 (:= _arr (array))
-(#0= _arr "Primer elemento")
-(#-2= _arr "Indice -2")
+(#0= _arr "First element")
+(#-2= _arr "Index -2")
 
-(if (not (#1? _arr)) "No se encontró ningún elemento en la posición 1")
+(if (not (#1? _arr)) "No element available on index 1")
 
-(. "El primer elemento es " (#0 _arr))
+(. "Array first element " (#0 _arr))
 ```
 
 <br/>
 
-#####Funciones de clase y objetos
+#####Class/Object functions
 
 ```lisp
 ; class_functions.em
@@ -552,38 +557,39 @@ Para el caso particular de índices numéricos debe reemplazarse '@' por '#'.
 ```
 <br/>
 
-#####Invocación de métodos
+#####Method invocation
 ```lisp
 ; methods.em
-(:= _nombres (new ArrayObject (array "juan" "carlos" "pedro")))
-(-> "count" _nombres) ; 3
+(:= _name (new ArrayObject (array "john" "charles" "peter")))
+(-> "count" _names) ; 3
 
-; forma abreviada
+; abbreviated
 (->count _nombres)
 
-; parámetros
-; (now) obtiene un objeto Datetime con la fecha actual (ver DatePackage)
-(->format (now) "Y-m-d H:i") ; fecha actual con formato abreviado
+; parameters
+; (now) obtains a DateTime instance with the current time
+(->format (now) "Y-m-d H:i") ; get current date
 ```
 
 <br/>
 
-##Pasaje de parámetros
+##Arguments
 
 <br/>
-Un programa puede recibir un número arbitrario de parámetros. Estos deben ir especificados luego de la instancia de entorno al realizar la ejecución del mismo.
+
+A program can receive an arbitrary number of arguments. These must be specified when calling the *execute* method right after the instance environment.
 
 ```lisp
 ; arguments.em
-; Este programa realiza el conteo de parametros recibidos
+; This program obtains the number of passed arguments
 
-; conteo de parámetros (%#)
-(. "Se encontraron un total de " (%#) "parámetros\n")
+; argument counter (%#)
+(. (%#) " parameters have been found\n")
 
-; obtener parámetros como arreglo (%_)
-(. "Parámetros: " (implode "," (%_)))
+; obtain arguments as array (%_)
+(. "Arguments: " (implode "," (%_)))
 ```
-Este script realiza la ejecución del programa especificado con 3 argumentos.
+This script performs the execution of the previous program with 3 arguments.
 
 ```php
 <?php
@@ -592,43 +598,44 @@ include 'vendor/autoload.php';
 use eMacros\Program\TextProgram;
 use eMacros\Environment\DefaultEnvironment;
 
-//instanciar programa
+//create program instance
 $program = new TextProgram(fie_get_contents('arguments.em'));
 
-//ejecutar programa
-$result = $program->execute(new DefaultEnvironment, 1, "hola", 5.5);
+//add arguments
+$result = $program->execute(new DefaultEnvironment, 1, "hello", 5.5);
 
-//mostrar resultados
+//print result
 echo $result;
 ?>
 ```
 
-La salida producida es la siguiente:
+The obtained output is as follows:
+
 ```bash
-Se encontraron un total de 3 parámetros
-Parámetros: 1,hola,5.5
+3 parameters have been found
+Parameters: 1,hello,5.5
 ```
-Podemos acceder a cada parámetro individualmente con las funciones correspondientes:
+We can access each argument individually with the corresponding functions:
 
 ```lisp
 ; arg_functions.em
 
-; obtener parámetro (%)
+; get argument by index (%)
 (+ 5 (% 0)) ; 5 + 1
 
-; verficar existencia de argumento (%?)
+; check argument existence (%?)
 (if (%? 1) (. (% 1) " mundo")) ; "hola mundo"
 
-; forma abreviada (%ARGN) (%ARGN?)
-(if (%1?) (. (%1) " mundo")) ; "hola mundo"
-``` 
+; abbreviated form (%ARGN) (%ARGN?)
+(if (%1?) (. (%1) " world")) ; "hello mundo"
+```
 <br/>
 
-##Paquetes
+##Packages
 
 <br/>
 
-eMacros cuenta con varios paquetes a disposición organizados por tipo dentro del namespace *eMacros\Package*. El siguiente script muestra el uso de funciones declaradas dentro del paquete 'String'.
+eMacros has several packages available organized by type within the namespace *eMacros\Package*. The following script demonstrates the use of some functions that are available in the 'String' package.
 
 ```lisp
 ; string_functions.em
@@ -644,91 +651,93 @@ eMacros cuenta con varios paquetes a disposición organizados por tipo dentro de
 ; str (strstr)
 (str "email@example.com" "@") ; "@example.com"
 ```
-En ocasiones 2 paquetes definen el mismo símbolo haciendo que la utilización de una función o valor resulte ambiguo. Este es el caso de *shuffle* y *reverse*, ambos declarados en *StringPackage* y *ArrayPackage*. Este problema puede solventarse utilizando el nombre del paquete como prefijo del símbolo.
+Sometimes two packages define the same symbol, so that the use of a function or value becomes ambiguous. This is the case of *shuffle* and *reverse*, both declared in *StringPackage* and *ArrayPackage*. This problem can be solved using the package name as a symbol prefix.
 
 ```lisp
 ; ambiguos.em
 
 ; reverse
 (reverse "abcde") ; "edcba"
-(Array::reverse (array "uno" "dos" "tres")) ; ["tres" "dos" "uno"]
+(Array::reverse (array "one" "two" "three")) ; ["three" "two" "one"]
 (String::reverse "xyz") ; "zyx"
 
-; arreglo auxiliar
+; aux array
 (:= _arr (array 1 2 3))
 
 ; shuffle
-(shuffle "abcde") ; shuffle en paquete String
-(Array::shuffle _arr) ; shuffle en paquete Array
-(String::shuffle "xyz") ; shuffle en paquete String
+(shuffle "abcde") ; shuffle in String package
+(Array::shuffle _arr) ; shuffle in Array package
+(String::shuffle "xyz") ; shuffle in String package
 ```
 <br/>
 
-##Invocación de funciones
+##Function invocation
 
 <br/>
 
-Las funciones *call-func* y *call-func-array* permiten invocar una función pasada como parámetro.
+The *call-func* and *call-func-array* functions allow invoking a function passed as argument.
 
 ```lisp
 ; call_func.em
-; muestra ejemplos de invocación utilizando call-func
-(call-func "strtoupper" "hello world") ; retorna "HELLO WORLD"
+; shows some examples of call-func
+(call-func "strtoupper" "hello world") ; returns "HELLO WORLD"
 
 (call-func Array::range 2 5) ; returns [2, 3, 4, 5]
 ```
 
-La función *call-func-array* espera un arreglo conteniendo el listado de argumentos como segundo parámetro. Este ejemplo realiza la suma de todos los valores pasados al programa.
+The *call-func-array* function expects an array containing the list of arguments as a second parameter. This code uses *call-func-array* to sum all arguments ​​passed to the program.
 
 ```lisp
 ; sigma.em
-; calcula la suma de todos los valores pasados como parámetro
+; calculates the sum of all arguments passed
 (call-func-array + (%_))
 ```
 
 <br/>
 
-##Use e Import
+##Use and Import
 
 <br/>
-Las funciones *use* e *import* permiten importar funciones directamente desde PHP o desde otros paquetes a la tabla de símbolos del entorno de ejecución.
+The *use* and *import* functions allow importing functions directly from PHP or from other packages to the symbol table of the current runtime environment.
+
 ```lisp
 ; use_example.em
-; Ejemplos de utilización de use
+; usage examples of use function
 
-; importar utf8_encode a la tabla de símbolos
+; import utf8_encode
 (use utf8_encode)
 (:= _encoded (utf8_encode (%0)))
 
-; alias
+; using an alias
 (use (utf8_decode utf8dec))
 (:= _decoded (utf8dec _encoded))
 
-; multiples símbolos
+; multiple use
 (use mb_detect_encoding mb_internal_encoding (mb_get_info mbinfo))
 ```
-La función *import* espera como parámetro un símbolo con el nombre de clase a importar.
+
+The *import* function expects a symbol with the package class name to import.
 
 ```lisp
 ; import_example.em
-; Ejemplos de uso de import
+; usage examples of import
 
 ; import MathPackage class
 (import eMacros\Package\MathPackage)
 (:= _sin (sin Math::PI_2))
 
-; si la clase no existe import intenta recuperarla del paquete eMacros\Package (agregando Package al final)
+; if no class is found then import tries to recover the package from the eMacros\Package namespace (and adding "Package" as suffix)
 (import CType)
-(if (digit (%0)) "El parámetro es un dígito" "El parámetro no es un dígito")
+(if (digit (%0)) "Argument is a digit" "Argument is not a digit")
 ```
 
 <br/>
 
-##Paquetes de usuario
+##User packages
 
 <br/>
 
-La forma recomendable de implementar funciones de usuario es a través de paquetes. Al mantener nuestras funciones dentro de paquetes customizados podemos importarlas a cualquier entorno de manera más eficiente. El siguiente ejemplo muestra la implementación de un paquete de ejemplo que agrega los símbolos *MY_CONSTANT* y *message* a su tabla de símbolos.
+The preferable way to implement user functions is through packages. By keeping our customized functions within packages we can import them into any environment more efficiently. The following example shows the implementation of a sample package that adds the symbols *MY_CONSTANT* and *message* to the environment's symbol table.
 
 ```php
 <?php
@@ -738,7 +747,7 @@ use eMacros\Package\Package;
 
 class CustomPackage extends Package {
     public function __construct() {
-        //debemos especificar un ID de paquete
+        //declare and ID for this package
         parent::__construct('Custom');
         
         $this['MY_CONSTANT'] = 42;
@@ -746,7 +755,7 @@ class CustomPackage extends Package {
     }
 }
 ```
-Si bien es posible utilizar *import* para importar los símbolos de este paquete al entorno de ejecución, a la larga es preferible utilizar un entorno customizado. El siguiente código de ejemplo muestra la implementación de un entorno de ejecución definido por usuario.
+While it is possible to import the symbols of this package through the predefined functions, it turns more convenient to use a customized environment. The following example shows the implementation of a runtime environment defined by the user.
 
 ```php
 <?php
@@ -765,21 +774,25 @@ class CustomEnvironment extends Environment {
 }
 ```
 
-Teniendo ya el entorno preparado podemos realizar la ejecución de programas utilizando los símbolos declarados previamente.
+Having already prepared our new user-defined environment we can make the implementation of programs using the previously declared symbols.
 
 ```lisp
 ; custom.em
-; Muestra el uso de un entorno de ejecución definido por usuario
-(<- MY_CONSTANT); retorna 42
+; An example using a user-defined environment
+(<- MY_CONSTANT); returns 42
 
-; podemos utilizar el nombre de paquete como prefijo
-(/ Custom::MY_CONSTANT 2) ; retorna 21
+; using package name as prefix
+(/ Custom::MY_CONSTANT 2) ; returns 21
 
-(String::ucfirst message) ; retorna "This is a custom package"
+(String::ucfirst message) ; returns "This is a custom package"
 ```
+
+Using a user-defined environment is not a lot different from previous examples.
 
 ```php
 <?php
+include 'vendor/autoload.php';
+
 use Acme\CustomEnvironment;
 use eMacros\Program\SimpleProgram;
 
@@ -788,13 +801,13 @@ $program->execute(new CustomEnvironment);
 ```
 <br/>
 
-##Implementación de funciones
+##Implementing user-defined functions
 
 <br/>
 
-La creación de macros y funciones se realiza a través de 3 tipos de clases y una interfaz auxiliar:
+Creating macros and functions is done through 3 available classes and an auxiliary interface:
 
-* PHPFunction (solo funciones disponibles en PHP)
+* PHPFunction (only functions available in PHP)
 * Closures
 * GenericFunction
 * Applicable
@@ -803,7 +816,7 @@ La creación de macros y funciones se realiza a través de 3 tipos de clases y u
 
 #####PHPFunction
 
-La clase *PHPFunction* actua como un wrapper de funciones PHP. El único parámetro requerido para su creación es el nombre de la función a encapsular.
+The *PHPFunction* class acts as a wrapper for PHP functions. The only parameter required for its creation is the name of the function to encapsulate.
 
 ```php
 <?php
@@ -817,18 +830,18 @@ class UserPackage extends Package {
         parent::__construct('User');
         
         /**
-         * Compresión de datos
-         * Uso: (compress "sample data")
+         * Compress data
+         * Usage: (compress "sample data")
          */
         $this['compress'] = new PHPFunction('bzcompress');
     }
 }
 ```
-Al utilizar *PHPFunction* omitimos realizar el chequeo de cantidad y tipo de parámetros. Aún así, resulta la manera más simple de importar funciones del lenguaje a un paquete.
+By using *PHPFunction* we omit checking the amount and type of parameters. Still, it is the simplest way to import language features to a package.
 
 ```lisp
 ; phpfunction.em
-; comprimir un string
+; compress a string
 (compress "some string")
 ```
 
@@ -836,7 +849,7 @@ Al utilizar *PHPFunction* omitimos realizar el chequeo de cantidad y tipo de par
 
 #####Closures
 
-Las funciones definidas como *Closures* tienen la ventaja de ahorrarnos la implementación de una clase.
+Functions defined as *Closures* have the advantage of saving the implementation of a class.
 
 ```php
 <?php
@@ -849,8 +862,8 @@ class UserPackage extends Package {
         parent::__construct('User');
         
         /**
-         * Suma y resta
-         * Uso: (plusmin 6 7 3) ; 10
+         * Addition and sustraction
+         * Usage: (plusmin 6 7 3) ; 10
          */
         $this['plusmin'] = function ($x, $y, $z) {
             return $x + $y - $z;
@@ -863,7 +876,7 @@ class UserPackage extends Package {
 
 #####GenericFunction
 
-Las clases que extiendan de *GenericFunction* deben implementar el método *execute*. Este método recibe un arreglo con todos los argumentos recibidos.
+Classes that extend from *GenericFunction* must implement the *execute* method. This method receives an array with all specified parameters.
 
 ```php
 <?php
@@ -873,8 +886,8 @@ use eMacros\Runtime\GenericFunction;
 
 class PlusMin extends GenericFunction {
     /**
-     * Suma y resta de valores
-     * Uso: (plusmin 4 5 1) ; 8
+     * Addition and subtraction
+     * Usage: (+- 4 5 1) ; 8
      */
     public function execute(array $args) {
         if (count($args) < 3) {
@@ -885,7 +898,9 @@ class PlusMin extends GenericFunction {
     }
 }
 ```
-El paquete se debe encargar de instanciar la clase y definir el símbolo al cual se asociará.
+
+This package instantiates the *PlusMin* class and defines the symbol which will be associated with it.
+
 ```php
 <?php
 namespace Acme;
@@ -908,9 +923,10 @@ class UserPackage extends Package {
 
 <br/>
 
-#####La interfaz Applicable
+#####The Applicable interface
 
-El método restante para la declaración de funciones consiste en la implementación de la interfaz *Applicable*. Esta interfaz resulta útil en caso de necesitar acceder a valores declarados dentro del entorno de ejecución (contantes, funciones, parámetros, etc) o si es necesario determinar si un parámetro se definió como un símbolo o valor literal. El método *apply* recibe 2 argumentos: una instancia de *Scope* con el entorno de ejecución actual y una instancia de *GenericList* con los argumentos suministrados. Para recuperar el valor de cada expresión presente en el listado de argumentos es necesario invocar al método *evaluate* pasando como parámetro la instancia de *Scope*. Este ejemplo implementa una clase *Increment* que incrementa el valor de un símbolo en 1 o en un valor auxiliar definido en la invocación.
+The other way for declaring functions is through the implemention of the *Applicable* interface. This interface is useful if you need to access values declared within the runtime environment (constants, functions, parameters, etc.) or if you need to determine if a parameter is defined as a symbol or literal. The *apply* method takes 2 arguments: an instance of *Scope* with the current execution environment and an instance of *GenericList* with the given arguments. To retrieve the value of each expression present in the list of arguments is necessary to invoke the *evaluate* method passing as parameter the *Scope* instance. This example implements a class named *Increment* that increases the value of a symbol by one side or by a given value when specified.
+
 ```php
 <?php
 namespace Acme\Runtime;
@@ -922,22 +938,22 @@ use eMacros\Symbol;
 
 class Increment implements Applicable {
     public function apply(Scope $scope, GenericList $arguments) {
-        //comprobar cantidad de parámetros
+        //check arguments amount
         $nargs = count($arguments);
         
         if ($nargs == 0) {
             throw new \BadFunctionCallException("Increment: No parameters found.");
         }
         
-        //comprobar que primer parámetro es símbolo
+        //check that first parameter is a symbol
         if (!($arguments[0] instanceof Symbol)) {
             throw new \InvalidArgumentException("Increment: A symbol is expected as first argument.");
         }
         
-        //obtener nombre de símbolo
+        //get symbol name
         $ref = $arguments[0]->symbol;
         
-        //obtener valor de símbolo
+        //get symbol value
         $value = $arguments[0]->evaluate($scope);
         
         if ($nargs > 1) {
@@ -952,7 +968,7 @@ class Increment implements Applicable {
     }
 }
 ```
-Es válido notar que esta clase debe asegurarse de que el primer parámetro sea un símbolo o de otro modo una excepción es lanzada.
+It is valid to note that this class must ensure that the first parameter is a symbol or otherwise an exception is thrown.
 
 ```php
 <?php
@@ -966,17 +982,19 @@ class UserPackage extends Package {
         parent::__construct('User');
         
         /**
-         * Incrementar valor de variable
-         * Uso: (inc _x) (inc _y 3)
+         * Increments a variable value
+         * Usaeg: (inc _x) (inc _y 3)
          */
         $this['inc'] = new Increment();
     }
 }
 ```
 
+The following code imports the *UserPackage* class and shows an usage example of the *inc* function.
+
 ```lisp
 ; inc.em
-; Ejemplo de uso de función "inc"
+; Example using the inc function
 (import Acme\UserPackage)
 (:= _x 1)
 (inc _x) ; _x = 2
@@ -989,7 +1007,7 @@ class UserPackage extends Package {
 
 <br/>
 
-Las macros son funciones que en vez de estar asociadas a un símbolo se definen a través de una expresión regular. Los paquetes implementan macros a través del método *macro*. Este método espera una cadena de texto con la expresión a comparar y una función anónima. Esta función recibe las coincidencias obtenidas al comparar la expresión regular contra el símbolo entrante. Por lo general, la funciones devueltas por una macro deben implementar un constructor que es invocado dentro de la función anónima con las coincidencias encontradas. El siguiente ejemplo muestra la implementación de una macro para calcular la distancia entre 2 puntos. Las coordenadas del punto inicial son declaradas como parte del operador y luego capturadas por la función anónima.
+Macros are functions that instead of being associated with a symbol they're defined by a regular expression. Macros are declared through the *macro* method. This method expects a regular expression string and an anonymous function. Generally, a function object returned by the *macro* method must implement a constructor that is invoked within the anonymous function with the matches found. The following example shows the implementation of a macro to calculate the distance between 2 points. The coordinates of the starting point are declared as part of the operator and then captured by the anonymous function.
 
 ```php
 <?php
@@ -1007,8 +1025,8 @@ class Distance extends GenericFunction {
     }
     
     /**
-     * Calcula la distancia entre 2 puntos
-     * Uso: (dist:X1Y7 3 5)
+     * Calculates the distance between 2 point
+     * Usage: (dist:X1Y7 3 5)
      */
     public function execute(array $args) {
         if (count($args) < 2) {
@@ -1023,8 +1041,7 @@ class Distance extends GenericFunction {
     }
 }
 ```
-
-La macro *dist* puede ser invocada directamente sin la necesidad de especificar coordenadas de origen. En ese caso, la distancia será calculada a partír de las coordenadas (0,0). El siguiente código muestra la implementación de la clase *GeometryPackage*. Esta clase agrega *dist* a la tabla de símbolos y define la macro para el calculo de distancias customizable.
+The *dist* macro can be invoked directly without the need of specifying coordinates of origin. In that case, the distance will be calculated from the coordinates (0,0). The following code shows the implementation of the *GeometryPackage* class. This class adds *dist* to the symbol table and defines the customizable macro for calculating distances.
 
 ```php
 <?php
@@ -1047,11 +1064,12 @@ class GeometryPackage extends Package {
     }
 }
 ```
-El siguiente programa muestra el funcionamiento de la función *dist* en ambos modos.
+
+The next example invokes the *dist" macro using both modes (with and without coordinates).
 
 ```lisp
 ; distance.em
-; Ejemplo de macro definida por usuario
+; User-defined macro example
 (import Acme\GeometryPackage)
 
 ; distance from (0,0)
@@ -1063,8 +1081,8 @@ El siguiente programa muestra el funcionamiento de la función *dist* en ambos m
 
 <br/>
 
-##Licencia
+##License
 
 <br/>
 
-El código correspondiente a esta librería es liberado utilizando la licencia BSD 2-Clause License.
+This code is licensed under the BSD 2-Clause license.

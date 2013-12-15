@@ -1,6 +1,6 @@
 ; symbols.em
 ; la función sym espera una cadena con el nombre del símbolo y su valor
-(sym "_program" "variables.em") ; agrega el símbolo _program con el valor "variables.em"
+(sym "_program" "symbols.em") ; agrega el símbolo _program con el valor "symbols.em"
 (. "Corriendo programa " _program)
 
 ; sym-exists verifica si el símbolo está declarado en la tabla de símbolos

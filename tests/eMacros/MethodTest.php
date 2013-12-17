@@ -4,6 +4,7 @@ namespace eMacros;
 use eMacros\Program\SimpleProgram;
 use Foo\Fizz;
 use Foo\FizzBuzz;
+use Test\ArrayTest;
 /**
  * 
  * @author emaphp
@@ -120,6 +121,12 @@ class MethodTest extends eMacrosTest {
 		$program = new SimpleProgram('(-> "anotherMethod" (%0) "emma" "Bye")');
 		$result = $program->execute(self::$env, new Fizz());
 		$this->assertEquals('Bye emma!', $result);
+	}
+	
+	public function testMethod16() {
+		$program = new SimpleProgram('(:= _arr (new Test\ArrayTest))(->setElems _arr (array 1 2 3))(->getElems _arr)');
+		$result = $program->execute(self::$env);
+		$this->assertEquals(array(1, 2, 3), $result);
 	}
 }
 ?>

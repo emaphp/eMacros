@@ -42,9 +42,9 @@ class ExamplesTest extends eMacrosTest {
 		$this->assertInternalType('array', $result);
 		$this->assertCount(4, $result);
 		$this->assertNull($result[0]);
-		$this->assertEquals("Corriendo programa variables.em", $result[1]);
+		$this->assertEquals("Corriendo programa symbols.em", $result[1]);
 		$this->assertEquals("El símbolo \"_program\" ya existe", $result[2]);
-		$this->assertEquals("Finalizando ejecución de variables.em", $result[3]);
+		$this->assertEquals("Finalizando ejecución de symbols.em", $result[3]);
 	}
 	
 	public function testArrays() {

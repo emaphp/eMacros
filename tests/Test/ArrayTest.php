@@ -2,6 +2,16 @@
 namespace Test;
 
 class ArrayTest {
+	public $elems;
+	
+	public function setElems($elems) {
+		$this->elems = $elems;
+	}
+	
+	public function getElems() {
+		return $this->elems;
+	}
+	
 	public static function cube($n) {
 		return($n * $n * $n);
 	}

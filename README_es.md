@@ -454,7 +454,7 @@ Los arreglos cuentan con un operador adicional para agregación de elementos.
 
 ; agregar elementos (@+)
 (:= _numeros (array))
-(@+ _numeros 1 2 3 4 5 )
+(@+ _numeros 1 2 3 4 5)
 (. "Numeros: " (implode "," _numeros))
 ```
 La clase *CorePackage* define un método abreviado para el acceso a claves en arreglos y objetos.

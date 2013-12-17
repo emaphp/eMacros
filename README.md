@@ -462,7 +462,7 @@ Arrays include an special operator to append elements.
 
 ; append elements (@+)
 (:= _numbers (array))
-(@+ _numbers 1 2 3 4 5 )
+(@+ _numbers 1 2 3 4 5)
 (. "Numbers: " (implode "," _numbers))
 ```
 The *CorePackage* class also defines an abbreviated way to obtain key/properties through *macros*.

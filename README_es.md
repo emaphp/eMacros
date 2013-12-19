@@ -4,7 +4,7 @@ eMacros
 The Extensible Macros Library for PHP
 
 **Autor**: Emmanuel Antico<br/>
-**Ultima modificación**: 15/12/2013
+**Ultima modificación**: 19/12/2013
 
 <br/>
 
@@ -619,6 +619,31 @@ Podemos acceder a cada parámetro individualmente con las funciones correspondie
 ; forma abreviada (%ARGN) (%ARGN?)
 (if (%1?) (. (%1) " mundo")) ; "hola mundo"
 ``` 
+<br/>
+
+#####El método *executeWith*
+
+<br/>
+El método *executeWith* nos permite definir los parámetros de un programa como un arreglo. Utilizando este método podemos reescribir el ejemplo anterior de la siguiente manera.
+
+```php
+<?php
+include 'vendor/autoload.php';
+
+use eMacros\Program\TextProgram;
+use eMacros\Environment\DefaultEnvironment;
+
+//instanciar programa
+$program = new TextProgram(fie_get_contents('arguments.em'));
+
+//ejecutar programa
+$result = $program->executeWith(new DefaultEnvironment, array(1, "hola", 5.5));
+
+//mostrar resultados
+echo $result;
+?>
+```
+
 <br/>
 
 ##Paquetes

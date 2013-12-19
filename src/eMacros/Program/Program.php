@@ -40,6 +40,11 @@ abstract class Program {
 		return count($this->expressions);
 	}
 	
+	public function executeWith(Environment $env, array $args) {
+		array_unshift($args, $env);
+		return call_user_func_array(array($this, 'execute'), $args);
+	}
+	
 	public abstract function execute(Environment $env);
 }
 ?>

@@ -4,7 +4,7 @@ eMacros
 The Extensible Macros Library for PHP
 
 **Author**: Emmanuel Antico<br/>
-**Last Modification**: 15/12/2013
+**Last Modification**: 19/12/2013
 
 <br/>
 
@@ -604,7 +604,7 @@ $program = new TextProgram(fie_get_contents('arguments.em'));
 //add arguments
 $result = $program->execute(new DefaultEnvironment, 1, "hello", 5.5);
 
-//print result
+//print results
 echo $result;
 ?>
 ```
@@ -629,6 +629,32 @@ We can access each argument individually with the corresponding functions:
 ; abbreviated form (%ARGN) (%ARGN?)
 (if (%1?) (. (%1) " world")) ; "hello mundo"
 ```
+
+<br/>
+
+#####The *executeWith* method
+
+<br/>
+The *executeWith* method allows us to define the parameters of a program as an array. Using this method we can rewrite the previous example in the following way.
+
+```php
+<?php
+include 'vendor/autoload.php';
+
+use eMacros\Program\TextProgram;
+use eMacros\Environment\DefaultEnvironment;
+
+//create program instance
+$program = new TextProgram(fie_get_contents('arguments.em'));
+
+//run program
+$result = $program->executeWith(new DefaultEnvironment, array(1, "hello", 5.5));
+
+//print results
+echo $result;
+?>
+```
+
 <br/>
 
 ##Packages

@@ -49,7 +49,7 @@ class JSONPackageTest extends eMacrosTest {
 	}
 	
 	public function testDecode4() {
-		$this->markTestSkipped("BIGINT_AS_STRING not implemented...");
+		$this->markTestIncomplete("BIGINT_AS_STRING not implemented...");
 		
 		$json = '{"number": 12345678901234567890}';
 		$program = new SimpleProgram('(JSON::decode (%0) false 512 JSON::BIGINT_AS_STRING)');

@@ -24,32 +24,36 @@ class DatePackage extends Package {
 		$this['format-time'] = new PHPFunction('strftime');
 		
 		//DateTime instance builder
-		$this['dt'] = function($date = null) {
-			if (!empty($date)) {
-				$rc = new \ReflectionClass('\\DateTime');
-				return $rc->newInstance($date);
+		$this['dt'] = function($date, \DateTimeZone $tz = null) {
+			if (is_null($tz)) {
+				return new \DateTime($date);
 			}
-			
-			return new \DateTime;
+						
+			return new \DateTime($date, $tz);
 		};
 		
-		$this['now'] = function() {				
-			return new \DateTime;
+		//DateTime instance builder (now)
+		$this['now'] = function(\DateTimeZone $tz = null) {
+			if (is_null($tz)) {
+				return new \DateTime('now');
+			}
+						
+			return new \DateTime('now', $tz);
 		};
 		
 		//DateInterval instance builder
-		$this['interval'] = function($interval = null) {
-			if (empty($interval)) {
-				throw new \BadFunctionCallException("interval: No interval specified.");
+		$this['interval'] = function($interval) {
+			if (!is_string($interval) || empty($interval)) {
+				throw new \BadFunctionCallException("interval: No valid interval specified.");
 			}
 			
 			return new \DateInterval($interval);
 		};
 		
-		//DateTimeZone
-		$this['tz'] = function($tz = null) {
-			if (empty($tz)) {
-				throw new \BadFunctionCallException("tz: No timezone specified.");
+		//DateTimeZone instance builder
+		$this['tz'] = function($tz) {
+			if (!is_string($tz) || empty($tz)) {
+				throw new \BadFunctionCallException("tz: No valid timezone specified.");
 			}
 			
 			return new \DateTimeZone($tz);

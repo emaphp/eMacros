@@ -51,73 +51,37 @@ class DatePackageTest extends eMacrosTest {
 	}
 	
 	public function testGetDate1() {
-		$tz = ini_get('date.timezone');
-		
-		if (empty($tz)) {
-			$this->markTestSkipped("No default timezone found! Set 'date.timezone' in your php.ini.");
-		}
-		
 		$program = new SimpleProgram('(get-date)');
 		$result = $program->execute(self::$xenv);
 		$this->assertTrue(is_array($result));
 	}
 	
 	public function testGetDate2() {
-		$tz = ini_get('date.timezone');
-		
-		if (empty($tz)) {
-			$this->markTestSkipped("No default timezone found! Set 'date.timezone' in your php.ini.");
-		}
-		
 		$program = new SimpleProgram('(Date::get-date)');
 		$result = $program->execute(self::$xenv);
 		$this->assertTrue(is_array($result));
 	}
 	
 	public function testDate1() {
-		$tz = ini_get('date.timezone');
-		
-		if (empty($tz)) {
-			$this->markTestSkipped("No default timezone found! Set 'date.timezone' in your php.ini.");
-		}
-		
 		$program = new SimpleProgram('(date "Y-m-d" (mktime 0 0 0 7 1 2000))');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals(date("Y-m-d", mktime(0, 0, 0, 7, 1, 2000)), $result);
 	}
 	
-	public function testDate2() {
-		$tz = ini_get('date.timezone');
-		
-		if (empty($tz)) {
-			$this->markTestSkipped("No default timezone found! Set 'date.timezone' in your php.ini.");
-		}
-		
+	public function testDate2() {		
 		$program = new SimpleProgram('(Date::date "Y-m-d" (Date::mktime 0 0 0 7 1 2000))');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals(date("Y-m-d", mktime(0, 0, 0, 7, 1, 2000)), $result);
 	}
 	
 	public function testDateCreate1() {
-		$tz = ini_get('date.timezone');
-		
-		if (empty($tz)) {
-			$this->markTestSkipped("No default timezone found! Set 'date.timezone' in your php.ini.");
-		}
-		
 		$program = new SimpleProgram('(date-create "j-M-Y" "15-Feb-2009")');
 		$result = $program->execute(self::$xenv);
 		$this->assertTrue($result instanceof \DateTime);
 		$this->assertEquals(\DateTime::createFromFormat('j-M-Y', '15-Feb-2009'), $result);
 	}
 	
-	public function testDateCreate2() {
-		$tz = ini_get('date.timezone');
-		
-		if (empty($tz)) {
-			$this->markTestSkipped("No default timezone found! Set 'date.timezone' in your php.ini.");
-		}
-		
+	public function testDateCreate2() {		
 		$program = new SimpleProgram('(Date::date-create "j-M-Y" "15-Feb-2009")');
 		$result = $program->execute(self::$xenv);
 		$this->assertTrue($result instanceof \DateTime);
@@ -155,36 +119,18 @@ class DatePackageTest extends eMacrosTest {
 	}
 	
 	public function testToTime1() {
-		$tz = ini_get('date.timezone');
-		
-		if (empty($tz)) {
-			$this->markTestSkipped("No default timezone found! Set 'date.timezone' in your php.ini.");
-		}
-		
 		$program = new SimpleProgram('(to-time "10 September 2000")');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals(strtotime("10 September 2000"), $result);
 	}
 	
-	public function testToTime2() {
-		$tz = ini_get('date.timezone');
-		
-		if (empty($tz)) {
-			$this->markTestSkipped("No default timezone found! Set 'date.timezone' in your php.ini.");
-		}
-		
+	public function testToTime2() {		
 		$program = new SimpleProgram('(Date::to-time "10 September 2000")');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals(strtotime("10 September 2000"), $result);
 	}
 	
 	public function testFormatTime1() {
-		$tz = ini_get('date.timezone');
-		
-		if (empty($tz)) {
-			$this->markTestSkipped("No default timezone found! Set 'date.timezone' in your php.ini.");
-		}
-		
 		$format = "%d/%m/%Y";
 		$program = new SimpleProgram('(parse-time (format-time (%0)) (%0))');
 		$result = $program->execute(self::$xenv, $format);
@@ -192,37 +138,22 @@ class DatePackageTest extends eMacrosTest {
 	}
 	
 	public function testFormatTime2() {
-		$tz = ini_get('date.timezone');
-		
-		if (empty($tz)) {
-			$this->markTestSkipped("No default timezone found! Set 'date.timezone' in your php.ini.");
-		}
-		
 		$format = "%d/%m/%Y";
 		$program = new SimpleProgram('(Date::parse-time (format-time (%0)) (%0))');
 		$result = $program->execute(self::$xenv, $format);
 		$this->assertEquals(strptime(strftime($format), $format), $result);
 	}
 	
+	/**
+	 * @expectedException PHPUnit_Framework_Error_Warning
+	 */
 	public function testDt0() {
-		$tz = ini_get('date.timezone');
-		
-		if (empty($tz)) {
-			$this->markTestSkipped("No default timezone found! Set 'date.timezone' in your php.ini.");
-		}
-		
 		$program = new SimpleProgram('(dt)');
 		$result = $program->execute(self::$xenv);
 		$this->assertTrue($result instanceof \DateTime);
 	}
 	
 	public function testDt1() {
-		$tz = ini_get('date.timezone');
-		
-		if (empty($tz)) {
-			$this->markTestSkipped("No default timezone found! Set 'date.timezone' in your php.ini.");
-		}
-		
 		$program = new SimpleProgram('(dt "2000-01-01")');
 		$result = $program->execute(self::$xenv);
 		$this->assertTrue($result instanceof \DateTime);
@@ -230,12 +161,6 @@ class DatePackageTest extends eMacrosTest {
 	}
 	
 	public function testDt2() {
-		$tz = ini_get('date.timezone');
-		
-		if (empty($tz)) {
-			$this->markTestSkipped("No default timezone found! Set 'date.timezone' in your php.ini.");
-		}
-		
 		$program = new SimpleProgram('(Date::dt "2000-01-01")');
 		$result = $program->execute(self::$xenv);
 		$this->assertTrue($result instanceof \DateTime);
@@ -243,24 +168,12 @@ class DatePackageTest extends eMacrosTest {
 	}
 	
 	public function testNow1() {
-		$tz = ini_get('date.timezone');
-		
-		if (empty($tz)) {
-			$this->markTestSkipped("No default timezone found! Set 'date.timezone' in your php.ini.");
-		}
-		
 		$program = new SimpleProgram('(->format (now) "Y-m-d")');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals(1, preg_match('/([\d]{4})-([\d]{2})-([\d]{2})/', $result));
 	}
 	
 	public function testNow2() {
-		$tz = ini_get('date.timezone');
-		
-		if (empty($tz)) {
-			$this->markTestSkipped("No default timezone found! Set 'date.timezone' in your php.ini.");
-		}
-		
 		$program = new SimpleProgram('(->format (Date::now) "Y-m-d")');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals(1, preg_match('/([\d]{4})-([\d]{2})-([\d]{2})/', $result));

@@ -138,12 +138,6 @@ class ExamplesTest extends eMacrosTest {
 	}
 	
 	public function testMethods() {
-		$tz = ini_get('date.timezone');
-		
-		if (empty($tz)) {
-			$this->markTestSkipped("No default timezone found! Set 'date.timezone' in your php.ini.");
-		}
-		
 		$program = new ListProgram(file_get_contents(__DIR__ . '/source/methods.em'));
 		$result = $program->execute(self::$env);
 		$this->assertInternalType('array', $result);

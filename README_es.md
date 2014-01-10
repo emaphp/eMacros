@@ -4,7 +4,7 @@ eMacros
 The Extensible Macros Library for PHP
 
 **Autor**: Emmanuel Antico<br/>
-**Ultima modificación**: 19/12/2013
+**Ultima modificación**: 10/01/2014
 
 <br/>
 
@@ -590,7 +590,7 @@ use eMacros\Program\TextProgram;
 use eMacros\Environment\DefaultEnvironment;
 
 //instanciar programa
-$program = new TextProgram(fie_get_contents('arguments.em'));
+$program = new TextProgram(file_get_contents('arguments.em'));
 
 //ejecutar programa
 $result = $program->execute(new DefaultEnvironment, 1, "hola", 5.5);
@@ -634,7 +634,7 @@ use eMacros\Program\TextProgram;
 use eMacros\Environment\DefaultEnvironment;
 
 //instanciar programa
-$program = new TextProgram(fie_get_contents('arguments.em'));
+$program = new TextProgram(file_get_contents('arguments.em'));
 
 //ejecutar programa
 $result = $program->executeWith(new DefaultEnvironment, array(1, "hola", 5.5));
@@ -1039,7 +1039,7 @@ class Distance extends GenericFunction {
      */
     public function execute(array $args) {
         if (count($args) < 2) {
-            throw new \BadFunctionCallException("Distance: Destination not specified.");
+            throw new \BadFunctionCallException("Distance: Destino no especificado.");
         }
         
         $x = intval($args[0]);
@@ -1064,10 +1064,10 @@ class GeometryPackage extends Package {
     public function __construct() {
         parent::__construct('Geometry');
         
-        //default distance
+        //distancia por defecto
         $this['dist'] = new Distance(0, 0);
 
-        //macro style
+        //macro
         $this->macro('@dist:X(\d+)Y(\d+)@', function ($matches) {
             return new Distance(intval($matches[1]), intval($matches[2]));
         });

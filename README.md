@@ -4,7 +4,7 @@ eMacros
 The Extensible Macros Library for PHP
 
 **Author**: Emmanuel Antico<br/>
-**Last Modification**: 19/12/2013
+**Last Modification**: 10/01/2013
 
 <br/>
 
@@ -599,7 +599,7 @@ use eMacros\Program\TextProgram;
 use eMacros\Environment\DefaultEnvironment;
 
 //create program instance
-$program = new TextProgram(fie_get_contents('arguments.em'));
+$program = new TextProgram(file_get_contents('arguments.em'));
 
 //add arguments
 $result = $program->execute(new DefaultEnvironment, 1, "hello", 5.5);
@@ -645,7 +645,7 @@ use eMacros\Program\TextProgram;
 use eMacros\Environment\DefaultEnvironment;
 
 //create program instance
-$program = new TextProgram(fie_get_contents('arguments.em'));
+$program = new TextProgram(file_get_contents('arguments.em'));
 
 //run program
 $result = $program->executeWith(new DefaultEnvironment, array(1, "hello", 5.5));

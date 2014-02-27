@@ -1,6 +1,6 @@
 ; distance.em
 ; Ejemplo de macro definida por usuario
-(import Acme\GeometryPackage)
+(import Acme\Package\GeometryPackage)
 
 ; distance from (0,0)
 (dist 4 2)

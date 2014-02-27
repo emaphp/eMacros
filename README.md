@@ -4,22 +4,14 @@ eMacros
 The Extensible Macros Library for PHP
 
 **Author**: Emmanuel Antico<br/>
-**Last Modification**: 10/01/2013
+**Last Modification**: 27/02/2014 [d/m/y]
 
 <br/>
 
 ##About
 <br/>
 
-eMacros is a PHP library based on [lisphp] (https://github.com/lisphp/lisphp "") which incorporates a customizable LISP dialect interpreter library.
-
-<br/>
-
-##Features
-
-<br/>
-
-Unlike lisphp, eMacros is aimed for embedded applications, so no console command is available. eMacros main purpose was to be able to generate text dynamically where text formatting functions were not complex enough, but it can be useful in other scenarios.
+*eMacros* is a PHP library based on [lisphp] (https://github.com/lisphp/lisphp "") featuring a customizable LISP dialect interpreter.
 
 <br/>
 
@@ -35,7 +27,7 @@ An updated version of PHP 5.4 is required tu run this library.
 
 <br>
 
-eMacros installation is performed via Composer. Add the following file to the project folder and perform the usual installation which is [described here] (http://getcomposer.org/doc/00-intro.md # installation-nix "").
+*eMacros* installation is performed via Composer. Add the following file to the project folder and perform the usual installation which is [described here] (http://getcomposer.org/doc/00-intro.md # installation-nix "").
 
 **composer.json**
 
@@ -55,7 +47,7 @@ eMacros installation is performed via Composer. Add the following file to the pr
 The following example shows the implementation of a simple program that calculates the sum of 2 numbers.
 
 ```php
-<?php
+
 include 'vendor/autoload.php';
 
 use eMacros\Program\SimpleProgram;
@@ -69,25 +61,23 @@ $result = $program->execute(new DefaultEnvironment);
 
 //show results
 echo $result; //prints 10
-?>
 ```
-This script begins by creating a new instance of a program which receives the code to be interpreted and *compiled*. For being able to run a program is necessary to define an environment instance. The *execute* method performs the execution of a program using the environment provided as a parameter. The result obtained is then returned.
+This script begins by creating a new instance of a program which receives the code to be interpreted. For being able to run a program is necessary to define an environment instance. The *execute* method performs the execution of a program using the environment provided as a parameter. The result obtained is then returned.
 
 <br/>
 
-If the source code of the program is invalid then a *eMacros\Exception\ParseException* is thrown. There are several types of programs, each one of these can generate different types of results based on the executed instructions. The class *SimpleProgram* defines the simplest type of program. This class returns the result of the last executed instruction. In case we would have instantiated the program as follows, the result would have been different.
+There are several types of programs, each one of these can generate different types of results based on the executed instructions. The class *SimpleProgram* defines the simplest type of program. This class returns the result of the last executed instruction. The following program includes 2 instructions but only one value is returned.
 
 ```php
 $program = new SimpleProgram('(+ 3 7)(- 6 3)');
 ```
 
-Since *SimpleProgram* always gets the final result generated, instead of 10 we would have obtained a 3, that is, the result of subtracting 3 to 6.
+Since *SimpleProgram* always returns the last generated value, instead of 10 we would have obtained 3, that is, the result of subtracting 3 to 6.
 
 <br/>
 To store all the results obtained from each expression we can use the *ListProgram* class. This class works by storing each result in an array. The result of executing a *ListProgram* is an array with the same amount of values that evaluated instructions.
 
 ```php
-<?php
 include 'vendor/autoload.php';
 
 use eMacros\Program\ListProgram;
@@ -96,15 +86,13 @@ use eMacros\Environment\DefaultEnvironment;
 $program = new ListProgram('(+ 3 7)(- 6 (+ 1 2))');
 $result = $program->execute(new DefaultEnvironment);
 
-echo $result[0]; //imprime 10
-echo $result[1]; //imprime 3
-?>
+echo $result[0]; //prints 10
+echo $result[1]; //prints 3
 ```
 
 The *TextProgram* class returns the result of concatenating each evaluated expression in a program. The following program performs the concatenation of two expressions to generate a message. This program also introduces the concatenation operator.
 
 ```php
-<?php
 include 'vendor/autoload.php';
 
 use eMacros\Program\TextProgram;
@@ -114,7 +102,6 @@ $program = new TextProgram('(. "Hel" "lo" " ")(. "Wo" "rld")');
 $result = $program->execute(new DefaultEnvironment);
 
 echo $result; //prints "Hello World"
-?>
 ```
 <br/>
 
@@ -122,10 +109,9 @@ echo $result; //prints "Hello World"
 
 <br/>
 
-The *eMacros\Environment\DefaultEnvironment* class defines a default environment where applications can run. An environment defines the list of symbols and operations that the program will be able to interpret. This ranges from simple operations such as arithmetic (+, -, \*, /) to more complex ones (if, or, @name, Array::reverse). Symbols and operations are added to an environment by *importing packages*. Current implementation of the *DefaultEnvironment* class looks like the following:
+The *DefaultEnvironment* class defines a default environment where applications can run. An environment defines the list of symbols and operations that the program will be able to interpret. This ranges from simple operations such as arithmetic (+, -, \*, /) to more complex ones (if, or, @name, Array::reverse). Symbols and operations are added to an environment by *importing packages*. Current implementation of the *DefaultEnvironment* class looks like the following:
 
 ```php
-<?php
 namespace eMacros\Environment;
 
 use eMacros\Package\CorePackage;
@@ -136,21 +122,20 @@ use eMacros\Package\DatePackage;
 
 class DefaultEnvironment extends Environment {
 	public function __construct() {
-		$this->import(new CorePackage);
 		$this->import(new StringPackage);
 		$this->import(new ArrayPackage);
 		$this->import(new RegexPackage);
 		$this->import(new DatePackage);
+		$this->import(new CorePackage);
 	}
 }
-?>
 ```
 
 *CorePackage*, *StringPackage*, *ArrayPackage*, etc are classes that define a list of symbols and operations to be used within a program. By importing a package to an environment we enable the use of symbols and operations defined within that package.
 
 <br/>
 
-The *DefaultEnvironment* class comes with a fair amount of string functions, array functions, date/time functions and regular expression functions, which makes it ideal for start experimenting on our own. The rest of the packages can be found in the *eMacros\Package* namespace.
+The *DefaultEnvironment* class comes with a fair amount of functions, which makes it ideal for start experimenting on our own. The rest of the packages can be found in the *eMacros\Package* namespace.
 
 <br/>
 
@@ -158,7 +143,7 @@ The *DefaultEnvironment* class comes with a fair amount of string functions, arr
 
 <br/>
 
-Programs can also be loaded from files. Having the application code in another file turns useful for adding comments, which improves its readability. This program is similar to the previous example, except that it also returns the version of PHP running on the system.
+Programs can also be loaded from files. Having the application code in another file turns useful for adding comments, which improves readability. This program is similar to the previous example, except that it also returns the version of PHP running on the system.
 
 ```lisp
 ; hello_world.em
@@ -171,7 +156,6 @@ Programs can also be loaded from files. Having the application code in another f
 This example uses the *file_get_contents* function to obtain the contents of a source file.
 
 ```php
-<?php
 include 'vendor/autoload.php';
 
 use eMacros\Program\TextProgram;
@@ -181,7 +165,6 @@ $program = new TextProgram(file_get_contents('hello_world.em'));
 $result = $program->execute(new DefaultEnvironment);
 
 echo $result;
-?>
 ```
 
 <br/>
@@ -190,7 +173,7 @@ echo $result;
 
 <br/>
 
-The *eMacros\Package\CorePackage* class is extremely important when building a program execution environment. Among the items that are contained on this package are:
+The *CorePackage* class is extremely important when building a program execution environment. Among the elements that are contained on this package are:
 
 * The *null*, *true* and *false* symbols.
 * Arithmetic, comparison and logic operators.
@@ -202,7 +185,7 @@ The *eMacros\Package\CorePackage* class is extremely important when building a p
 
 <br/>
 
-As noted, the functionality of this package is very basic so it is recommended to have it included in the case of defining a customized environment. Below is a brief overview of the capabilities of this package.
+As noted, the functionality of this package is very critical so it is recommended to have it included whenever we create a customized environment. Below is a brief overview of the capabilities of this package.
 
 <br/>
 
@@ -238,14 +221,14 @@ As noted, the functionality of this package is very basic so it is recommended t
 ; logical.em
 
 ; AND OR
-(and true true)
-(or false true)
+(and true true) ; true
+(or false true) ; true
 
 ; several parameters
-(and true true false true)
+(and true true false true) ; false
 
 ; NOT
-(not true)
+(not true) ; false
 
 ; IF
 ; if [CONDITION] [VALUE_TRUE]
@@ -592,7 +575,6 @@ A program can receive an arbitrary number of arguments. These must be specified 
 This script performs the execution of the previous program with 3 arguments.
 
 ```php
-<?php
 include 'vendor/autoload.php';
 
 use eMacros\Program\TextProgram;
@@ -606,10 +588,9 @@ $result = $program->execute(new DefaultEnvironment, 1, "hello", 5.5);
 
 //print results
 echo $result;
-?>
 ```
 
-The obtained output is as follows:
+The obtained output is the following:
 
 ```bash
 3 parameters have been found
@@ -638,7 +619,6 @@ We can access each argument individually with the corresponding functions:
 The *executeWith* method allows us to define the parameters of a program as an array. Using this method we can rewrite the previous example in the following way.
 
 ```php
-<?php
 include 'vendor/autoload.php';
 
 use eMacros\Program\TextProgram;
@@ -652,7 +632,6 @@ $result = $program->executeWith(new DefaultEnvironment, array(1, "hello", 5.5));
 
 //print results
 echo $result;
-?>
 ```
 
 <br/>
@@ -661,7 +640,7 @@ echo $result;
 
 <br/>
 
-eMacros has several packages available organized by type within the namespace *eMacros\Package*. The following script demonstrates the use of some functions that are available in the 'String' package.
+*eMacros* has several packages available organized by type within the *eMacros\Package* namespace. The following script demonstrates the use of some functions that are available in the 'String' package.
 
 ```lisp
 ; string_functions.em
@@ -724,7 +703,7 @@ The *call-func-array* function expects an array containing the list of arguments
 ##Use and Import
 
 <br/>
-The *use* and *import* functions allow importing functions directly from PHP or from other packages to the symbol table of the current runtime environment.
+The *use* and *import* functions allows importing functions directly from PHP or from other packages to the current symbol table.
 
 ```lisp
 ; use_example.em
@@ -766,7 +745,6 @@ The *import* function expects a symbol with the package class name to import.
 The preferable way to implement user functions is through packages. By keeping our customized functions within packages we can import them into any environment more efficiently. The following example shows the implementation of a sample package that adds the symbols *MY_CONSTANT* and *message* to the environment's symbol table.
 
 ```php
-<?php
 namespace Acme;
 
 use eMacros\Package\Package;
@@ -784,7 +762,6 @@ class CustomPackage extends Package {
 While it is possible to import the symbols of this package through the predefined functions, it turns more convenient to use a customized environment. The following example shows the implementation of a runtime environment defined by the user.
 
 ```php
-<?php
 namespace Acme;
 
 use eMacros\Environment\Environment;
@@ -793,9 +770,9 @@ use eMacros\Package\StringPackage;
 
 class CustomEnvironment extends Environment {
     public function __construct() {
-        $this->import(new CorePackage);
+        $this->import(new CustomPackage);        
         $this->import(new StringPackage);
-        $this->import(new CustomPackage);
+        $this->import(new CorePackage);
     }
 }
 ```
@@ -813,18 +790,6 @@ Having already prepared our new user-defined environment we can make the impleme
 (String::ucfirst message) ; returns "This is a custom package"
 ```
 
-Using a user-defined environment is not a lot different from previous examples.
-
-```php
-<?php
-include 'vendor/autoload.php';
-
-use Acme\CustomEnvironment;
-use eMacros\Program\SimpleProgram;
-
-$program = new SimpleProgram(file_get_contents('custom.em'));
-$program->execute(new CustomEnvironment);
-```
 <br/>
 
 ##Implementing user-defined functions
@@ -842,10 +807,9 @@ Creating macros and functions is done through 3 available classes and an auxilia
 
 #####PHPFunction
 
-The *PHPFunction* class acts as a wrapper for PHP functions. The only parameter required for its creation is the name of the function to encapsulate.
+The *PHPFunction* class acts as a wrapper for PHP functions. This class constructor expects the name of the function to encapsulate.
 
 ```php
-<?php
 namespace Acme;
 
 use eMacros\Package\Package;
@@ -875,10 +839,9 @@ By using *PHPFunction* we omit checking the amount and type of parameters. Still
 
 #####Closures
 
-Functions defined as *Closures* have the advantage of saving the implementation of a class.
+Functions defined as *Closures* can help to avoid implementing an entire class from scratch.
 
 ```php
-<?php
 namespace Acme;
 
 use eMacros\Package\Package;
@@ -902,10 +865,9 @@ class UserPackage extends Package {
 
 #####GenericFunction
 
-Classes that extend from *GenericFunction* must implement the *execute* method. This method receives an array with all specified parameters.
+Classes that extend from *GenericFunction* must implement the *execute* method. This method receives an array with all submitted arguments.
 
 ```php
-<?php
 namespace Acme\Runtime;
 
 use eMacros\Runtime\GenericFunction;
@@ -928,7 +890,6 @@ class PlusMin extends GenericFunction {
 This package instantiates the *PlusMin* class and defines the symbol which will be associated with it.
 
 ```php
-<?php
 namespace Acme;
 
 use eMacros\Package\Package;
@@ -951,10 +912,9 @@ class UserPackage extends Package {
 
 #####The Applicable interface
 
-The other way for declaring functions is through the implemention of the *Applicable* interface. This interface is useful if you need to access values declared within the runtime environment (constants, functions, parameters, etc.) or if you need to determine if a parameter is defined as a symbol or literal. The *apply* method takes 2 arguments: an instance of *Scope* with the current execution environment and an instance of *GenericList* with the given arguments. To retrieve the value of each expression present in the list of arguments is necessary to invoke the *evaluate* method passing as parameter the *Scope* instance. This example implements a class named *Increment* that increases the value of a symbol by one side or by a given value when specified.
+We can also create functions through the *Applicable* interface. This interface is useful if you need to access values declared within the runtime environment (constants, functions, parameters, etc.) or if you need to determine if a given parameter is defined as a symbol or literal. The *apply* method takes 2 arguments: an instance of *Scope* with the current execution environment and an instance of *GenericList* with the given arguments. To retrieve an expression value we need to invoke its *evaluate* method using the *Scope* instance as argument. This example implements a class named *Increment* that increases the value of a symbol by one or by a given value (when specified).
 
 ```php
-<?php
 namespace Acme\Runtime;
 
 use eMacros\Scope;
@@ -994,10 +954,9 @@ class Increment implements Applicable {
     }
 }
 ```
-It is valid to note that this class must ensure that the first parameter is a symbol or otherwise an exception is thrown.
+Notice that this class ensures that the first parameter is a symbol or otherwise an exception is thrown.
 
 ```php
-<?php
 namespace Acme;
 
 use eMacros\Package\Package;
@@ -1033,10 +992,9 @@ The following code imports the *UserPackage* class and shows an usage example of
 
 <br/>
 
-Macros are functions that instead of being associated with a symbol they're defined by a regular expression. Macros are declared through the *macro* method. This method expects a regular expression string and an anonymous function. Generally, a function object returned by the *macro* method must implement a constructor that is invoked within the anonymous function with the matches found. The following example shows the implementation of a macro to calculate the distance between 2 points. The coordinates of the starting point are declared as part of the operator and then captured by the anonymous function.
+Macros are functions that instead of being associated with a symbol they're generated from a regular expression. Macros are declared through the *macro* method. This method expects a regular expression string and a *Closure* instance (or anonymous function). This anonymous function receives all matches found for the given regular expression. Its main purpose is to generate a valid environment function with those matches. The following example shows the implementation of a macro to calculate the distance between 2 points. The coordinates of the starting point are declared as part of the operator and then captured by the anonymous function.
 
 ```php
-<?php
 namespace Acme\Runtime;
 
 use eMacros\Runtime\GenericFunction;
@@ -1104,6 +1062,93 @@ The next example invokes the *dist" macro using both modes (with and without coo
 ; distance from (4, 2)
 (dist:X4Y2 5 7)
 ```
+
+<br/>
+
+##Appendix I - Available packages
+
+<br/>
+<table width="96%">
+    <thead>
+        <tr>
+            <th>Class name</th>
+            <th>Description</th>
+            <th>Prefix</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>CorePackage</td>
+            <td>Basic symbols and operators</td>
+            <td>Core</td>
+        </tr>
+        <tr>
+            <td>ArrayPackage</td>
+            <td><a href="http://php.net/manual/en/ref.array.php">Array functions</a></td>
+            <td>Array</td>
+        </tr>
+        <tr>
+            <td>BufferPackage</td>
+            <td><a href="http://php.net/manual/en/ref.outcontrol.php">Output control functions</a></td>
+            <td>Buffer</td>
+        </tr>
+        <tr>
+            <td>CTypePackage</td>
+            <td><a href="http://php.net/manual/en/ref.ctype.php">CType functions</a></td>
+            <td>CType</td>
+        </tr>
+        <tr>
+            <td>DatePackage</td>
+            <td><a href="http://php.net/manual/en/ref.datetime.php">Date/Time functions</a></td>
+            <td>Date</td>
+        </tr>
+        <tr>
+            <td>FilePackage</td>
+            <td><a href="http://php.net/manual/en/ref.filesystem.php">Filesystem functions</a></td>
+            <td>File</td>
+        </tr>
+        <tr>
+            <td>FilterPackage</td>
+            <td><a href="http://php.net/manual/en/ref.filter.php">Filter functions</a></td>
+            <td>Filter</td>
+        </tr>
+        <tr>
+            <td>HashPackage</td>
+            <td>Hashing functions (sha1,md5, etc)</td>
+            <td>Hash</td>
+        </tr>
+        <tr>
+            <td>HTMLPackage</td>
+            <td>HTML functions (nl2br, strip-tags, etc)</td>
+            <td>HTML</td>
+        </tr>
+        <tr>
+            <td>JSONPackage</td>
+            <td><a href="http://php.net/manual/en/ref.json.php">JSON functions</a></td>
+            <td>JSON</td>
+        </tr>
+        <tr>
+            <td>MathPackage</td>
+            <td><a href="http://php.net/manual/en/ref.math.php">Math functions</a></td>
+            <td>Math</td>
+        </tr>
+        <tr>
+            <td>RegexPackage</td>
+            <td><a href="http://php.net/manual/en/ref.pcre.php">PCRE functions</a></td>
+            <td>Regex</td>
+        </tr>
+        <tr>
+            <td>RequestPackage</td>
+            <td>Request global vars (GET, POST, etc)</td>
+            <td>Request</td>
+        </tr>
+        <tr>
+            <td>StringPackage</td>
+            <td><a href="http://php.net/manual/en/ref.strings.php">String functions</a></td>
+            <td>String</td>
+        </tr>
+    </tbody>
+</table>
 
 <br/>
 

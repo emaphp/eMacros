@@ -1,5 +1,5 @@
 <?php
-namespace Acme;
+namespace Acme\Package;
 
 use eMacros\Package\Package;
 use Acme\Runtime\Increment;

@@ -1,9 +1,10 @@
 <?php
-namespace Acme;
+namespace Acme\Environment;
 
 use eMacros\Environment\Environment;
 use eMacros\Package\CorePackage;
 use eMacros\Package\StringPackage;
+use Acme\Package\CustomPackage;
 
 class CustomEnvironment extends Environment {
 	public function __construct() {

@@ -9,11 +9,11 @@ use eMacros\Package\DatePackage;
 
 class DefaultEnvironment extends Environment {
 	public function __construct() {
-		$this->import(new CorePackage);
 		$this->import(new StringPackage);
 		$this->import(new ArrayPackage);
 		$this->import(new RegexPackage);
 		$this->import(new DatePackage);
+		$this->import(new CorePackage);
 	}
 }
 ?>

@@ -2,7 +2,7 @@
 namespace eMacros;
 
 use eMacros\Environment\DefaultEnvironment;
-use eMacros\Environment\ExtendedEnvironment;
+use Acme\Environment\ExtendedEnvironment;
 use eMacros\Environment\Environment;
 use eMacros\Package\CorePackage;
 

@@ -1,8 +1,8 @@
 ; class_functions.em
 (:= _song (new stdClass))
-(@name= _song "Meditango")
-(@artist= _song "Astor Piazzolla")
-(@genre= _song "Tango")
+(#name= _song "Meditango")
+(#artist= _song "Astor Piazzolla")
+(#genre= _song "Tango")
 
 ; get-object-vars
 (get-object-vars _song) ; ["name" => "Meditango", "artist" => "Astor Piazzolla", "genre" => "Tango"]

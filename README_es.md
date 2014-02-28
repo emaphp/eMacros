@@ -4,7 +4,7 @@ eMacros
 The Extensible Macros Library for PHP
 
 **Autor**: Emmanuel Antico<br/>
-**Ultima modificación**: 27/02/2014
+**Ultima modificación**: 28/02/2014
 
 <br/>
 
@@ -65,16 +65,16 @@ $result = $program->execute(new DefaultEnvironment);
 //mostrar resultados
 echo $result; //imprime el número 10 por pantalla
 ```
-Este script comienza creando una nueva instancia de programa a la cual se le pasa el código a ser interpretado. Para realizar la ejecución de un programa es necesario definir el entorno donde se ejecutará. El método *execute* realiza la ejecución de un programa en el entorno pasado como parámetro. El resultado obtenido es luego devuelto.
+Este script comienza creando una nueva instancia de programa a la cual se le pasa el código a ser interpretado. Para realizar la ejecución de un programa es necesario definir el entorno donde se ejecutará. El método *execute* realiza la ejecución de un programa en el entorno pasado como parámetro. El valor generado es luego devuelto.
 
 <br/>
-Existen varios tipos de programas, cada uno de estos programas puede generar distintos tipos de resultados de acuerdo a las instrucciones ejecutadas. La clase *SimpleProgram* define el tipo más sencillo de programa. Esta clase devuelve el resultado de la última instrucción ejecutada. En caso de que hubieramos instanciado el programa de la siguiente manera, el resultado hubiera sido diferente.
+Existen varios tipos de programas, cada uno de estos programas puede generar distintos tipos de resultados de acuerdo a las instrucciones ejecutadas. La clase *SimpleProgram* define el tipo más sencillo de programa. Esta clase devuelve el resultado de la última instrucción ejecutada. En caso de que hubieramos instanciado el programa de la siguiente manera el resultado hubiera sido diferente.
 
 ```php
 $program = new SimpleProgram('(+ 3 7)(- 6 3)');
 ```
 
-Dado que *SimpleProgram* obtiene siempre el último resultado generado, en lugar de 10 la ejecución hubiera mostrado un 3, es decir, el resultado de restar 3 a 6.
+Dado que *SimpleProgram* obtiene siempre el último valor generado, en lugar de 10 la ejecución hubiera mostrado un 3, es decir, el resultado de restar 3 a 6.
 
 <br/>
 En caso de que se quiera almacenar todos los resultados obtenidos de cada expresión podemos utilizar la clase *ListProgram*. Esta clase va almacenando cada resultado generado en un arreglo. El resultado obtenido de ejecutar un *ListProgram* es un arreglo con tantos valores como expresiones (no anidadas) se hayan evaluado.
@@ -92,10 +92,9 @@ echo $result[0]; //imprime 10
 echo $result[1]; //imprime 3
 ```
 
-Ademas de estas 2 clases también contamos con *TextProgram*. La clase *TextProgram* obtiene el resultado de concatenar el resultado de evaluar cada expresión dentro de un programa. El siguiente programa realiza la concatenación de 2 expresiones para generar un mensaje. Este programa también introduce el operador de concatenación.
+Ademas de estas 2 clases también contamos con *TextProgram*. La clase *TextProgram* obtiene el resultado de concatenar cada uno de los valores generados por expresiones no anidadas dentro de un programa. El siguiente programa realiza la concatenación de 2 expresiones para generar un mensaje. Este programa también introduce el operador de concatenación.
 
 ```php
-<?php
 include 'vendor/autoload.php';
 
 use eMacros\Program\TextProgram;
@@ -105,7 +104,6 @@ $program = new TextProgram('(. "Hel" "lo" " ")(. "Wo" "rld")');
 $result = $program->execute(new DefaultEnvironment);
 
 echo $result; //imprime la cadena "Hello World"
-?>
 ```
 <br/>
 
@@ -187,7 +185,7 @@ La clase *CorePackage* resulta esencial para la generación de ambientes de ejec
 * Etc.
 
 <br/>
-Como se observa, la funcionalidad de este paquete es muy básica por lo que se recomienda contar con la misma en el caso de definir un entorno customizado. A continuación se hará una breve reseña de las capacidades de este paquete.
+Como se observa, la funcionalidad de este paquete es muy básica por lo que se recomienda contar con el mismo en el caso de definir un entorno customizado. A continuación se hará una breve reseña de las capacidades de este paquete.
 
 <br/>
 
@@ -401,7 +399,7 @@ Los arreglos se crean a través de la función *array*. Es posible definir sus v
 ; setear claves
 (:= _data (array ("nombre" "juan") ("apellido" "perez") ("ocupacion" "desarrollador")))
 ```
-Para la creación de objectos contamos con 2 funciones: *new* y *instance*. La diferencia entre estas 2 es que *new* espera el nombre de la clase definido como símbolo mientras que *instance* espera una cadena.
+Para la creación de objetos contamos con 2 funciones: *new* e *instance*. La diferencia entre estas 2 es que *new* espera el nombre de la clase definido como símbolo mientras que *instance* espera una cadena.
 
 ```lisp
 ; objects.em
@@ -414,40 +412,34 @@ Para la creación de objectos contamos con 2 funciones: *new* y *instance*. La d
 ; crear instancia de DOMDocument
 (:= _xml (new DOMDocument "1.0" "ISO-8859-1"))
 ```
-Para trabajar con las claves y propiedades de arreglos/objetos contamos con 3 operadores de asignación, comprobación y obtención.
+Para trabajar con las claves y propiedades contamos con los operadores de asignación, comprobación y obtención.
 
 ```lisp
 ; properties.em
 ; declarar instancia
 (:= _os (new stdClass))
 
-; asignar valores (@=)
-(@= "nombre" _os "GNU/Linux") ; _os->nombre = "GNU/Linux"
-(@= "familia" _os "Unix-like") ; _os->familia = "Unix-like"
+; asignar valores (#=)
+(#= "nombre" _os "GNU/Linux") ; _os->nombre = "GNU/Linux"
+(#= "familia" _os "Unix-like") ; _os->familia = "Unix-like"
 
-; obtener valores (@)
-(. "El sistema " (@ "nombre" _os) " es de la familia " (@ "familia" _os))
+; obtener valores (#)
+(. "El sistema " (# "nombre" _os) " es de la familia " (# "familia" _os))
 
-; comprobar existencia de propiedad (@?)
-(if (not (@? "empresa" _os)) " y es libre")
+; comprobar existencia de propiedad (#?)
+(if (not (#? "empresa" _os)) " y es libre")
 ```
 
-Los arreglos cuentan con un operador adicional para agregación de elementos.
 ```lisp
 ; keys.em
 (:= _arr (array ("program" "keys.em") ("language" "eMacros")))
-(. "El programa " (@ "program" _arr) " está escrito en " (@ "language" _arr))
+(. "El programa " (# "program" _arr) " está escrito en " (# "language" _arr))
 
 ; guardar estado de programa en arreglo
-(@= "estado" _arr "Ejecutando")
+(#= "estado" _arr "Ejecutando")
 
 ; comprobar existencia de clave
-(if (@? "estado" _arr) (. "Estado de programa: " (@ "estado" _arr)) "Estado desconocido")
-
-; agregar elementos (@+)
-(:= _numeros (array))
-(@+ _numeros 1 2 3 4 5)
-(. "Numeros: " (implode "," _numeros))
+(if (#? "estado" _arr) (. "Estado de programa: " (# "estado" _arr)) "Estado desconocido")
 ```
 La clase *CorePackage* define un método abreviado para el acceso a claves en arreglos y objetos.
 
@@ -459,27 +451,27 @@ La clase *CorePackage* define un método abreviado para el acceso a claves en ar
 ; declarar instancia
 (:= _os (new stdClass))
 
-; asignar valores (@PROPIEDAD=)
-(@nombre= _os "GNU/Linux") ; _os->nombre = "GNU/Linux"
-(@familia= _os "Unix-like") ; _os->familia = "Unix-like"
+; asignar valores (#PROPIEDAD=)
+(#nombre= _os "GNU/Linux") ; _os->nombre = "GNU/Linux"
+(#familia= _os "Unix-like") ; _os->familia = "Unix-like"
 
-; obtener valores (@PROPIEDAD)
-(. "El sistema " (@nombre _os) " es de la familia " (@familia _os))
+; obtener valores (#PROPIEDAD)
+(. "El sistema " (#nombre _os) " es de la familia " (#familia _os))
 
-; comprobar existencia de propiedad (@PROPIEDAD?)
-(if (not (@empresa? _os)) " y es libre")
+; comprobar existencia de propiedad (#PROPIEDAD?)
+(if (not (#empresa? _os)) " y es libre")
 
 ;; ARREGLOS
 (:= _arr (array ("program" "keys.em") ("language" "eMacros")))
-(. "El programa " (@program _arr) " está escrito en " (@language _arr))
+(. "El programa " (#program _arr) " está escrito en " (#language _arr))
 
 ; guardar estado de programa en arreglo
-(@estado= _arr "Ejecutando")
+(#estado= _arr "Ejecutando")
 
 ; comprobar existencia de clave
-(if (@estado? _arr) (. "Estado de programa: " (@estado _arr)) "Estado desconocido")
+(if (#estado? _arr) (. "Estado de programa: " (#estado _arr)) "Estado desconocido")
 ```
-Para el caso particular de índices numéricos debe reemplazarse '@' por '#'.
+Este operador también funciona para índices numéricos.
 
 ```lisp
 ; numeric_keys.em
@@ -499,9 +491,9 @@ Para el caso particular de índices numéricos debe reemplazarse '@' por '#'.
 ```lisp
 ; class_functions.em
 (:= _song (new stdClass))
-(@name= _song "Meditango")
-(@artist= _song "Astor Piazzolla")
-(@genre= _song "Tango")
+(#name= _song "Meditango")
+(#artist= _song "Astor Piazzolla")
+(#genre= _song "Tango")
 
 ; get-object-vars
 (get-object-vars _song) ; ["name" => "Meditango", "artist" => "Astor Piazzolla", "genre" => "Tango"]
@@ -638,7 +630,7 @@ echo $result;
 
 <br/>
 
-eMacros cuenta con varios paquetes a disposición organizados por tipo dentro del namespace *eMacros\Package*. El siguiente script muestra el uso de funciones declaradas dentro del paquete 'String'.
+*eMacros* cuenta con varios paquetes a disposición organizados por tipo dentro del namespace *eMacros\Package*. El siguiente script muestra el uso de funciones declaradas dentro del paquete 'String'.
 
 ```lisp
 ; string_functions.em
@@ -893,7 +885,7 @@ class PlusMin extends GenericFunction {
     }
 }
 ```
-El paquete se debe encargar de instanciar la clase y definir el símbolo al cual se asociará.
+El paquete se debe encargar de instanciar la clase y definir el símbolo asociado.
 ```php
 namespace Acme;
 
@@ -998,7 +990,6 @@ El siguiente código importa la clase *UserPackage* y muestra un ejemplo de util
 Las macros son funciones que en vez de estar asociadas a un símbolo se definen a través de una expresión regular. Los paquetes implementan macros a través del método *macro*. Este método espera una cadena de texto con la expresión a comparar y una función anónima. Esta función recibe las coincidencias obtenidas al comparar la expresión regular contra el símbolo entrante. Por lo general, la funciones devueltas por una macro deben implementar un constructor que es invocado dentro de la función anónima con las coincidencias encontradas. El siguiente ejemplo muestra la implementación de una macro para calcular la distancia entre 2 puntos. Las coordenadas del punto inicial son declaradas como parte del operador y luego capturadas por la función anónima.
 
 ```php
-<?php
 namespace Acme\Runtime;
 
 use eMacros\Runtime\GenericFunction;
@@ -1067,7 +1058,7 @@ El siguiente programa muestra el funcionamiento de la función *dist* en ambos m
 ```
 <br/>
 
-##Appendix I - Paquetes disponibles
+##Apéndice I - Paquetes disponibles
 
 <br/>
 <table width="96%">

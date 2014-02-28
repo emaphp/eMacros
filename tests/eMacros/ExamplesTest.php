@@ -84,13 +84,10 @@ class ExamplesTest extends eMacrosTest {
 		$program = new ListProgram(file_get_contents(__DIR__ . '/source/keys.em'));
 		$result = $program->execute(self::$env);
 		$this->assertInternalType('array', $result);
-		$this->assertCount(7, $result);
+		$this->assertCount(4, $result);
 		$this->assertEquals(array("program" => "keys.em", "language" => "eMacros"), $result[0]);
 		$this->assertEquals("El programa keys.em está escrito en eMacros", $result[1]);
 		$this->assertEquals("Estado de programa: Ejecutando", $result[3]);
-		$this->assertInternalType('array', $result[4]);
-		$this->assertEquals(5, $result[5]);
-		$this->assertEquals("Numeros: 1,2,3,4,5", $result[6]);
 	}
 	
 	public function testShortKeys() {

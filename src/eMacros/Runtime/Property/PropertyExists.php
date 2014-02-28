@@ -1,40 +1,40 @@
 <?php
-namespace eMacros\Runtime\Key;
+namespace eMacros\Runtime\Property;
 
 use eMacros\Applicable;
 use eMacros\Scope;
 use eMacros\GenericList;
 
-class KeyExists implements Applicable {
+class PropertyExists implements Applicable {
 	/**
 	 * Key/property to find
 	 * @var mixed
 	 */
-	public $key;
+	public $property;
 	
-	public function __construct($key = null) {
-		$this->key = $key;
+	public function __construct($property = null) {
+		$this->property = $property;
 	}
 	
 	/**
 	 * Checks if the given key/property is available in a array/object
-	 * Usage: (@? 5 _array) (@? "name" _obj) (@name? _obj)
+	 * Usage: (#? 5 _array) (#? "name" _obj) (#name? _obj)
 	 * Returns: boolean
 	 * (non-PHPdoc)
 	 * @see \eMacros\Applicable::apply()
 	 */
 	public function apply(Scope $scope, GenericList $arguments) {
 		//get index and value
-		if (is_null($this->key)) {
+		if (is_null($this->property)) {
 			if (count($arguments) == 0) {
-				throw new \BadFunctionCallException("KeyExists: No parameters found.");
+				throw new \BadFunctionCallException("PropertyExists: No parameters found.");
 			}
 				
 			$key = $arguments[0]->evaluate($scope);
 				
 			if (count($arguments) == 1) {
 				if (!array_key_exists(0, $scope->arguments)) {
-					throw new \BadFunctionCallException("KeyExists: Expected value of type array/object as second parameter but none found.");
+					throw new \BadFunctionCallException("PropertyExists: Expected value of type array/object as second parameter but none found.");
 				}
 		
 				$value = $scope->arguments[0];
@@ -44,11 +44,11 @@ class KeyExists implements Applicable {
 			}
 		}
 		else {
-			$key = $this->key;
+			$key = $this->property;
 				
 			if (count($arguments) == 0) {
 				if (!array_key_exists(0, $scope->arguments)) {
-					throw new \BadFunctionCallException("KeyExists: Expected value of type array/object as first parameter but none found.");
+					throw new \BadFunctionCallException("PropertyExists: Expected value of type array/object as first parameter but none found.");
 				}
 		
 				$value = $scope->arguments[0];
@@ -79,7 +79,7 @@ class KeyExists implements Applicable {
 			return true;
 		}
 		
-		throw new \InvalidArgumentException(sprintf("KeyExists: Expected value of type array/object but %s found instead", gettype($value)));
+		throw new \InvalidArgumentException(sprintf("PropertyExists: Expected value of type array/object but %s found instead", gettype($value)));
 	}
 }
 ?>

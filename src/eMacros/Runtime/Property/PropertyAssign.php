@@ -1,25 +1,25 @@
 <?php
-namespace eMacros\Runtime\Key;
+namespace eMacros\Runtime\Property;
 
 use eMacros\Applicable;
 use eMacros\Scope;
 use eMacros\GenericList;
 use eMacros\Symbol;
 
-class KeyAssign implements Applicable {
+class PropertyAssign implements Applicable {
 	/**
 	 * Key/Property name
 	 * @var mixed
 	 */
-	public $key;
+	public $property;
 	
-	public function __construct($key = null) {
-		$this->key = $key;
+	public function __construct($property = null) {
+		$this->property = $property;
 	}
 	
 	/**
 	 * Sets a key/property value
-	 * Usage: (@= 'name' _obj "emma") (@surname= _obj "doe")
+	 * Usage: (#= 'name' _obj "emma") (#surname= _obj "doe")
 	 * Returns: the assigned value
 	 * (non-PHPdoc)
 	 * @see \eMacros\Applicable::apply()
@@ -27,21 +27,21 @@ class KeyAssign implements Applicable {
 	public function apply(Scope $scope, GenericList $arguments) {
 		$nargs = count($arguments);
 		
-		if (is_null($this->key)) {
+		if (is_null($this->property)) {
 			if ($nargs == 0) {
-				throw new \BadFunctionCallException("KeyAssign: No key defined.");
+				throw new \BadFunctionCallException("PropertyAssign: No key defined.");
 			}
 			elseif ($nargs == 1) {
-				throw new \BadFunctionCallException("KeyAssign: No target specified.");
+				throw new \BadFunctionCallException("PropertyAssign: No target specified.");
 			}
 			elseif ($nargs == 2) {
-				throw new \BadFunctionCallException("KeyAssign: No value specified.");
+				throw new \BadFunctionCallException("PropertyAssign: No value specified.");
 			}
 			
 			$target = $arguments[1];
 			
 			if (!($target instanceof Symbol)) {
-				throw new \InvalidArgumentException(sprintf("KeyAssign: Expected symbol as second argument but %s was found instead.", substr(strtolower(strstr(get_class($arguments[1]), '\\')), 1)));
+				throw new \InvalidArgumentException(sprintf("PropertyAssign: Expected symbol as second argument but %s was found instead.", substr(strtolower(strstr(get_class($arguments[1]), '\\')), 1)));
 			}
 			
 			$property = $arguments[0]->evaluate($scope);
@@ -50,19 +50,19 @@ class KeyAssign implements Applicable {
 		}
 		else {
 			if ($nargs == 0) {
-				throw new \BadFunctionCallException("KeyAssign: No target found.");
+				throw new \BadFunctionCallException("PropertyAssign: No target found.");
 			}
 			elseif ($nargs == 1) {
-				throw new \BadFunctionCallException("KeyAssign: No value specified.");
+				throw new \BadFunctionCallException("PropertyAssign: No value specified.");
 			}
 			
 			$target = $arguments[0];
 				
 			if (!($target instanceof Symbol)) {
-				throw new \InvalidArgumentException(sprintf("KeyAssign: Expected symbol as last argument but %s was found instead.", substr(strtolower(strstr(get_class($arguments[0]), '\\')), 1)));
+				throw new \InvalidArgumentException(sprintf("PropertyAssign: Expected symbol as last argument but %s was found instead.", substr(strtolower(strstr(get_class($arguments[0]), '\\')), 1)));
 			}
 			
-			$property = $this->key;
+			$property = $this->property;
 			$value = $arguments[1]->evaluate($scope);
 			$ref = $target->symbol;
 		}
@@ -83,20 +83,20 @@ class KeyAssign implements Applicable {
 					return $value;
 				}
 				
-				throw new \UnexpectedValueException(sprintf("KeyAssign: Property '$property' not found on class %s.", get_class($scope->symbols[$ref])));
+				throw new \UnexpectedValueException(sprintf("PropertyAssign: Property '$property' not found on class %s.", get_class($scope->symbols[$ref])));
 			}
 			
 			$rp = new \ReflectionProperty($scope->symbols[$ref], $property);
 			
 			if (!$rp->isPublic()) {
-				throw new \UnexpectedValueException(sprintf("KeyAssign: Property '$property' does not have public access on class %s.", get_class($scope->symbols[$ref])));
+				throw new \UnexpectedValueException(sprintf("PropertyAssign: Property '$property' does not have public access on class %s.", get_class($scope->symbols[$ref])));
 			}
 			
 			$scope->symbols[$ref]->$property = $value;
 			return $value;
 		}
 		
-		throw new \InvalidArgumentException(sprintf("KeyAssign: Expected array/object as last argument but %s was found instead.", gettype($scope->symbols[$ref])));
+		throw new \InvalidArgumentException(sprintf("PropertyAssign: Expected array/object as last argument but %s was found instead.", gettype($scope->symbols[$ref])));
 	}
 }
 ?>

@@ -29,15 +29,12 @@ use eMacros\Runtime\Type\CastToType;
 use eMacros\Runtime\Type\IsA;
 use eMacros\Runtime\PHPFunction;
 use eMacros\Runtime\Method\MethodInvoke;
-use eMacros\Runtime\Index\IndexGet;
-use eMacros\Runtime\Index\IndexExists;
 use eMacros\Runtime\Builder\ArrayBuilder;
 use eMacros\Runtime\Builder\ObjectBuilder;
 use eMacros\Runtime\Builder\InstanceBuilder;
 use eMacros\Runtime\Value\ValueSet;
 use eMacros\Runtime\Value\ValueUnset;
 use eMacros\Runtime\Value\ValueReturn;
-use eMacros\Runtime\Value\ValueAppend;
 use eMacros\Runtime\Argument\ArgumentCount;
 use eMacros\Runtime\Argument\ArgumentList;
 use eMacros\Runtime\Argument\ArgumentGet;
@@ -46,14 +43,14 @@ use eMacros\Runtime\Environment\EnvironmentUse;
 use eMacros\Runtime\Environment\EnvironmentImport;
 use eMacros\Runtime\String\Concatenation;
 use eMacros\Runtime\Output\OutputEcho;
-use eMacros\Runtime\Key\KeyGet;
-use eMacros\Runtime\Key\KeyExists;
-use eMacros\Runtime\Key\KeyAssign;
 use eMacros\Runtime\Symbol\SymbolSet;
 use eMacros\Runtime\Symbol\SymbolLookup;
 use eMacros\Runtime\Symbol\SymbolExists;
 use eMacros\Runtime\Callback\CallFunction;
 use eMacros\Runtime\Callback\CallFunctionArray;
+use eMacros\Runtime\Property\PropertyAssign;
+use eMacros\Runtime\Property\PropertyExists;
+use eMacros\Runtime\Property\PropertyGet;
 
 class CorePackage extends Package {
 	public function __construct() {
@@ -119,25 +116,25 @@ class CorePackage extends Package {
 		 */
 		
 		/**
-		 * Obtains a property/index value from an object/array
-		 * Examples: (@ "name" _obj) (@ 0 (%1))
-		 * Returns: Mixed
-		 */
-		$this['@'] = new KeyGet();
-		
-		/**
 		 * Checks if a given property/index exists in an object/array
-		 * Examples: (@? "name" _obj) (@? 0 (%1))
+		 * Examples: (#? "name" _obj) (#? 0 (%1))
 		 * Returns: Boolean
 		 */
-		$this['@?'] = new KeyExists();
+		$this['#?'] = new PropertyExists();
 		
 		/**
 		 * Stores a value on an array/object with the given key/property
-		 * Examples: (@= "name" _arr "Emma") (@= _newProperty _obj 10)
+		 * Examples: (#= "name" _arr "Emma") (#= _newProperty _obj 10)
 		 * Returns: The assigned value
 		 */
-		$this['@='] = new KeyAssign();
+		$this['#='] = new PropertyAssign();
+		
+		/**
+		 * Obtains a property/index value from an object/array
+		 * Examples: (# "name" _obj) (# 0 (%1))
+		 * Returns: Mixed
+		 */
+		$this['#'] = new PropertyGet();
 		
 		/**
 		 * VALUE FUNCTIONS
@@ -156,13 +153,6 @@ class CorePackage extends Package {
 		 * Returns: NULL
 		 */
 		$this['unset'] = new ValueUnset();
-		
-		/**
-		 * Appends an element to an array (only arrays)
-		 * Examples: (@+ "Hello" _arr) (@+ 1 _arr)
-		 * Returns: The value appended
-		 */
-		$this['@+'] = new ValueAppend();
 		
 		/**
 		 * Returns a symbol/literal value
@@ -327,65 +317,46 @@ class CorePackage extends Package {
 		$this->macro('/^as-(bool|boolean|int|integer|string|float|double|real|object|array|unset|null|binary)$/', function ($matches) {
 			return new CastToType($matches[1]);
 		});
-		
-		/**
-		 * Obtains a value from a given index
-		 * Pattern: #INDEX
-		 * Examples: (#3 _x) (#1)
-		 * Returns: mixed
-		 */
-		$this->macro('/^#([+|-]?[0-9]+)$/', function ($matches) {
-			return new IndexGet(intval($matches[1])); 
-		});
-		
+				
 		/**
 		 * Checks if a given index exists
-		 * Pattern: #INDEX?
-		 * Examples: (#3? _x) (#1?)
+		 * Pattern: #PROPERTY?
+		 * Examples: (#name? _x) (#id?)
 		 * Returns: boolean
 		 */
-		$this->macro('/^#([+|-]?[0-9]+)\?$/', function ($matches) {
-			return new IndexExists(intval($matches[1]));
+		$this->macro('/^#([^\s]+)\?$/', function ($matches) {
+			if (is_numeric($matches[1])) {
+				return new PropertyExists(intval($matches[1]));
+			}
+			
+			return new PropertyExists($matches[1]);
+		});
+
+		/**
+		 * Sets given index/property
+		 * Pattern: #PROPERTY=
+		 * Examples: (#name= "Emma" _arr) (#price= 12.95 _prod)
+		 * Returns: Assigned value
+		 */
+		$this->macro('/^#([^\s]+)=$/', function ($matches) {
+			if (is_numeric($matches[1])) {
+				return new PropertyAssign(intval($matches[1]));
+			}
+			
+			return new PropertyAssign($matches[1]);
 		});
 		
 		/**
 		 * Obtains a value from a given index/property
-		 * Pattern: @PROPERTY
-		 * Examples: (@name _x) (@id)
+		 * Pattern: #PROPERTY
+		 * Examples: (#name _x) (#id)
 		 * Returns: mixed
 		 */
-		$this->macro('/^@([\w]+)$/', function ($matches) {
-			return new KeyGet($matches[1]);
-		});
-		
-		/**
-		 * Checks if a given index exists
-		 * Pattern: @PROPERTY?
-		 * Examples: (@name? _x) (@id?)
-		 * Returns: boolean
-		 */
-		$this->macro('/^@([\w]+)\?$/', function ($matches) {
-			return new KeyExists($matches[1]);
-		});
-		
-		/**
-		 * Sets given index/property
-		 * Pattern: @PROPERTY=
-		 * Examples: (@name= "Emma" _arr) (@price= 12.95 _prod)
-		 * Returns: Assigned value
-		 */
-		$this->macro('/^@([\w]+)\=$/', function ($matches) {
-			return new KeyAssign($matches[1]);
-		});
-		
-		/**
-		 * Sets given index (only arrays)
-		 * Pattern: #2=
-		 * Examples: (#1= "First!" _arr) (#-1= 12.95 _prod)
-		 * Returns: Assigned value
-		 */
-		$this->macro('/^#([+|-]?[\d]+)\=$/', function ($matches) {
-			return new KeyAssign(intval($matches[1]));
+		$this->macro('/^#([^\s]*[^\?|=]+)$/', function ($matches) {
+			if (is_numeric($matches[1])) {
+				return new PropertyGet(intval($matches[1]));
+			}
+			return new PropertyGet($matches[1]);
 		});
 		
 		/**

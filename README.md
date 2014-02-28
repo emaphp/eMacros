@@ -4,14 +4,14 @@ eMacros
 The Extensible Macros Library for PHP
 
 **Author**: Emmanuel Antico<br/>
-**Last Modification**: 27/02/2014 [d/m/y]
+**Last Modification**: 28/02/2014 [d/m/y]
 
 <br/>
 
 ##About
 <br/>
 
-*eMacros* is a PHP library based on [lisphp] (https://github.com/lisphp/lisphp "") featuring a customizable LISP dialect interpreter.
+*eMacros* is a PHP library based on [lisphp] (https://github.com/lisphp/lisphp "") that features a customizable LISP dialect interpreter.
 
 <br/>
 
@@ -27,7 +27,7 @@ An updated version of PHP 5.4 is required tu run this library.
 
 <br>
 
-*eMacros* installation is performed via Composer. Add the following file to the project folder and perform the usual installation which is [described here] (http://getcomposer.org/doc/00-intro.md # installation-nix "").
+*eMacros* installation is performed via Composer. Add the following file to your project folder and perform the usual installation which is [described here] (http://getcomposer.org/doc/00-intro.md # installation-nix "").
 
 **composer.json**
 
@@ -47,7 +47,6 @@ An updated version of PHP 5.4 is required tu run this library.
 The following example shows the implementation of a simple program that calculates the sum of 2 numbers.
 
 ```php
-
 include 'vendor/autoload.php';
 
 use eMacros\Program\SimpleProgram;
@@ -62,7 +61,7 @@ $result = $program->execute(new DefaultEnvironment);
 //show results
 echo $result; //prints 10
 ```
-This script begins by creating a new instance of a program which receives the code to be interpreted. For being able to run a program is necessary to define an environment instance. The *execute* method performs the execution of a program using the environment provided as a parameter. The result obtained is then returned.
+This script begins by creating a new instance of a program which receives the code to be interpreted. For being able to run a program is necessary to define an environment instance. The *execute* method performs the execution of a program using the environment provided as a parameter. The obtained value is then returned.
 
 <br/>
 
@@ -75,7 +74,7 @@ $program = new SimpleProgram('(+ 3 7)(- 6 3)');
 Since *SimpleProgram* always returns the last generated value, instead of 10 we would have obtained 3, that is, the result of subtracting 3 to 6.
 
 <br/>
-To store all the results obtained from each expression we can use the *ListProgram* class. This class works by storing each result in an array. The result of executing a *ListProgram* is an array with the same amount of values that evaluated instructions.
+To store all the results obtained from each expression we can use the *ListProgram* class. This class works by storing each generated value in an array.
 
 ```php
 include 'vendor/autoload.php';
@@ -90,7 +89,7 @@ echo $result[0]; //prints 10
 echo $result[1]; //prints 3
 ```
 
-The *TextProgram* class returns the result of concatenating each evaluated expression in a program. The following program performs the concatenation of two expressions to generate a message. This program also introduces the concatenation operator.
+The *TextProgram* class returns the result of concatenating each evaluated expression in a program. This example generates a message by using the concatenation operator.
 
 ```php
 include 'vendor/autoload.php';
@@ -109,7 +108,7 @@ echo $result; //prints "Hello World"
 
 <br/>
 
-The *DefaultEnvironment* class defines a default environment where applications can run. An environment defines the list of symbols and operations that the program will be able to interpret. This ranges from simple operations such as arithmetic (+, -, \*, /) to more complex ones (if, or, @name, Array::reverse). Symbols and operations are added to an environment by *importing packages*. Current implementation of the *DefaultEnvironment* class looks like the following:
+The *DefaultEnvironment* class defines a default execution environment where applications can run. An environment defines the list of symbols and operations that the program will be able to interpret. This ranges from simple operations such as arithmetic (+, -, \*, /) to more complex ones (if, or, @name, Array::reverse). Symbols and operations are added to an environment by *importing packages*. Current implementation of the *DefaultEnvironment* class looks like the following:
 
 ```php
 namespace eMacros\Environment;
@@ -419,36 +418,29 @@ In order to work with key/properties, *CorePackage* provides 3 operators.
 ; declare new instance
 (:= _os (new stdClass))
 
-; set key/property value (@=)
-(@= "name" _os "GNU/Linux") ; _os->name = "GNU/Linux"
-(@= "family" _os "Unix-like") ; _os->family = "Unix-like"
+; set key/property value (#=)
+(#= "name" _os "GNU/Linux") ; _os->name = "GNU/Linux"
+(#= "family" _os "Unix-like") ; _os->family = "Unix-like"
 
-; get key/property value (@)
-(. "System " (@ "name" _os) " is a " (@ "family" _os) " OS")
+; get key/property value (#)
+(. "System " (# "name" _os) " is a " (# "family" _os) " OS")
 
-; check if key/property exists (@?)
-(if (not (@? "company" _os)) " and is libre")
+; check if key/property exists (#?)
+(if (not (#? "company" _os)) " and is libre")
 ```
-
-Arrays include an special operator to append elements.
-
+<br/>
 ```lisp
 ; keys.em
 (:= _arr (array ("program" "keys.em") ("language" "eMacros")))
-(. "Program" (@ "program" _arr) " is written in " (@ "language" _arr))
+(. "Program" (# "program" _arr) " is written in " (# "language" _arr))
 
 ; stores status in array
-(@= "status" _arr "Running")
+(#= "status" _arr "Running")
 
 ; check key existence
-(if (@? "status" _arr) (. "Program status: " (@ "status" _arr)) "Unknown status")
-
-; append elements (@+)
-(:= _numbers (array))
-(@+ _numbers 1 2 3 4 5)
-(. "Numbers: " (implode "," _numbers))
+(if (#? "status" _arr) (. "Program status: " (# "status" _arr)) "Unknown status")
 ```
-The *CorePackage* class also defines an abbreviated way to obtain key/properties through *macros*.
+The *CorePackage* class also defines an abbreviated way for obtaining key/properties through *macros*.
 
 ```lisp
 ; short_keys.em
@@ -458,27 +450,27 @@ The *CorePackage* class also defines an abbreviated way to obtain key/properties
 ; create instance
 (:= _os (new stdClass))
 
-; assign value (@PROPERTY=)
-(@name= _os "GNU/Linux") ; _os->name = "GNU/Linux"
-(@family= _os "Unix-like") ; _os->family = "Unix-like"
+; assign value (#PROPERTY=)
+(#name= _os "GNU/Linux") ; _os->name = "GNU/Linux"
+(#family= _os "Unix-like") ; _os->family = "Unix-like"
 
-; get value (@PROPERTY)
-(. "System " (@name _os) " is a " (@family _os) " OS")
+; get value (#PROPERTY)
+(. "System " (#name _os) " is a " (#family _os) " OS")
 
-; check property (@PROPERTY?)
-(if (not (@company? _os)) " and is libre")
+; check property (#PROPERTY?)
+(if (not (#company? _os)) " and is libre")
 
 ;; ARRAYS
 (:= _arr (array ("program" "keys.em") ("language" "eMacros")))
-(. "Program " (@program _arr) " is written in " (@language _arr))
+(. "Program " (#program _arr) " is written in " (#language _arr))
 
 ; stores program status
 (@status= _arr "Running")
 
 ; check key existence
-(if (@status? _arr) (. "Program status: " (@status _arr)) "Unknown status")
+(if (#status? _arr) (. "Program status: " (#status _arr)) "Unknown status")
 ```
-For numeric indexes the '@' should be replaced by '#'.
+This operator supports numeric indexes as well.
 
 ```lisp
 ; numeric_keys.em
@@ -498,9 +490,9 @@ For numeric indexes the '@' should be replaced by '#'.
 ```lisp
 ; class_functions.em
 (:= _song (new stdClass))
-(@name= _song "Meditango")
-(@artist= _song "Astor Piazzolla")
-(@genre= _song "Tango")
+(#name= _song "Meditango")
+(#artist= _song "Astor Piazzolla")
+(#genre= _song "Tango")
 
 ; get-object-vars
 (get-object-vars _song) ; ["name" => "Meditango", "artist" => "Astor Piazzolla", "genre" => "Tango"]
@@ -560,7 +552,7 @@ For numeric indexes the '@' should be replaced by '#'.
 
 <br/>
 
-A program can receive an arbitrary number of arguments. These must be specified when calling the *execute* method right after the instance environment.
+A program can accept an arbitrary number of arguments. These must be specified right after the instance environment.
 
 ```lisp
 ; arguments.em
@@ -827,7 +819,7 @@ class UserPackage extends Package {
     }
 }
 ```
-By using *PHPFunction* we omit checking the amount and type of parameters. Still, it is the simplest way to import language features to a package.
+By using *PHPFunction* we omit checking the amount parameters and their types. Still, it is the simplest way to import language features to a package.
 
 ```lisp
 ; phpfunction.em
@@ -861,6 +853,10 @@ class UserPackage extends Package {
 }
 ```
 
+```lisp
+; closure.em
+(+- 4 7 2) ; return 9
+```
 <br/>
 
 #####GenericFunction
@@ -887,7 +883,7 @@ class PlusMin extends GenericFunction {
 }
 ```
 
-This package instantiates the *PlusMin* class and defines the symbol which will be associated with it.
+This package adds a new symbol and assigns it to a new *PlusMin* instance.
 
 ```php
 namespace Acme;
@@ -992,7 +988,7 @@ The following code imports the *UserPackage* class and shows an usage example of
 
 <br/>
 
-Macros are functions that instead of being associated with a symbol they're generated from a regular expression. Macros are declared through the *macro* method. This method expects a regular expression string and a *Closure* instance (or anonymous function). This anonymous function receives all matches found for the given regular expression. Its main purpose is to generate a valid environment function with those matches. The following example shows the implementation of a macro to calculate the distance between 2 points. The coordinates of the starting point are declared as part of the operator and then captured by the anonymous function.
+Macros are functions that instead of being associated with a symbol they're generated from a regular expression. Macros are declared using the *macro* method. This method expects a regular expression string and a *Closure* instance (or anonymous function). This anonymous function receives all matches found for the given regular expression. Its main purpose is to generate a valid environment function with those matches. The following example shows the implementation of a macro to calculate the distance between 2 points. The coordinates of the starting point are declared as part of the operator and then captured by the anonymous function.
 
 ```php
 namespace Acme\Runtime;

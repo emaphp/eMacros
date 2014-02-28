@@ -58,6 +58,12 @@ class DatePackage extends Package {
 			
 			return new \DateTimeZone($tz);
 		};
+		
+		//diff-format. Usage: /(diff-format _myDate (now) "%h")
+		$this['diff-format'] = function (\DateTime $from, \DateTime $to, $format = "%s") {
+			$interval = $from->diff($to);
+			return $interval->format($format);
+		};
 	}
 }
 ?>

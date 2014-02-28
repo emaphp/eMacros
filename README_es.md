@@ -412,7 +412,7 @@ Para la creación de objetos contamos con 2 funciones: *new* e *instance*. La di
 ; crear instancia de DOMDocument
 (:= _xml (new DOMDocument "1.0" "ISO-8859-1"))
 ```
-Para trabajar con las claves y propiedades contamos con los operadores de asignación, comprobación y obtención.
+Para trabajar con propiedades contamos con los operadores de asignación, comprobación y obtención.
 
 ```lisp
 ; properties.em
@@ -429,7 +429,7 @@ Para trabajar con las claves y propiedades contamos con los operadores de asigna
 ; comprobar existencia de propiedad (#?)
 (if (not (#? "empresa" _os)) " y es libre")
 ```
-
+Las mismas funciones puede utilizarse para índices en arreglos.
 ```lisp
 ; keys.em
 (:= _arr (array ("program" "keys.em") ("language" "eMacros")))

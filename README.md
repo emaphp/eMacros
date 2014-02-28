@@ -4,7 +4,7 @@ eMacros
 The Extensible Macros Library for PHP
 
 **Author**: Emmanuel Antico<br/>
-**Last Modification**: 28/02/2014 [d/m/y]
+**Last Modification**: 28/02/2014
 
 <br/>
 
@@ -387,7 +387,7 @@ Alternatively, we can use the symbol manipulation functions: *sym*, *sym-exists*
 ##Arrays and objects
 
 <br/>
-Arrays are created througn the *array* function. It is possible to define key-value pairs using tuples.
+Arrays are created through the *array* function. It is possible to define key-value pairs using tuples.
 
 ```lisp
 ; arrays.em
@@ -411,7 +411,7 @@ Objects can be created through 2 functions: *new* and *instance*. While *new* ex
 ; create DOMDocument instance
 (:= _xml (new DOMDocument "1.0" "ISO-8859-1"))
 ```
-In order to work with key/properties, *CorePackage* provides 3 operators.
+In order to work with properties, *CorePackage* provides 3 operators.
 
 ```lisp
 ; properties.em
@@ -428,6 +428,7 @@ In order to work with key/properties, *CorePackage* provides 3 operators.
 ; check if key/property exists (#?)
 (if (not (#? "company" _os)) " and is libre")
 ```
+Same functions can be used with array keys.
 <br/>
 ```lisp
 ; keys.em
@@ -552,7 +553,7 @@ This operator supports numeric indexes as well.
 
 <br/>
 
-A program can accept an arbitrary number of arguments. These must be specified right after the instance environment.
+A program can accept an arbitrary number of arguments. These must be specified right after the environment instance.
 
 ```lisp
 ; arguments.em
@@ -608,7 +609,7 @@ We can access each argument individually with the corresponding functions:
 #####The *executeWith* method
 
 <br/>
-The *executeWith* method allows us to define the parameters of a program as an array. Using this method we can rewrite the previous example in the following way.
+The *executeWith* method can be used to send a list of arguments as an array. Using this method we can rewrite the previous example in the following way.
 
 ```php
 include 'vendor/autoload.php';
@@ -672,7 +673,7 @@ Sometimes two packages define the same symbol, so that the use of a function or 
 
 <br/>
 
-The *call-func* and *call-func-array* functions allow invoking a function passed as argument.
+The *call-func* and *call-func-array* functions allow to invoke a function passed as argument.
 
 ```lisp
 ; call_func.em
@@ -682,7 +683,7 @@ The *call-func* and *call-func-array* functions allow invoking a function passed
 (call-func Array::range 2 5) ; returns [2, 3, 4, 5]
 ```
 
-The *call-func-array* function expects an array containing the list of arguments as a second parameter. This code uses *call-func-array* to sum all arguments ​​passed to the program.
+The *call-func-array* function expects an array containing the list of arguments as a second parameter. This code uses *call-func-array* to sum all arguments ​​passed to a program.
 
 ```lisp
 ; sigma.em
@@ -695,7 +696,7 @@ The *call-func-array* function expects an array containing the list of arguments
 ##Use and Import
 
 <br/>
-The *use* and *import* functions allows importing functions directly from PHP or from other packages to the current symbol table.
+The *use* and *import* functions allow importing functions directly from PHP or from other packages to the current symbol table.
 
 ```lisp
 ; use_example.em
@@ -751,7 +752,7 @@ class CustomPackage extends Package {
     }
 }
 ```
-While it is possible to import the symbols of this package through the predefined functions, it turns more convenient to use a customized environment. The following example shows the implementation of a runtime environment defined by the user.
+While it is possible to import the symbols of this package through *import*, it turns more convenient to use a customized environment. The following example shows the implementation of a runtime environment defined by the user.
 
 ```php
 namespace Acme;
@@ -908,7 +909,7 @@ class UserPackage extends Package {
 
 #####The Applicable interface
 
-We can also create functions through the *Applicable* interface. This interface is useful if you need to access values declared within the runtime environment (constants, functions, parameters, etc.) or if you need to determine if a given parameter is defined as a symbol or literal. The *apply* method takes 2 arguments: an instance of *Scope* with the current execution environment and an instance of *GenericList* with the given arguments. To retrieve an expression value we need to invoke its *evaluate* method using the *Scope* instance as argument. This example implements a class named *Increment* that increases the value of a symbol by one or by a given value (when specified).
+We can also create functions through the *Applicable* interface. This interface is useful if you need to access values declared within the runtime environment (constants, functions, parameters, etc.) or if you need to determine if a given parameter is defined as a symbol or literal. The *apply* method takes 2 arguments: an instance of *Scope* with the current execution environment and an instance of *GenericList* with the given arguments. To obtain an expression value we need to invoke its *evaluate* method using the *Scope* instance as argument. This example implements a class named *Increment* that increases the value of a symbol by one or by a given value (when specified).
 
 ```php
 namespace Acme\Runtime;
@@ -1024,7 +1025,6 @@ class Distance extends GenericFunction {
 The *dist* macro can be invoked directly without the need of specifying coordinates of origin. In that case, the distance will be calculated from the coordinates (0,0). The following code shows the implementation of the *GeometryPackage* class. This class adds *dist* to the symbol table and defines the customizable macro for calculating distances.
 
 ```php
-<?php
 namespace Acme;
 
 use eMacros\Package\Package;

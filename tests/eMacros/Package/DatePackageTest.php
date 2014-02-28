@@ -206,5 +206,12 @@ class DatePackageTest extends eMacrosTest {
 		$this->assertTrue($result instanceof \DateTimeZone);
 		$this->assertEquals(new \DateTimeZone("America/Argentina/Buenos_Aires"), $result);
 	}
+	
+	public function testDiffFormat() {
+		$program = new SimpleProgram('(diff-format (dt "1984-07-05") (dt "2014-02-28") "%y")');
+		$result = $program->execute(self::$env);
+		$this->assertInternalType('string', $result);
+		$this->assertEquals('29', $result);
+	}
 }
 ?>

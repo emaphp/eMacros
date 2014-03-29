@@ -101,7 +101,7 @@ class PropertyGet implements Applicable {
 			$rp = new \ReflectionProperty($value, $key);
 				
 			if (!$rp->isPublic()) {
-				throw new \InvalidArgumentException(sprintf("PropertyGet: Cannot access non-public property '%s'.", strval($key)));
+				$rp->setAccessible(true);
 			}
 
 			return $value->$key;

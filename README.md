@@ -4,7 +4,7 @@ eMacros
 The Extensible Macros Library for PHP
 
 **Author**: Emmanuel Antico<br/>
-**Last Modification**: 28/02/2014
+**Last Modification**: 29/03/2014
 
 <br/>
 
@@ -34,7 +34,7 @@ An updated version of PHP 5.4 is required tu run this library.
 ```json
 {
     "require": {
-        "emacros/emacros": "dev-master"
+        "emacros/emacros": "1.0.*"
     }
 }
 ```

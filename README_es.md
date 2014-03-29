@@ -4,7 +4,7 @@ eMacros
 The Extensible Macros Library for PHP
 
 **Autor**: Emmanuel Antico<br/>
-**Ultima modificación**: 28/02/2014
+**Ultima modificación**: 29/03/2014
 
 <br/>
 
@@ -39,7 +39,7 @@ La instalación de *eMacros* se realiza a través de **Composer**. Agregar el si
 ```json
 {
     "require": {
-        "emacros/emacros": "dev-master"
+        "emacros/emacros": "1.0.*"
     }
 }
 ```

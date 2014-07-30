@@ -104,7 +104,7 @@ class PropertyGet implements Applicable {
 				$rp->setAccessible(true);
 			}
 
-			return $value->$key;
+			return $rp->getValue($value);
 		}
 		
 		throw new \InvalidArgumentException(sprintf("PropertyGet: Expected value of type array/object but %s found instead", gettype($value)));

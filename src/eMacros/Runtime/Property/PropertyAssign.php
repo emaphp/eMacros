@@ -89,10 +89,10 @@ class PropertyAssign implements Applicable {
 			$rp = new \ReflectionProperty($scope->symbols[$ref], $property);
 			
 			if (!$rp->isPublic()) {
-				throw new \UnexpectedValueException(sprintf("PropertyAssign: Property '$property' does not have public access on class %s.", get_class($scope->symbols[$ref])));
+				$rp->setAccessible(true);
 			}
 			
-			$scope->symbols[$ref]->$property = $value;
+			$rp->setValue($scope->symbols[$ref], $value);
 			return $value;
 		}
 		

@@ -4,7 +4,7 @@ eMacros
 The Extensible Macros Library for PHP
 
 **Author**: Emmanuel Antico<br/>
-**Last Modification**: 29/03/2014
+**Last Modification**: 30/07/2014
 
 <br/>
 
@@ -40,7 +40,7 @@ An updated version of PHP 5.4 is required tu run this library.
 ```
 <br/>
 
-##First steps
+##Introduction
 
 <br/>
 

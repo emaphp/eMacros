@@ -4,7 +4,7 @@ eMacros
 The Extensible Macros Library for PHP
 
 **Autor**: Emmanuel Antico<br/>
-**Ultima modificación**: 29/03/2014
+**Ultima modificación**: 30/07/2014
 
 <br/>
 
@@ -45,8 +45,7 @@ La instalación de *eMacros* se realiza a través de **Composer**. Agregar el si
 ```
 <br/>
 
-##Primeros pasos
-
+##Introducción
 <br/>
 El siguiente ejemplo muestra la implementación de un programa en *eMacros* sencillo que calcula la suma de 2 números.
 

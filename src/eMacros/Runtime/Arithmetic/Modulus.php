@@ -12,16 +12,8 @@ class Modulus extends GenericFunction {
 	 * @see \eMacros\Runtime\GenericFunction::execute()
 	 */
     public function execute(array $arguments) {
-    	if (empty($arguments)) {
-    		//no arguments
-    		throw new \BadFunctionCallException("Modulus: No arguments found.");
-    	}
-    	
-    	if (!isset($arguments[1])) {
-    		//not enough arguments
-    		throw new \BadFunctionCallException("Modulus: At least 2 arguments are required");
-    	}
-    	
+    	if (empty($arguments)) throw new \BadFunctionCallException("Modulus: No arguments found.");
+    	if (!isset($arguments[1])) throw new \BadFunctionCallException("Modulus: At least 2 arguments are required");
         return $arguments[0] % $arguments[1];
     }
 }

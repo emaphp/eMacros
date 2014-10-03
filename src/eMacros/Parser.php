@@ -8,7 +8,7 @@ class Parser {
 	 * Validated symbols
 	 * @var array
 	 */
-	public static $map = array();
+	public static $map = [];
 	
 	/*
 	 * SYMBOL REGEX
@@ -56,7 +56,7 @@ class Parser {
 	public static function parse($program) {
 		$i = 0;
 		$len = strlen($program);
-		$forms = array();
+		$forms = [];
 		
 		while ($i < $len) {
 			if (strpos(self::WHITESPACES, $program[$i]) === false) {
@@ -70,9 +70,8 @@ class Parser {
 				
 				$i += $offset;
 			}
-			else {
+			else
 				++$i;
-			}
 		}
 		
 		return $forms;
@@ -90,18 +89,17 @@ class Parser {
 		
 		if (is_null($parentheses)) {
 			$_parentheses = self::PARENTHESES;
-			$parentheses = array();
+			$parentheses = [];
 			
-			for ($i = 0, $len = strlen($_parentheses); $i < $len; $i += 2) {
+			for ($i = 0, $len = strlen($_parentheses); $i < $len; $i += 2)
 				$parentheses[$_parentheses[$i]] = $_parentheses[$i + 1];
-			}
 			
 			unset($_parentheses);
 		}
 		
 		if (isset($form[0], $parentheses[$form[0]])) {
 			$end = $parentheses[$form[0]];
-			$values = array();
+			$values = [];
 			$i = 1;
 			$len = strlen($form);
 			
@@ -129,36 +127,32 @@ class Parser {
 		}
 		elseif (isset($form[0]) && $form[0] == self::COMMENT_PREFIX) {
 			$offset = strlen(strtok($form, "\n"));
-			return null;
+			return;
 		}
 		elseif (preg_match(self::REAL_PATTERN, $form, $matches)) {
 			$offset = strlen($matches[0]);
-	
 			return new Literal((float) $matches[0]);
 		}
 		elseif (preg_match(self::INTEGER_PATTERN, $form, $matches)) {
 			$offset = strlen($matches[0]);
 			$sign = $matches[1] == '-' ? -1 : 1;
 			$value = !empty($matches[3]) ? hexdec($matches[3]) : (!empty($matches[4]) ? octdec($matches[4]) : $matches[2]);
-	
 			return new Literal($sign * $value);
 		}
 		elseif (preg_match(self::STRING_PATTERN, $form, $matches)) {
 			list($parsed) = $matches;
 			$offset = strlen($parsed);
-			return new Literal(preg_replace_callback(self::STRING_ESCAPE_PATTERN, array(__CLASS__, 'unescapeString'), substr($parsed, 1, -1)));
+			return new Literal(preg_replace_callback(self::STRING_ESCAPE_PATTERN, [__CLASS__, 'unescapeString'], substr($parsed, 1, -1)));
 		}
 		elseif (preg_match(self::SYMBOL_PATTERN, $form, $matches)) {
 			$symbol = $matches[0];
 			$offset = strlen($matches[0]);
 			
 			//store validated symbols in order to reduce checks
-			if (array_key_exists($symbol, self::$map)) {
+			if (array_key_exists($symbol, self::$map))
 				return self::$map[$symbol];
-			}
 			
-			self::$map[$symbol] = new Symbol($symbol);
-			return self::$map[$symbol];
+			return self::$map[$symbol] = new Symbol($symbol);
 		}
 		
 		throw new ParseException($form, 0);
@@ -170,17 +164,14 @@ class Parser {
 	 * @return string
 	 */
 	protected static function unescapeString($matches) {
-		static $map = array('n' => "\n", 'r' => "\r", 't' => "\t", 'v' => "\v", 'f' => "\f");
+		static $map = ['n' => "\n", 'r' => "\r", 't' => "\t", 'v' => "\v", 'f' => "\f"];
 		
-		if (!empty($matches[2])) {
+		if (!empty($matches[2]))
 			return chr(octdec($matches[2]));
-		}
-		elseif (!empty($matches[3])) {
+		elseif (!empty($matches[3]))
 			return chr(hexdec($matches[3]));
-		}
-		elseif (isset($map[$matches[1]])) {
+		elseif (isset($map[$matches[1]]))
 			return $map[$matches[1]];
-		}
 		
 		return $matches[1];
 	}
@@ -189,7 +180,7 @@ class Parser {
 	 * Flushes validated symbols table
 	 */
 	public static function flush() {
-		self::$map = array();
+		self::$map = [];
 	}
 }
 ?>

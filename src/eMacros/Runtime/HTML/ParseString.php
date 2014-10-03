@@ -15,11 +15,8 @@ class ParseString implements Applicable {
 	 * @see \eMacros\Applicable::apply()
 	 */
 	public function apply(Scope $scope, GenericList $arguments) {
-		if (count($arguments) == 0) {
-			throw new \BadFunctionCallException("ParseString: No parameters found.");
-		}
-		
-		$arr = array();
+		if (count($arguments) == 0) throw new \BadFunctionCallException("ParseString: No parameters found.");
+		$arr = [];
 		parse_str($arguments[0]->evaluate($scope), $arr);
 		return $arr;
 	}

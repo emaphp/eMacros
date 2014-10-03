@@ -26,53 +26,35 @@ class PropertyExists implements Applicable {
 	public function apply(Scope $scope, GenericList $arguments) {
 		//get index and value
 		if (is_null($this->property)) {
-			if (count($arguments) == 0) {
-				throw new \BadFunctionCallException("PropertyExists: No parameters found.");
-			}
-				
+			if (count($arguments) == 0) throw new \BadFunctionCallException("PropertyExists: No parameters found.");
 			$key = $arguments[0]->evaluate($scope);
-				
+			
 			if (count($arguments) == 1) {
-				if (!array_key_exists(0, $scope->arguments)) {
-					throw new \BadFunctionCallException("PropertyExists: Expected value of type array/object as second parameter but none found.");
-				}
-		
+				if (!array_key_exists(0, $scope->arguments)) throw new \BadFunctionCallException("PropertyExists: Expected value of type array/object as second parameter but none found.");
 				$value = $scope->arguments[0];
 			}
-			else {
-				$value = $arguments[1]->evaluate($scope);
-			}
+			
+			else $value = $arguments[1]->evaluate($scope);
 		}
 		else {
 			$key = $this->property;
-				
+			
 			if (count($arguments) == 0) {
-				if (!array_key_exists(0, $scope->arguments)) {
-					throw new \BadFunctionCallException("PropertyExists: Expected value of type array/object as first parameter but none found.");
-				}
-		
+				if (!array_key_exists(0, $scope->arguments)) throw new \BadFunctionCallException("PropertyExists: Expected value of type array/object as first parameter but none found.");
 				$value = $scope->arguments[0];
 			}
-			else {
-				$value = $arguments[0]->evaluate($scope);
-			}
+			
+			else $value = $arguments[0]->evaluate($scope);
 		}
 		
 		//get index/property
-		if (is_array($value)) {
-			return array_key_exists($key, $value);
-		}
-		elseif ($value instanceof \ArrayObject || $value instanceof \ArrayAccess) {
-			return $value->offsetExists($key);
-		}
+		if (is_array($value)) return array_key_exists($key, $value);
+		elseif ($value instanceof \ArrayObject || $value instanceof \ArrayAccess) return $value->offsetExists($key);
 		elseif (is_object($value)) {
 			//check property existence
 			if (!property_exists($value, $key)) {
 				//check existence through __isset
-				if (method_exists($value, '__isset')) {
-					return $value->__isset($key);
-				}
-		
+				if (method_exists($value, '__isset')) return $value->__isset($key);
 				return false;
 			}
 			

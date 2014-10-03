@@ -14,16 +14,10 @@ class SymbolExists implements Applicable {
 	 * @see \eMacros\Applicable::apply()
 	 */
 	public function apply(Scope $scope, GenericList $arguments) {
-		if (count($arguments) == 0) {
-			throw new \BadFunctionCallException("SymbolExists: No parameters found.");
-		}
-		
+		if (count($arguments) == 0) throw new \BadFunctionCallException("SymbolExists: No parameters found.");
 		$ref = $arguments[0]->evaluate($scope);
-		
-		if (!is_string($ref) || empty($ref)) {
+		if (!is_string($ref) || empty($ref))
 			throw new \InvalidArgumentException("SymbolExists: Symbol must be specified as a non-empty string.");
-		}
-		
 		return array_key_exists($ref, $scope->symbols);
 	}
 }

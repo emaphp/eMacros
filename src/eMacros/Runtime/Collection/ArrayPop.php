@@ -15,29 +15,17 @@ class ArrayPop implements Applicable {
 	 * @see \eMacros\Applicable::apply()
 	 */
 	public function apply(Scope $scope, GenericList $arguments) {
-		if (count($arguments) == 0) {
-			throw new \BadFunctionCallException("ArrayPop: No target specified.");
-		}
-		
+		if (count($arguments) == 0) throw new \BadFunctionCallException("ArrayPop: No target specified.");
 		$target = $arguments[0];
-		
-		if (!($target instanceof Symbol)) {
+		if (!($target instanceof Symbol))
 			throw new \InvalidArgumentException(sprintf("ArrayPop: Expected symbol as first argument but %s was found instead.", substr(strtolower(strstr(get_class($arguments[0]), '\\')), 1)));
-		}
-		
 		$ref = $target->symbol;
-		
-		if (is_array($scope->symbols[$ref])) {
-			return array_pop($scope->symbols[$ref]);
-		}
+		if (is_array($scope->symbols[$ref])) return array_pop($scope->symbols[$ref]);
 		elseif ($scope->symbols[$ref] instanceof \ArrayObject) {
 			$arr = $scope->symbols[$ref]->getArrayCopy();
 			$value = array_pop($arr);
-			
-			if (count($scope->symbols[$ref]->getArrayCopy()) != 0) {
+			if (count($scope->symbols[$ref]->getArrayCopy()) != 0)
 				$scope->symbols[$ref]->exchangeArray($arr);
-			}
-			
 			return $value;
 		}
 		

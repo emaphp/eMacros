@@ -19,10 +19,9 @@ class ParseException extends \Exception {
 	}
 	
 	public function getSourceLine() {
-		if ($this->offset <= 0) {
+		if ($this->offset <= 0)
 			return 1;
-		}
-		
+
 		return substr_count($this->code, "\n", 0, $this->offset) + 1;
 	}
 	

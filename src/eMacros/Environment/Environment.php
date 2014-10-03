@@ -10,13 +10,13 @@ class Environment extends Scope {
 	 * Imported packages
 	 * @var array
 	 */
-	public $packages = array();
+	public $packages = [];
 	
 	/**
 	 * Program arguments
 	 * @var array
 	 */
-	public $arguments = array();
+	public $arguments = [];
 	
 	/**
 	 * Validates a aymbol
@@ -25,9 +25,8 @@ class Environment extends Scope {
 	 * @return array
 	 */
 	protected static function symbol($symbol) {
-		if ($symbol instanceof Symbol) {
-			return array($symbol->symbol, $symbol->package);
-		}
+		if ($symbol instanceof Symbol)
+			return [$symbol->symbol, $symbol->package];
 	
 		throw new \UnexpectedValueException(sprintf("Unexpected value of type '%s'.", is_object($symbol) ? get_class($symbol) : gettype($symbol)));
 	}
@@ -69,24 +68,19 @@ class Environment extends Scope {
 		
 		if (!is_null($pck)) {
 			//check package
-			if (!array_key_exists($pck, $this->packages)) {
+			if (!array_key_exists($pck, $this->packages))
 				throw new \UnexpectedValueException(sprintf("Package '%s' not found.", $pck));
-			}
 			
 			return $this->packages[$pck]->offsetGet($sym);
 		}
 		
 		//is symbol defined on this scope?
-		if (array_key_exists($sym, $this->symbols)) {
+		if (array_key_exists($sym, $this->symbols))
 			return $this->symbols[$sym];
-		}
-		else {
-			foreach ($this->macros as $regex => $callback) {
-				if (preg_match($regex, $sym, $matches)) {
-					$this->symbols[$sym] = $callback->__invoke($matches);
-					return $this->symbols[$sym];
-				}
-			}
+
+		foreach ($this->macros as $regex => $callback) {
+			if (preg_match($regex, $sym, $matches))
+				return $this->symbols[$sym] = $callback->__invoke($matches);
 		}
 	}
 }

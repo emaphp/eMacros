@@ -28,70 +28,40 @@ class PropertyAssign implements Applicable {
 		$nargs = count($arguments);
 		
 		if (is_null($this->property)) {
-			if ($nargs == 0) {
-				throw new \BadFunctionCallException("PropertyAssign: No key defined.");
-			}
-			elseif ($nargs == 1) {
-				throw new \BadFunctionCallException("PropertyAssign: No target specified.");
-			}
-			elseif ($nargs == 2) {
-				throw new \BadFunctionCallException("PropertyAssign: No value specified.");
-			}
-			
+			if ($nargs == 0) throw new \BadFunctionCallException("PropertyAssign: No key defined.");
+			elseif ($nargs == 1) throw new \BadFunctionCallException("PropertyAssign: No target specified.");
+			elseif ($nargs == 2) throw new \BadFunctionCallException("PropertyAssign: No value specified.");
 			$target = $arguments[1];
-			
-			if (!($target instanceof Symbol)) {
+			if (!($target instanceof Symbol))
 				throw new \InvalidArgumentException(sprintf("PropertyAssign: Expected symbol as second argument but %s was found instead.", substr(strtolower(strstr(get_class($arguments[1]), '\\')), 1)));
-			}
-			
 			$property = $arguments[0]->evaluate($scope);
 			$value = $arguments[2]->evaluate($scope);
 			$ref = $target->symbol;
 		}
 		else {
-			if ($nargs == 0) {
-				throw new \BadFunctionCallException("PropertyAssign: No target found.");
-			}
-			elseif ($nargs == 1) {
-				throw new \BadFunctionCallException("PropertyAssign: No value specified.");
-			}
-			
-			$target = $arguments[0];
-				
-			if (!($target instanceof Symbol)) {
+			if ($nargs == 0) throw new \BadFunctionCallException("PropertyAssign: No target found.");
+			elseif ($nargs == 1) throw new \BadFunctionCallException("PropertyAssign: No value specified.");
+			$target = $arguments[0];				
+			if (!($target instanceof Symbol))
 				throw new \InvalidArgumentException(sprintf("PropertyAssign: Expected symbol as last argument but %s was found instead.", substr(strtolower(strstr(get_class($arguments[0]), '\\')), 1)));
-			}
-			
 			$property = $this->property;
 			$value = $arguments[1]->evaluate($scope);
 			$ref = $target->symbol;
 		}
 		
-		if (is_array($scope->symbols[$ref]) || $scope->symbols[$ref] instanceof \ArrayAccess || $scope->symbols[$ref] instanceof \ArrayObject) {
-			$scope->symbols[$ref][$property] = $value;
-			return $value;
-		}
+		if (is_array($scope->symbols[$ref]) || $scope->symbols[$ref] instanceof \ArrayAccess || $scope->symbols[$ref] instanceof \ArrayObject)
+			return $scope->symbols[$ref][$property] = $value;
 		elseif (is_object($scope->symbols[$ref])) {
 			if (!property_exists($scope->symbols[$ref], $property)) {
-				if ($scope->symbols[$ref] instanceof \stdClass) {
-					$scope->symbols[$ref]->$property = $value;
-					return $value;
-				}
-				
-				if (method_exists($scope->symbols[$ref], '__set')) {
-					$scope->symbols[$ref]->__set($property, $value);
-					return $value;
-				}
-				
+				if ($scope->symbols[$ref] instanceof \stdClass)
+					return $scope->symbols[$ref]->$property = $value;
+				if (method_exists($scope->symbols[$ref], '__set'))
+					return $scope->symbols[$ref]->__set($property, $value);
 				throw new \UnexpectedValueException(sprintf("PropertyAssign: Property '$property' not found on class %s.", get_class($scope->symbols[$ref])));
 			}
 			
 			$rp = new \ReflectionProperty($scope->symbols[$ref], $property);
-			
-			if (!$rp->isPublic()) {
-				$rp->setAccessible(true);
-			}
-			
+			if (!$rp->isPublic()) $rp->setAccessible(true);
 			$rp->setValue($scope->symbols[$ref], $value);
 			return $value;
 		}

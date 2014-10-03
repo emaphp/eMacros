@@ -15,16 +15,10 @@ class ArrayShuffle implements Applicable {
 	 * @see \eMacros\Applicable::apply()
 	 */
 	public function apply(Scope $scope, GenericList $arguments) {
-		if (count($arguments) == 0) {
-			throw new \BadFunctionCallException("ArrayShuffle: No target specified.");
-		}
-		
+		if (count($arguments) == 0) throw new \BadFunctionCallException("ArrayShuffle: No target specified.");
 		$target = $arguments[0];
-		
-		if (!($target instanceof Symbol)) {
+		if (!($target instanceof Symbol))
 			throw new \InvalidArgumentException(sprintf("ArrayShuffle: Expected symbol as first argument but %s was found instead.", substr(strtolower(strstr(get_class($arguments[0]), '\\')), 1)));
-		}
-		
 		$ref = $target->symbol;
 		
 		if ($scope->symbols[$ref] instanceof \ArrayObject) {

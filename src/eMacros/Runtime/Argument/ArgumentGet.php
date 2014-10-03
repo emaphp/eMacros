@@ -25,20 +25,13 @@ class ArgumentGet implements Applicable {
 	 */
 	public function apply(Scope $scope, GenericList $arguments) {
 		if (is_null($this->index)) {
-			if (count($arguments) == 0) {
-				throw new \BadFunctionCallException("ArgumentGet: No index specified.");
-			}
-			
+			if (count($arguments) == 0) throw new \BadFunctionCallException("ArgumentGet: No index specified.");
 			$index = intval($arguments[0]->evaluate($scope));
 		}
-		else {
-			$index = $this->index;
-		}
+		else $index = $this->index;
 		
-		if (!array_key_exists($index, $scope->arguments)) {
+		if (!array_key_exists($index, $scope->arguments))
 			throw new \UnexpectedValueException(sprintf("ArgumentGet: No parameter found at index %d.", $index));
-		}
-		
 		return $scope->arguments[$index];
 	}
 }

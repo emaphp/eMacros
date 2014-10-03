@@ -27,13 +27,10 @@ class BufferPackage extends Package {
 		$this['CLEAN'] = PHP_OUTPUT_HANDLER_CLEAN;
 		$this['FLUSH'] = PHP_OUTPUT_HANDLER_FLUSH;
 		
-		if (version_compare(phpversion(), '5.4', '>=')) {
-			//operation constants
-			$this['STD_FLAGS'] = PHP_OUTPUT_HANDLER_STDFLAGS;
-			$this['REMOVABLE'] = PHP_OUTPUT_HANDLER_REMOVABLE;
-			$this['FLUSHABLE'] = PHP_OUTPUT_HANDLER_FLUSHABLE;
-			$this['CLEANABLE'] = PHP_OUTPUT_HANDLER_CLEANABLE;
-		}
+		$this['STD_FLAGS'] = PHP_OUTPUT_HANDLER_STDFLAGS;
+		$this['REMOVABLE'] = PHP_OUTPUT_HANDLER_REMOVABLE;
+		$this['FLUSHABLE'] = PHP_OUTPUT_HANDLER_FLUSHABLE;
+		$this['CLEANABLE'] = PHP_OUTPUT_HANDLER_CLEANABLE;
 	}
 }
 ?>

@@ -12,10 +12,7 @@ class Concatenation extends GenericFunction {
 	 * @see \eMacros\Runtime\GenericFunction::execute()
 	 */
     public function execute(array $arguments) {
-        if (isset($arguments[0])) {
-        	return implode('', $arguments);
-        }
-        
+        if (isset($arguments[0])) return implode('', $arguments);
         return '';
     }
 }

@@ -12,22 +12,13 @@ class Subtraction extends GenericFunction {
 	 * @see \eMacros\Runtime\GenericFunction::execute()
 	 */
     public function execute(array $arguments) {
-    	if (empty($arguments)) {
-    		throw new \InvalidArgumentException("Subtraction: At least 1 argument is required");
-    	}
-    	
+    	if (empty($arguments)) throw new \InvalidArgumentException("Subtraction: At least 1 argument is required");
     	//emulate CLISP: (- 3) = -3
-    	if (!isset($arguments[1])) {
-    		return -$arguments[0];
-    	}
-    	
+    	if (!isset($arguments[1])) return -$arguments[0];
     	//obtain first argument
         $result = array_shift($arguments);
-        
-        foreach ($arguments as $value) {
-            $result -= $value;
-        }
-
+        foreach ($arguments as $value)
+        	$result -= $value;
         return $result;
     }
 }

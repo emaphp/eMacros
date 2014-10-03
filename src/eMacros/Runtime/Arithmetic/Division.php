@@ -13,23 +13,13 @@ class Division extends GenericFunction {
 	 * @see \eMacros\Runtime\GenericFunction::execute()
 	 */
     public function execute(array $arguments) {
-    	if (empty($arguments)) {
-    		//no parameters
-    		throw new \InvalidArgumentException("Division: At least 1 argument is required.");
-    	}
-    	
+    	if (empty($arguments)) throw new \InvalidArgumentException("Division: At least 1 argument is required.");
     	//emulate CLISP: (/ 4) = 1/4
-    	if (!isset($arguments[1])) {
-    		return 1 / $arguments[0];
-    	}
-    	
+    	if (!isset($arguments[1])) return 1 / $arguments[0];
     	//get first value
     	$result = array_shift($arguments);
-    	
-		foreach ($arguments as $value) {
+		foreach ($arguments as $value)
 			$result /= $value;
-		}
-		
 		return $result;
     }
 }

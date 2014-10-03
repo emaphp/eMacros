@@ -8,7 +8,7 @@ class TextProgram extends Program {
 		//set arguments
 		$env->arguments = array_slice(func_get_args(), 1);
 		
-		$values = array();
+		$values = [];
 		
 		foreach ($this->expressions as $expr) {
 			$values[] = $expr->evaluate($env);

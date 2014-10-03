@@ -16,10 +16,7 @@ class Cond implements Applicable {
 	public function apply(Scope $scope, GenericList $arguments) {
 		foreach ($arguments as $pair) {
 			list($condition, $body) = $pair;
-			
-			if ($condition->evaluate($scope)) {
-				return $body->evaluate($scope);
-			}
+			if ($condition->evaluate($scope)) return $body->evaluate($scope);
 		}
 	}
 }

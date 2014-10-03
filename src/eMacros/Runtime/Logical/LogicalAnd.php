@@ -14,14 +14,10 @@ class LogicalAnd implements Applicable {
 	 * @see \eMacros\Applicable::apply()
 	 */
     public function apply(Scope $scope, GenericList $operands) {
-    	if (count($operands) == 0) {
-    		throw new \BadFunctionCallException("And: No parameters found.");
-    	}
+    	if (count($operands) == 0) throw new \BadFunctionCallException("And: No parameters found.");
     	
         foreach ($operands as $expr) {
-            if (!$value = $expr->evaluate($scope)) {
-            	return $value;
-            }
+            if (!$value = $expr->evaluate($scope)) return $value;
         }
 
         return $value;

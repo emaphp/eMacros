@@ -13,10 +13,7 @@ class TypeOf extends GenericFunction {
 	 */
 	public function execute(array $arguments) {
 		//check number of parameters
-		if (empty($arguments)) {
-			throw new \BadFunctionCallException("TypeOf: No arguments found.");
-		}
-		
+		if (empty($arguments)) throw new \BadFunctionCallException("TypeOf: No arguments found.");
 		return gettype($arguments[0]);
 	}
 }

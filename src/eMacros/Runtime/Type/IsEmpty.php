@@ -12,14 +12,10 @@ class IsEmpty extends GenericFunction {
 	 * @see \eMacros\Runtime\GenericFunction::execute()
 	 */
 	public function execute(array $arguments) {
-		if (empty($arguments)) {
-			throw new \BadFunctionCallException('IsEmpty: No parameters found.');
-		}
+		if (empty($arguments)) throw new \BadFunctionCallException('IsEmpty: No parameters found.');
 		
 		foreach ($arguments as $arg) {
-			if (!empty($arg)) {
-				return false;
-			}
+			if (!empty($arg)) return false;
 		}
 			
 		return true;

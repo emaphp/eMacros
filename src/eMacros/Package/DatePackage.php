@@ -14,9 +14,9 @@ class DatePackage extends Package {
 		$this['get-date'] = new PHPFunction('getdate');
 		$this['date'] = new PHPFunction('date');
 		$this['mktime'] = new PHPFunction('mktime');
-		$this['date-create'] = new PHPFunction(array('DateTime', 'createFromFormat'));
+		$this['date-create'] = new PHPFunction(['DateTime', 'createFromFormat']);
 		$this['date-parse'] = new PHPFunction('date_parse');
-		$this['interval-create'] = new PHPFunction(array('DateInterval', 'createFromDateString'));
+		$this['interval-create'] = new PHPFunction(['DateInterval', 'createFromDateString']);
 		
 		//string + date functions
 		$this['to-time'] = new PHPFunction('strtotime');
@@ -25,36 +25,28 @@ class DatePackage extends Package {
 		
 		//DateTime instance builder
 		$this['dt'] = function($date, \DateTimeZone $tz = null) {
-			if (is_null($tz)) {
-				return new \DateTime($date);
-			}
-						
+			if (is_null($tz)) return new \DateTime($date);		
 			return new \DateTime($date, $tz);
 		};
 		
 		//DateTime instance builder (now)
 		$this['now'] = function(\DateTimeZone $tz = null) {
-			if (is_null($tz)) {
-				return new \DateTime('now');
-			}
-						
+			if (is_null($tz)) return new \DateTime('now');
 			return new \DateTime('now', $tz);
 		};
 		
 		//DateInterval instance builder
 		$this['interval'] = function($interval) {
-			if (!is_string($interval) || empty($interval)) {
+			if (!is_string($interval) || empty($interval))
 				throw new \BadFunctionCallException("interval: No valid interval specified.");
-			}
 			
 			return new \DateInterval($interval);
 		};
 		
 		//DateTimeZone instance builder
 		$this['tz'] = function($tz) {
-			if (!is_string($tz) || empty($tz)) {
+			if (!is_string($tz) || empty($tz))
 				throw new \BadFunctionCallException("tz: No valid timezone specified.");
-			}
 			
 			return new \DateTimeZone($tz);
 		};

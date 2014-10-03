@@ -14,20 +14,11 @@ class SymbolLookup implements Applicable {
 	 * @see \eMacros\Applicable::apply()
 	 */
 	public function apply(Scope $scope, GenericList $arguments) {
-		if (count($arguments) == 0) {
-			throw new \BadFunctionCallException("SymbolLookup: No parameters found.");
-		}
-		
+		if (count($arguments) == 0) throw new \BadFunctionCallException("SymbolLookup: No parameters found.");
 		$ref = $arguments[0]->evaluate($scope);
-		
-		if (!is_string($ref) || empty($ref)) {
-			throw new \InvalidArgumentException("SymbolLookup: Symbol must be specified as a non-empty string.");
-		}
-		
-		if (!array_key_exists($ref, $scope->symbols)) {
+		if (!is_string($ref) || empty($ref)) throw new \InvalidArgumentException("SymbolLookup: Symbol must be specified as a non-empty string.");
+		if (!array_key_exists($ref, $scope->symbols))
 			throw new \InvalidArgumentException(sprintf("SymbolLookup: Symbol %s does not exists on current environment.", $ref));
-		}
-		
 		return $scope->symbols[$ref];
 	}
 }

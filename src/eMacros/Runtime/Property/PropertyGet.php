@@ -26,45 +26,29 @@ class PropertyGet implements Applicable {
 	public function apply(Scope $scope, GenericList $arguments) {
 		//get index and value
 		if (is_null($this->property)) {
-			if (count($arguments) == 0) {
-				throw new \BadFunctionCallException("PropertyGet: No parameters found.");
-			}
-			
+			if (count($arguments) == 0) throw new \BadFunctionCallException("PropertyGet: No parameters found.");
 			$key = $arguments[0]->evaluate($scope);
 			
 			if (count($arguments) == 1) {
-				if (!array_key_exists(0, $scope->arguments)) {
-					throw new \BadFunctionCallException("PropertyGet: Expected value of type array/object as second parameter but none found.");
-				}
-				
+				if (!array_key_exists(0, $scope->arguments)) throw new \BadFunctionCallException("PropertyGet: Expected value of type array/object as second parameter but none found.");
 				$value = $scope->arguments[0];
 			}
-			else {
-				$value = $arguments[1]->evaluate($scope);
-			}
+			else $value = $arguments[1]->evaluate($scope);
 		}
 		else {
 			$key = $this->property;
 			
 			if (count($arguments) == 0) {
-				if (!array_key_exists(0, $scope->arguments)) {
-					throw new \BadFunctionCallException("PropertyGet: Expected value of type array/object as first parameter but none found.");
-				}
-				
+				if (!array_key_exists(0, $scope->arguments)) throw new \BadFunctionCallException("PropertyGet: Expected value of type array/object as first parameter but none found.");
 				$value = $scope->arguments[0];
 			}
-			else {
-				$value = $arguments[0]->evaluate($scope);
-			}
+			else $value = $arguments[0]->evaluate($scope);
 		}
 		
 		//get index/property
 		if (is_array($value)) {
 			if (!array_key_exists($key, $value)) {
-				if (is_int($key)) {
-					throw new \OutOfBoundsException(sprintf("PropertyGet: Key %s does not exists.", strval($key)));
-				}
-				
+				if (is_int($key)) throw new \OutOfBoundsException(sprintf("PropertyGet: Key %s does not exists.", strval($key)));
 				throw new \InvalidArgumentException(sprintf("PropertyGet: Key '%s' does not exists.", strval($key)));
 			}
 				
@@ -72,10 +56,7 @@ class PropertyGet implements Applicable {
 		}
 		elseif ($value instanceof \ArrayObject || $value instanceof \ArrayAccess) {
 			if (!$value->offsetExists($key)) {
-				if (is_int($key)) {
-					throw new \OutOfBoundsException(sprintf("PropertyGet: Key %s does not exists.", strval($key)));
-				}
-				
+				if (is_int($key)) throw new \OutOfBoundsException(sprintf("PropertyGet: Key %s does not exists.", strval($key)));
 				throw new \InvalidArgumentException(sprintf("PropertyGet: Key '%s' does not exists.", strval($key)));
 			}
 				
@@ -85,25 +66,15 @@ class PropertyGet implements Applicable {
 			//check property existence
 			if (!property_exists($value, $key)) {
 				//check existence through __isset
-				if (method_exists($value, '__isset') && !$value->__isset($key)) {
-					throw new \InvalidArgumentException(sprintf("PropertyGet: Property '%s' not found.", strval($key)));
-				}
-		
+				if (method_exists($value, '__isset') && !$value->__isset($key)) throw new \InvalidArgumentException(sprintf("PropertyGet: Property '%s' not found.", strval($key)));
 				//try calling __get
-				if (method_exists($value, '__get')) {
-					return $value->__get($key);
-				}
-		
+				if (method_exists($value, '__get')) return $value->__get($key);
 				throw new \InvalidArgumentException(sprintf("PropertyGet: Property '%s' not found.", strval($key)));
 			}
 				
 			//check property access
 			$rp = new \ReflectionProperty($value, $key);
-				
-			if (!$rp->isPublic()) {
-				$rp->setAccessible(true);
-			}
-
+			if (!$rp->isPublic()) $rp->setAccessible(true);
 			return $rp->getValue($value);
 		}
 		

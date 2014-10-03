@@ -12,10 +12,7 @@ class Car extends GenericFunction {
 	 * @see \eMacros\Runtime\GenericFunction::execute()
 	 */
     public function execute(array $arguments) {
-    	if (empty($arguments)) {
-    		throw new \BadFunctionCallException("Car: No parameters found.");
-    	}
-    	
+    	if (empty($arguments)) throw new \BadFunctionCallException("Car: No parameters found.");
         list($list) = $arguments;
         
         if ($list instanceof \Iterator) {
@@ -27,17 +24,12 @@ class Car extends GenericFunction {
             $iter->rewind();
             $value = $iter->valid() ? $iter->current() : null;
         }
-        elseif (is_array($list)) {
-            $value = !empty($list) ? array_shift($list) : null;
-        }
-        elseif ($list instanceof \ArrayAccess) {
-        	//cannot ensure which is the first element, return index 0
+        elseif (is_array($list))
+        	$value = !empty($list) ? array_shift($list) : null;
+        elseif ($list instanceof \ArrayAccess)
         	$value = isset($list[0]) ? $list[0] : null;
-        }
-        else {
-            throw new \InvalidArgumentException('Car: Parameter is not a list.');
-        }
-        
+        else
+        	throw new \InvalidArgumentException('Car: Parameter is not a list.');
         return $value;
     }
 }

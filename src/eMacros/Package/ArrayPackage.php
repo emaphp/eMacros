@@ -43,9 +43,8 @@ class ArrayPackage extends Package {
 		$this['replace'] = new PHPFunction('array_replace');
 		$this['reverse'] = new PHPFunction('array_reverse');
 		
-		if (function_exists('array_column')) {
+		if (function_exists('array_column'))
 			$this['column'] = new PHPFunction('array_column');
-		}
 		
 		//macros
 		$this['car'] = new Car();

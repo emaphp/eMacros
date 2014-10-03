@@ -12,10 +12,7 @@ class LogicalNot extends GenericFunction {
 	 * @see \eMacros\Runtime\GenericFunction::execute()
 	 */
     public function execute(array $arguments) {
-    	if (empty($arguments)) {
-    		throw new \BadFunctionCallException("Not: No parameters found.");
-    	}
-    	
+    	if (empty($arguments)) throw new \BadFunctionCallException("Not: No parameters found.");
         return !$arguments[0];
     }
 }

@@ -233,10 +233,9 @@ class CorePackage extends Package {
 		$this['intval'] = new PHPFunction('intval');
 		
 		//PHP 5.5
-		if (function_exists('boolval')) {
+		if (function_exists('boolval'))
 			$this['boolval'] = new PHPFunction('boolval');			
-		}
-		
+
 		/**
 		 * CLASS/OBJECT FUNCTIONS
 		 */
@@ -301,10 +300,7 @@ class CorePackage extends Package {
 		 * Returns: boolean
 		 */
 		$this->macro('/^(bool|boolean|int|integer|string|float|double|resource|object|array|numeric|scalar|null)\?$/', function ($matches) {
-			if ($matches[1] == 'boolean') {
-				$matches[1] = 'bool';
-			}
-		
+			if ($matches[1] == 'boolean') $matches[1] = 'bool';		
 			return new IsType('is_' . $matches[1]);
 		});
 		
@@ -325,10 +321,7 @@ class CorePackage extends Package {
 		 * Returns: boolean
 		 */
 		$this->macro('/^#([^\s]+)\?$/', function ($matches) {
-			if (is_numeric($matches[1])) {
-				return new PropertyExists(intval($matches[1]));
-			}
-			
+			if (is_numeric($matches[1])) return new PropertyExists(intval($matches[1]));
 			return new PropertyExists($matches[1]);
 		});
 
@@ -339,10 +332,7 @@ class CorePackage extends Package {
 		 * Returns: Assigned value
 		 */
 		$this->macro('/^#([^\s]+)=$/', function ($matches) {
-			if (is_numeric($matches[1])) {
-				return new PropertyAssign(intval($matches[1]));
-			}
-			
+			if (is_numeric($matches[1])) return new PropertyAssign(intval($matches[1]));
 			return new PropertyAssign($matches[1]);
 		});
 		
@@ -353,9 +343,7 @@ class CorePackage extends Package {
 		 * Returns: mixed
 		 */
 		$this->macro('/^#([^\s]*[^\?|=]+)$/', function ($matches) {
-			if (is_numeric($matches[1])) {
-				return new PropertyGet(intval($matches[1]));
-			}
+			if (is_numeric($matches[1])) return new PropertyGet(intval($matches[1]));
 			return new PropertyGet($matches[1]);
 		});
 		

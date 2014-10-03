@@ -12,12 +12,8 @@ class Count extends GenericFunction {
 	 * @see \eMacros\Runtime\GenericFunction::execute()
 	 */
 	public function execute(array $arguments) {
-		if (empty($arguments)) {
-			throw new \InvalidArgumentException("Count: No parameters found.");
-		}
-		
+		if (empty($arguments)) throw new \InvalidArgumentException("Count: No parameters found.");
 		list($list) = $arguments;
-	
 		return is_string($list) ? strlen($list) : count($list);
 	}
 }

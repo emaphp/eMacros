@@ -23,14 +23,10 @@ class IsType extends GenericFunction {
 	 */
 	public function execute(array $arguments) {
 		//check number of parameters
-		if (empty($arguments)) {
-			throw new \BadFunctionCallException("IsType: No arguments found.");
-		}
+		if (empty($arguments)) throw new \BadFunctionCallException("IsType: No arguments found.");
 		
 		foreach ($arguments as $arg) {
-			if (call_user_func($this->callback, $arg) === false) {
-				return false;
-			}
+			if (call_user_func($this->callback, $arg) === false) return false;
 		}
 		
 		return true;

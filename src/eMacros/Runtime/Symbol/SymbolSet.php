@@ -16,16 +16,9 @@ class SymbolSet implements Applicable {
 	 * @see \eMacros\Applicable::apply()
 	 */
 	public function apply(Scope $scope, GenericList $arguments) {
-		if (count($arguments) == 0) {
-			throw new \BadFunctionCallException("SymbolSet: No parameters found.");
-		}
-		
+		if (count($arguments) == 0) throw new \BadFunctionCallException("SymbolSet: No parameters found.");
 		$ref = $arguments[0]->evaluate($scope);
-		
-		if (!is_string($ref) || empty($ref)) {
-			throw new \InvalidArgumentException("SymbolSet: Symbol must be specified as a non-empty string.");
-		}
-		
+		if (!is_string($ref) || empty($ref)) throw new \InvalidArgumentException("SymbolSet: Symbol must be specified as a non-empty string.");
 		Symbol::validateSymbol($ref);
 		$value = (count($arguments) > 1) ? $arguments[1]->evaluate($scope) : null;
 		$scope->symbols[$ref] = $value;

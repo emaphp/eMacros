@@ -8,7 +8,7 @@ use eMacros\Expression;
 
 abstract class GenericFunction implements Applicable {    
     final public function apply(Scope $scope, GenericList $arguments) {
-    	$args = array();
+    	$args = [];
     	
     	foreach ($arguments as $arg) {
     		$args[] = $arg->evaluate($scope);

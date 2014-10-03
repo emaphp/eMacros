@@ -14,14 +14,10 @@ class LogicalOr implements Applicable {
 	 * @see \eMacros\Applicable::apply()
 	 */
     public function apply(Scope $scope, GenericList $operands) {
-    	if (count($operands) == 0) {
-    		throw new \BadFunctionCallException("And: No parameters found.");
-    	}
+    	if (count($operands) == 0) throw new \BadFunctionCallException("And: No parameters found.");
     	
         foreach ($operands as $form) {
-            if ($value = $form->evaluate($scope)) {
-            	return $value;
-            }
+            if ($value = $form->evaluate($scope)) return $value;
         }
 
         return $value;

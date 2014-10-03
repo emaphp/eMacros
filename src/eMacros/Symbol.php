@@ -27,13 +27,11 @@ class Symbol implements Expression {
 	const PATTERN = '{^[^\s\d(){}\[\]"\';][^\s\'"(){}\[\];]*$}';
 
 	public static function validateSymbol($symbol) {
-		if (!is_string($symbol)) {
+		if (!is_string($symbol))
 			throw new \UnexpectedValueException(sprintf("Symbol: unexpected value of type '%s'.", gettype($symbol)));
-		}
 		
-		if (!preg_match(self::PATTERN, $symbol)) {
+		if (!preg_match(self::PATTERN, $symbol))
 			throw new \UnexpectedValueException(sprintf("Symbol: '%s' is not a valid symbol.", $symbol));
-		}
 	
 		return $symbol;
 	}

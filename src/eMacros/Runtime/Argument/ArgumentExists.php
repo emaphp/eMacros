@@ -26,16 +26,10 @@ class ArgumentExists implements Applicable {
 	 */
 	public function apply(Scope $scope, GenericList $arguments) {
 		if (is_null($this->index)) {
-			if (count($arguments) == 0) {
-				throw new \BadFunctionCallException("ArgumentGet: No index specified.");
-			}
-				
+			if (count($arguments) == 0) throw new \BadFunctionCallException("ArgumentGet: No index specified.");
 			$index = intval($arguments[0]->evaluate($scope));
 		}
-		else {
-			$index = $this->index;
-		}
-		
+		else $index = $this->index;
 		return array_key_exists($index, $scope->arguments);
 	}
 }

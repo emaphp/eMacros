@@ -9,9 +9,8 @@ class Literal implements Expression {
 	public $value;
 
     public function __construct($value) {
-        if (!in_array(gettype($value), array('integer', 'double', 'string'))) {
-            throw new \UnexpectedValueException(sprintf("Literal: Unexpected value of type '%s'.", gettype($value)));
-        }
+        if (!in_array(gettype($value), ['integer', 'double', 'string']))
+        	throw new \UnexpectedValueException(sprintf("Literal: Unexpected value of type '%s'.", gettype($value)));
         
         $this->value = $value;
     }

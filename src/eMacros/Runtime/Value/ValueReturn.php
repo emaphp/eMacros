@@ -12,11 +12,7 @@ class ValueReturn extends GenericFunction {
 	 * @see \eMacros\Runtime\GenericFunction::execute()
 	 */
 	public function execute(array $arguments) {
-		if (empty($arguments)) {
-			return null;
-		}
-		
-		return $arguments[0];
+		return empty($arguments) ? null : $arguments[0];
 	}
 }
 ?>

@@ -12,9 +12,7 @@ class OutputEcho extends GenericFunction {
 	 * @see \eMacros\Runtime\GenericFunction::execute()
 	 */
 	public function execute(array $arguments) {
-		foreach ($arguments as $arg) {
-			echo $arg;
-		}
+		foreach ($arguments as $arg) echo $arg;
 	}
 }
 ?>

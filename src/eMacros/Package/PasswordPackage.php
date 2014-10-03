@@ -10,21 +10,17 @@ class PasswordPackage extends Package {
 		$this['crypt'] = new PHPFunction('crypt');
 		
 		//password functions
-		if (function_exists('password_hash')) {
+		if (function_exists('password_hash'))
 			$this['hash'] = new PHPFunction('password_hash');
-		}
 		
-		if (function_exists('password_get_info')) {
+		if (function_exists('password_get_info'))
 			$this['get-info'] = new PHPFunction('password_get_info');
-		}
-		
-		if (function_exists('password_needs_rehash')) {
+
+		if (function_exists('password_needs_rehash'))
 			$this['needs-rehash'] = new PHPFunction('password_needs_rehash');
-		}
 		
-		if (function_exists('password_verify')) {
+		if (function_exists('password_verify'))
 			$this['verify'] = new PHPFunction('password_verify');
-		}
 		
 		if (version_compare(phpversion(), '5.5', '>=')) {
 			$this['PASSWORD_DEFAULT'] = PASSWORD_DEFAULT;

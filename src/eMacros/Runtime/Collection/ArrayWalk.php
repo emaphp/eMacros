@@ -16,30 +16,16 @@ class ArrayWalk implements Applicable {
 	 */
 	public function apply(Scope $scope, GenericList $arguments) {
 		$nargs = count($arguments);
-		
-		if ($nargs == 0) {
-			throw new \BadFunctionCallException("ArrayWalk: No target specified.");
-		}
-		elseif ($nargs == 1) {
-			throw new \BadFunctionCallException("ArrayWalk: No callback specified.");
-		}
-		
+		if ($nargs == 0) throw new \BadFunctionCallException("ArrayWalk: No target specified.");
+		elseif ($nargs == 1) throw new \BadFunctionCallException("ArrayWalk: No callback specified.");
 		$target = $arguments[0];
-		
-		if (!($target instanceof Symbol)) {
+		if (!($target instanceof Symbol))
 			throw new \InvalidArgumentException(sprintf("ArrayWalk: Expected symbol as first argument but %s was found instead.", substr(strtolower(strstr(get_class($arguments[0]), '\\')), 1)));
-		}
-		
 		$ref = $target->symbol;
 		
 		if (is_array($scope->symbols[$ref]) || $scope->symbols[$ref] instanceof \ArrayObject) {
 			$op = $arguments[1]->evaluate($scope);
-			
-			if (is_callable($op)) {
-				$userdata = $nargs > 2 ? $arguments[2]->evaluate($scope) : null;
-				return array_walk($scope->symbols[$ref], $op, $userdata);
-			}
-			
+			if (is_callable($op)) return array_walk($scope->symbols[$ref], $op, $nargs > 2 ? $arguments[2]->evaluate($scope) : null);
 			throw new \InvalidArgumentException("ArrayWalk: Expected callable as second argument.");
 		}
 		

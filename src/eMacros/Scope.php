@@ -6,21 +6,19 @@ class Scope implements \ArrayAccess, \IteratorAggregate {
 	 * Symboil table
 	 * @var array
 	 */
-	public $symbols = array();
+	public $symbols = [];
 	
 	/**
 	 * Macros list
 	 * @var array
 	 */
-	public $macros = array();
+	public $macros = [];
 		
 	protected static function symbol($symbol) {
-		if ($symbol instanceof Symbol) {
+		if ($symbol instanceof Symbol)
 			return $symbol->symbol;
-		}
-		elseif (is_string($symbol)) {
+		elseif (is_string($symbol))
 			return $symbol;
-		}
 		
 		throw new \UnexpectedValueException(sprintf("Unexpected value of type '%s'.", is_object($symbol) ? get_class($symbol) : gettype($symbol)));
 	}
@@ -34,19 +32,16 @@ class Scope implements \ArrayAccess, \IteratorAggregate {
 		$sym = self::symbol($symbol);
 
 		//is symbol defined on this scope?
-		if (array_key_exists($sym, $this->symbols)) {
+		if (array_key_exists($sym, $this->symbols))
 			return $this->symbols[$sym];
-		}
 		else {
 			foreach ($this->macros as $regex => $callback) {
-				if (preg_match($regex, $sym, $matches)) {
-					$this->symbols[$sym] = $callback->__invoke($matches);
-					return $this->symbols[$sym];
-				}
+				if (preg_match($regex, $sym, $matches))
+					return $this->symbols[$sym] = $callback->__invoke($matches);
 			}
 		}
 		
-		return null;
+		return;
 	}
 	
 	public function offsetExists($symbol) {
@@ -61,8 +56,7 @@ class Scope implements \ArrayAccess, \IteratorAggregate {
 	 * @see ArrayAccess::offsetSet()
 	 */
 	public function offsetSet($symbol, $value) {
-		$symbol = Symbol::validateSymbol($symbol);
-		$this->symbols[$symbol] = $value;
+		$this->symbols[Symbol::validateSymbol($symbol)] = $value;
 	}
 	
 	/**
@@ -80,11 +74,10 @@ class Scope implements \ArrayAccess, \IteratorAggregate {
 	 * @see IteratorAggregate::getIterator()
 	 */
 	public function getIterator() {
-		$symbols = array();
+		$symbols = [];
 		
-		foreach ($this->listSymbols() as $name) {
+		foreach ($this->listSymbols() as $name)
 			$symbols[$name] = $this[$name];
-		}
 	
 		return new \ArrayIterator($symbols);
 	}

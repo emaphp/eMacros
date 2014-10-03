@@ -25,25 +25,16 @@ class ArraySort implements Applicable {
 	 * @see \eMacros\Applicable::apply()
 	 */
 	public function apply(Scope $scope, GenericList $arguments) {
-		if (count($arguments) == 0) {
-			throw new \BadFunctionCallException("ArraySort: No array specified.");
-		}
-		
+		if (count($arguments) == 0) throw new \BadFunctionCallException("ArraySort: No array specified.");
 		$target = $arguments[0];
-		
-		if (!($target instanceof Symbol)) {
+		if (!($target instanceof Symbol))
 			throw new \InvalidArgumentException(sprintf("ArraySort: Expected symbol as first argument but %s was found instead.", substr(strtolower(strstr(get_class($arguments[0]), '\\')), 1)));
-		}
-		
 		$ref = $target->symbol;
 		
 		if (is_array($scope->symbols[$ref])) {
 			$func = $this->callback;
-			
-			if (count($arguments) > 1) {
+			if (count($arguments) > 1)
 				return $func($scope->symbols[$ref], $arguments[1]->evaluate($scope));
-			}
-			
 			return $func($scope->symbols[$ref]);
 		}
 		

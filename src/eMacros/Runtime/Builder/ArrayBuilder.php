@@ -15,27 +15,18 @@ class ArrayBuilder implements Applicable {
 	 * @see \eMacros\Applicable::apply()
 	 */
 	public function apply(Scope $scope, GenericList $arguments) {
-		$values = array();
+		$values = [];
 		
 		foreach ($arguments as $arg) {
 			if ($arg instanceof GenericList) {
-				if (count($arg) < 1) {
-					throw new \InvalidArgumentException("ArrayBuilder: No key defined.");
-				}
-				
-				if (count($arg) < 2) {
-					throw new \InvalidArgumentException("ArrayBuilder: No value defined.");
-				}
-				
+				if (count($arg) < 1) throw new \InvalidArgumentException("ArrayBuilder: No key defined.");
+				if (count($arg) < 2) throw new \InvalidArgumentException("ArrayBuilder: No value defined.");
 				//obtain symbol pair
 				list($key, $value) = $arg;
-				
 				$key = $key->evaluate($scope);
 				$values[$key] = $value->evaluate($scope);
 			}
-			else {
-				$values[] = $arg->evaluate($scope);
-			}
+			else $values[] = $arg->evaluate($scope);
 		}
 	
 		return $values;

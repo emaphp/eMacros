@@ -12,35 +12,22 @@ class Cdr extends GenericFunction {
 	 * @see \eMacros\Runtime\GenericFunction::execute()
 	 */
 	public function execute(array $arguments) {
-		if (empty($arguments)) {
-			throw new \BadFunctionCallException("Cdr: No parameters found.");
-		}
-		
+		if (empty($arguments)) throw new \BadFunctionCallException("Cdr: No parameters found.");
 		list($list) = $arguments;
 		
 		if (is_array($list)) {
-			if (empty($list)) {
-				return null;
-			}
-			
+			if (empty($list)) return null;
 			return array_slice($list, 1);
 		}
 		
 		if ($list instanceof \Iterator || $list instanceof \IteratorAggregate) {
 			$it = $list instanceof \Iterator ? $list : $list->getIterator();
 			$it->rewind();
-			
 			//empty list?
-			if (!$it->valid()) {
-				return null;
-			}
-			
-			$result = array();
-			
-			for ($it->next(); $it->valid(); $it->next()) {
+			if (!$it->valid()) return null;
+			$result = [];
+			for ($it->next(); $it->valid(); $it->next())
 				$result[] = $it->current();
-			}
-		
 			return $result;
 		}
 		

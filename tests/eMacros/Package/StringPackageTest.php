@@ -1,7 +1,7 @@
 <?php
 namespace eMacros;
 
-use eMacros\Program\SimpleProgram;
+use eMacros\Program\Program;
 use eMacros\Package\StringPackage;
 use eMacros\Program\ListProgram;
 /**
@@ -19,142 +19,142 @@ class StringPackageTest extends eMacrosTest {
 	}
 	
 	public function testContatenate0() {
-		$program = new SimpleProgram('(.)');
+		$program = new Program('(.)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals('', $result);
 	}
 	
 	public function testContatenate1() {
-		$program = new SimpleProgram('(. "Hello" " " "World")');
+		$program = new Program('(. "Hello" " " "World")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals('Hello World', $result);
 	}
 	
 	public function testAddCSlashes() {
-		$program = new SimpleProgram('(addcslashes "foo[ ]" "A..z")');
+		$program = new Program('(addcslashes "foo[ ]" "A..z")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals('\f\o\o\[ \]', $result);
 	}
 	
 	public function testStripCSlashes() {
-		$program = new SimpleProgram('(stripcslashes (%0))');
+		$program = new Program('(stripcslashes (%0))');
 		$result = $program->execute(self::$env, '\d\n\e');
 		$this->assertEquals("d\ne", $result);
 	}
 	
 	public function testBin2Hex() {
-		$program = new SimpleProgram('(bin2hex "Hello")');
+		$program = new Program('(bin2hex "Hello")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals('48656c6c6f', $result);
 	}
 	
 	public function testHex2Bin() {
-		$program = new SimpleProgram('(hex2bin "6578616d706c65206865782064617461")');
+		$program = new Program('(hex2bin "6578616d706c65206865782064617461")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals('example hex data', $result);
 	}
 	
 	public function testChr() {
-		$program = new SimpleProgram('(chr 65)');
+		$program = new Program('(chr 65)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals('A', $result);
 	}
 	
 	public function testCountChars() {
-		$program = new SimpleProgram('(count-chars "aabbcdee" 1)');
+		$program = new Program('(count-chars "aabbcdee" 1)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(array(97 => 2, 98 => 2, 99 => 1, 100 => 1, 101 => 2), $result);
 	}
 	
 	public function testLCFirst() {
-		$program = new SimpleProgram('(lcfirst "Hello World")');
+		$program = new Program('(lcfirst "Hello World")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals("hello World", $result);
 	}
 	
 	public function testLTrim() {
-		$program = new SimpleProgram('(ltrim "   Hello World   ")');
+		$program = new Program('(ltrim "   Hello World   ")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals("Hello World   ", $result);
 	}
 	
 	public function testRTrim() {
-		$program = new SimpleProgram('(rtrim "   Hello World   ")');
+		$program = new Program('(rtrim "   Hello World   ")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals("   Hello World", $result);
 	}
 	
 	public function testOrd() {
-		$program = new SimpleProgram('(ord "\n")');
+		$program = new Program('(ord "\n")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(10, $result);
 	}
 	
 	public function testNumberFormat1() {
 		$number = 1234.56;
-		$program = new SimpleProgram('(number-format (%0))');
+		$program = new Program('(number-format (%0))');
 		$result = $program->execute(self::$env, $number);
 		$this->assertEquals("1,235", $result);
 	}
 	
 	public function testNumberFormat2() {
 		$number = 1234.56;
-		$program = new SimpleProgram('(number-format (%0) 2 "," " ")');
+		$program = new Program('(number-format (%0) 2 "," " ")');
 		$result = $program->execute(self::$env, $number);
 		$this->assertEquals("1 234,56", $result);
 	}
 	
 	public function testNumberFormat3() {
 		$number = 1234.56;
-		$program = new SimpleProgram('(number-format (%0) 2 "." "")');
+		$program = new Program('(number-format (%0) 2 "." "")');
 		$result = $program->execute(self::$env, $number);
 		$this->assertEquals("1234.56", $result);
 	}
 	
 	public function testExplode1() {
-		$program = new SimpleProgram('(explode "," "1,2,3")');
+		$program = new Program('(explode "," "1,2,3")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(explode(',', '1,2,3'), $result);
 	}
 	
 	public function testExplode2() {
-		$program = new SimpleProgram('(String::explode "," "1,2,3")');
+		$program = new Program('(String::explode "," "1,2,3")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(explode(',', '1,2,3'), $result);
 	}
 	
 	public function testImplode1() {
-		$program = new SimpleProgram('(implode "," (%0))');
+		$program = new Program('(implode "," (%0))');
 		$result = $program->execute(self::$env, array(1,2,3));
 		$this->assertEquals(implode(',', array(1,2,3)), $result);
 	}
 	
 	public function testImplode2() {
-		$program = new SimpleProgram('(String::implode "," (%0))');
+		$program = new Program('(String::implode "," (%0))');
 		$result = $program->execute(self::$env, array(1,2,3));
 		$this->assertEquals(implode(',', array(1,2,3)), $result);
 	}
 	
 	public function testPad1() {
-		$program = new SimpleProgram('(pad "Alien" 10 "-=" PAD_LEFT)');
+		$program = new Program('(pad "Alien" 10 "-=" PAD_LEFT)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(str_pad('Alien', 10, "-=", STR_PAD_LEFT), $result);
 	}
 	
 	public function testPad2() {
-		$program = new SimpleProgram('(String::pad "Alien" 10 "-=" String::PAD_LEFT)');
+		$program = new Program('(String::pad "Alien" 10 "-=" String::PAD_LEFT)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(str_pad('Alien', 10, "-=", STR_PAD_LEFT), $result);
 	}
 	
 	public function testRepeat1() {
-		$program = new SimpleProgram('(repeat "-=" 10)');
+		$program = new Program('(repeat "-=" 10)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(str_repeat("-=", 10), $result);
 	}
 	
 	public function testRepeat2() {
-		$program = new SimpleProgram('(String::repeat "-=" 10)');
+		$program = new Program('(String::repeat "-=" 10)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(str_repeat("-=", 10), $result);
 	}
@@ -163,24 +163,24 @@ class StringPackageTest extends eMacrosTest {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function testReplace0() {
-		$program = new SimpleProgram('(replace "%body%" "black" "<body text=\'%body%\'>" 0)');
+		$program = new Program('(replace "%body%" "black" "<body text=\'%body%\'>" 0)');
 		$result = $program->execute(self::$env);
 	}
 	
 	public function testReplace1() {
-		$program = new SimpleProgram('(replace "%body%" "black" "<body text=\'%body%\'>")');
+		$program = new Program('(replace "%body%" "black" "<body text=\'%body%\'>")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals("<body text='black'>", $result);
 	}
 	
 	public function testReplace2() {
-		$program = new SimpleProgram('(String::replace "%body%" "black" "<body text=\'%body%\'>")');
+		$program = new Program('(String::replace "%body%" "black" "<body text=\'%body%\'>")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals("<body text='black'>", $result);
 	}
 	
 	public function testReplace3() {
-		$program = new SimpleProgram('(String::replace "%body%" "black" "<body text=\'%body%\'>%body%" _count)(<- _count)');
+		$program = new Program('(String::replace "%body%" "black" "<body text=\'%body%\'>%body%" _count)(<- _count)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(2, $result);
 	}
@@ -189,222 +189,222 @@ class StringPackageTest extends eMacrosTest {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function testIReplace0() {
-		$program = new SimpleProgram('(ireplace "%body%" "black" "<body text=\'%body%\'>" 0)');
+		$program = new Program('(ireplace "%body%" "black" "<body text=\'%body%\'>" 0)');
 		$result = $program->execute(self::$env);
 	}
 	
 	public function testIReplace1() {
-		$program = new SimpleProgram('(ireplace "%body%" "black" "<body text=\'%BODY%\'>")');
+		$program = new Program('(ireplace "%body%" "black" "<body text=\'%BODY%\'>")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals("<body text='black'>", $result);
 	}
 	
 	public function testIReplace2() {
-		$program = new SimpleProgram('(String::ireplace "%body%" "black" "<body text=\'%body%\'>%BODY%")(<- _count)');
+		$program = new Program('(String::ireplace "%body%" "black" "<body text=\'%body%\'>%BODY%")(<- _count)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(2, $result);
 	}
 	
 	public function testReverse1() {
-		$program = new SimpleProgram('(reverse "Hello")');
+		$program = new Program('(reverse "Hello")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals("olleH", $result);
 	}
 	
 	public function testReverse2() {
-		$program = new SimpleProgram('(String::reverse "Hello")');
+		$program = new Program('(String::reverse "Hello")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals("olleH", $result);
 	}
 	
 	public function testShuffle1() {
-		$program = new SimpleProgram('(shuffle "abcde")');
+		$program = new Program('(shuffle "abcde")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(1, preg_match('/[a-e]{5}/', $result));
 	}
 	
 	public function testShuffle2() {
-		$program = new SimpleProgram('(String::shuffle "abcde")');
+		$program = new Program('(String::shuffle "abcde")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(1, preg_match('/[a-e]{5}/', $result));
 	}
 	
 	public function testSplit1() {
-		$program = new SimpleProgram('(split "hello friend" 3)');
+		$program = new Program('(split "hello friend" 3)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(str_split("hello friend", 3), $result);
 	}
 	
 	public function testSplit2() {
-		$program = new SimpleProgram('(String::split "hello friend" 3)');
+		$program = new Program('(String::split "hello friend" 3)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(str_split("hello friend", 3), $result);
 	}
 	
 	public function testWordCount1() {
-		$program = new SimpleProgram('(word-count "hello my friend")');
+		$program = new Program('(word-count "hello my friend")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(str_word_count("hello my friend"), $result);
 	}
 	
 	public function testWordCount2() {
-		$program = new SimpleProgram('(String::word-count "hello my friend")');
+		$program = new Program('(String::word-count "hello my friend")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(str_word_count("hello my friend"), $result);
 	}
 	
 	public function testCmp1() {
-		$program = new SimpleProgram('(cmp "abc" "abcd")');
+		$program = new Program('(cmp "abc" "abcd")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(strcmp("abc", "abcd"), $result);
 	}
 	
 	public function testCmp2() {
-		$program = new SimpleProgram('(String::cmp "abc" "abcd")');
+		$program = new Program('(String::cmp "abc" "abcd")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(strcmp("abc", "abcd"), $result);
 	}
 	
 	public function testLen1() {
-		$program = new SimpleProgram('(len "hello")');
+		$program = new Program('(len "hello")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(strlen("hello"), $result);
 	}
 	
 	public function testLen2() {
-		$program = new SimpleProgram('(String::len "hello")');
+		$program = new Program('(String::len "hello")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(strlen("hello"), $result);
 	}
 	
 	public function testPos1() {
-		$program = new SimpleProgram('(pos "abcdef abcdef" "a" 1)');
+		$program = new Program('(pos "abcdef abcdef" "a" 1)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(strpos("abcdef abcdef","a",1), $result);
 	}
 	
 	public function testPos2() {
-		$program = new SimpleProgram('(String::pos "abcdef abcdef" "a" 1)');
+		$program = new Program('(String::pos "abcdef abcdef" "a" 1)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(strpos("abcdef abcdef","a",1), $result);
 	}
 	
 	public function testIPos1() {
-		$program = new SimpleProgram('(ipos "xyz" "a")');
+		$program = new Program('(ipos "xyz" "a")');
 		$result = $program->execute(self::$env);
 		$this->assertFalse($result);
 	}
 	
 	public function testIPos2() {
-		$program = new SimpleProgram('(ipos "ABC" "b")');
+		$program = new Program('(ipos "ABC" "b")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(1, $result);
 	}
 	
 	public function testStr1() {
-		$program = new SimpleProgram('(str "name@example.com" "@")');
+		$program = new Program('(str "name@example.com" "@")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(strstr("name@example.com", "@"), $result);
 	}
 	
 	public function testStr2() {
-		$program = new SimpleProgram('(String::str "name@example.com" "@")');
+		$program = new Program('(String::str "name@example.com" "@")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(strstr("name@example.com", "@"), $result);
 	}
 	
 	public function testIStr1() {
-		$program = new SimpleProgram('(istr "USER@EXAMPLE.com" "e")');
+		$program = new Program('(istr "USER@EXAMPLE.com" "e")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals("ER@EXAMPLE.com", $result);
 	}
 	
 	public function testIStr2() {
-		$program = new SimpleProgram('(istr "USER@EXAMPLE.com" "e" true)');
+		$program = new Program('(istr "USER@EXAMPLE.com" "e" true)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals("US", $result);
 	}
 	
 	public function testToLower1() {
-		$program = new SimpleProgram('(to-lower "Mary Had A Little Lamb and She LOVED It So")');
+		$program = new Program('(to-lower "Mary Had A Little Lamb and She LOVED It So")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(strtolower("Mary Had A Little Lamb and She LOVED It So"), $result);
 	}
 	
 	public function testToLower2() {
-		$program = new SimpleProgram('(String::to-lower "Mary Had A Little Lamb and She LOVED It So")');
+		$program = new Program('(String::to-lower "Mary Had A Little Lamb and She LOVED It So")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(strtolower("Mary Had A Little Lamb and She LOVED It So"), $result);
 	}
 	
 	public function testToUpper1() {
-		$program = new SimpleProgram('(to-upper "Mary Had A Little Lamb and She LOVED It So")');
+		$program = new Program('(to-upper "Mary Had A Little Lamb and She LOVED It So")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(strtoupper("Mary Had A Little Lamb and She LOVED It So"), $result);
 	}
 	
 	public function testToUpper2() {
-		$program = new SimpleProgram('(String::to-upper "Mary Had A Little Lamb and She LOVED It So")');
+		$program = new Program('(String::to-upper "Mary Had A Little Lamb and She LOVED It So")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(strtoupper("Mary Had A Little Lamb and She LOVED It So"), $result);
 	}
 	
 	public function testSubStr1() {
-		$program = new SimpleProgram('(substr "abcdef" -2)');
+		$program = new Program('(substr "abcdef" -2)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(substr("abcdef", -2), $result);
 	}
 	
 	public function testSubStr2() {
-		$program = new SimpleProgram('(String::substr "abcdef" -2)');
+		$program = new Program('(String::substr "abcdef" -2)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(substr("abcdef", -2), $result);
 	}
 	
 	public function testTrim1() {
-		$program = new SimpleProgram('(trim "   Hello  ")');
+		$program = new Program('(trim "   Hello  ")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(trim("   Hello  "), $result);
 	}
 	
 	public function testTrim2() {
-		$program = new SimpleProgram('(String::trim "   Hello  ")');
+		$program = new Program('(String::trim "   Hello  ")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(trim("   Hello  "), $result);
 	}
 	
 	public function testUcfirst1() {
-		$program = new SimpleProgram('(ucfirst "hello")');
+		$program = new Program('(ucfirst "hello")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(ucfirst("hello"), $result);
 	}
 	
 	public function testUcfirst2() {
-		$program = new SimpleProgram('(String::ucfirst "hello")');
+		$program = new Program('(String::ucfirst "hello")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(ucfirst("hello"), $result);
 	}
 	
 	public function testUcwords1() {
-		$program = new SimpleProgram('(ucwords "hello world")');
+		$program = new Program('(ucwords "hello world")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(ucwords("hello world"), $result);
 	}
 	
 	public function testUcwords2() {
-		$program = new SimpleProgram('(String::ucwords "hello world")');
+		$program = new Program('(String::ucwords "hello world")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(ucwords("hello world"), $result);
 	}
 	
 	public function testPbrk1() {
-		$program = new SimpleProgram('(String::pbrk "This is a Simple text." "mi")');
+		$program = new Program('(String::pbrk "This is a Simple text." "mi")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals("is is a Simple text.", $result);
 	}
 	
 	public function testPbrk2() {
-		$program = new SimpleProgram('(String::pbrk "This is a Simple text." "S")');
+		$program = new Program('(String::pbrk "This is a Simple text." "S")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals("Simple text.", $result);
 	}
@@ -417,19 +417,19 @@ class StringPackageTest extends eMacrosTest {
 	}
 	
 	public function testSprintf() {
-		$program = new SimpleProgram('(sprintf "The %2$s contains %1$04d monkeys" 5 "tree")');
+		$program = new Program('(sprintf "The %2$s contains %1$04d monkeys" 5 "tree")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals("The tree contains 0005 monkeys", $result);
 	}
 	
 	public function testGetCSV1() {
-		$program = new SimpleProgram('(getcsv "val1,val2,val3")');
+		$program = new Program('(getcsv "val1,val2,val3")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(array('val1', 'val2', 'val3'), $result);
 	}
 	
 	public function testGetCSV2() {
-		$program = new SimpleProgram('(getcsv "val1.val2.val3" ".")');
+		$program = new Program('(getcsv "val1.val2.val3" ".")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(array('val1', 'val2', 'val3'), $result);
 	}
@@ -438,7 +438,7 @@ class StringPackageTest extends eMacrosTest {
 	 * @expectedException BadFunctionCallException
 	 */
 	public function testSscanf0() {
-		$program = new SimpleProgram('(sscanf)');
+		$program = new Program('(sscanf)');
 		$result = $program->execute(self::$env);
 	}
 	
@@ -446,18 +446,18 @@ class StringPackageTest extends eMacrosTest {
 	 * @expectedException BadFunctionCallException
 	 */
 	public function testSscanf1() {
-		$program = new SimpleProgram('(sscanf "some string")');
+		$program = new Program('(sscanf "some string")');
 		$result = $program->execute(self::$env);
 	}
 	
 	public function testSscanf2() {
-		$program = new SimpleProgram('(sscanf "SN/2350001" "SN/%d")');
+		$program = new Program('(sscanf "SN/2350001" "SN/%d")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(array('2350001'), $result);
 	}
 	
 	public function testSscanf3() {
-		$program = new SimpleProgram('(sscanf "January 01 2000" "%s %d %d")');
+		$program = new Program('(sscanf "January 01 2000" "%s %d %d")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(array('January', '01', '2000'), $result);
 	}
@@ -466,12 +466,12 @@ class StringPackageTest extends eMacrosTest {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function testSscanf4() {
-		$program = new SimpleProgram('(sscanf "January 01 2000" "%s %d %d" 0)');
+		$program = new Program('(sscanf "January 01 2000" "%s %d %d" 0)');
 		$result = $program->execute(self::$env);
 	}
 	
 	public function testSscanf5() {
-		$program = new SimpleProgram('(sscanf "24 Lewis Carroll" "%d %s %s" _id _first _last)');
+		$program = new Program('(sscanf "24 Lewis Carroll" "%d %s %s" _id _first _last)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(3, $result);
 	}

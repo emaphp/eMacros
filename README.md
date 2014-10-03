@@ -4,7 +4,7 @@ eMacros
 The Extensible Macros Library for PHP
 
 **Author**: Emmanuel Antico<br/>
-**Last Modification**: 30/07/2014
+**Last Modification**: 03/10/2014
 
 <br/>
 
@@ -34,7 +34,7 @@ An updated version of PHP 5.4 is required tu run this library.
 ```json
 {
     "require": {
-        "emacros/emacros": "1.0.*"
+        "emacros/emacros": "1.1.*"
     }
 }
 ```
@@ -49,11 +49,11 @@ The following example shows the implementation of a simple program that calculat
 ```php
 include 'vendor/autoload.php';
 
-use eMacros\Program\SimpleProgram;
+use eMacros\Program\Program;
 use eMacros\Environment\DefaultEnvironment;
 
 //create program instance
-$program = new SimpleProgram('(+ 3 7)');
+$program = new Program('(+ 3 7)');
 
 //run program
 $result = $program->execute(new DefaultEnvironment);
@@ -61,17 +61,17 @@ $result = $program->execute(new DefaultEnvironment);
 //show results
 echo $result; //prints 10
 ```
-This script begins by creating a new instance of a program which receives the code to be interpreted. For being able to run a program is necessary to define an environment instance. The *execute* method performs the execution of a program using the environment provided as a parameter. The obtained value is then returned.
+This script begins by creating a new instance of a program which receives the code to be interpreted. For being able to run a program an environment instance is required. The *execute* method performs the execution of a program using the environment provided as an argument. The obtained value is then returned.
 
 <br/>
 
-There are several types of programs, each one of these can generate different types of results based on the executed instructions. The class *SimpleProgram* defines the simplest type of program. This class returns the result of the last executed instruction. The following program includes 2 instructions but only one value is returned.
+There are several types of programs, each one of these can generate different types of results based on its instructions. The class *Program* defines the simplest type of program. This class returns the result of the last executed instruction. The following program includes 2 instructions but only one value is returned.
 
 ```php
-$program = new SimpleProgram('(+ 3 7)(- 6 3)');
+$program = new Program('(+ 3 7)(- 6 3)');
 ```
 
-Since *SimpleProgram* always returns the last generated value, instead of 10 we would have obtained 3, that is, the result of subtracting 3 to 6.
+Since *Program* always returns the last generated value, instead of 10 we would have obtained 3, that is, the result of subtracting 3 to 6.
 
 <br/>
 To store all the results obtained from each expression we can use the *ListProgram* class. This class works by storing each generated value in an array.
@@ -343,7 +343,7 @@ As noted, the functionality of this package is very critical so it is recommende
 ##Variables
 
 <br/>
-Declaring a variable adds a new symbol to the current environment symbol table. In order to declare a variable we use the assignment operator.
+Declaring a variable adds a new symbol to the current environment symbol table. In order to declare a variable we use the **:=** operator.
 
 
 ```lisp
@@ -621,7 +621,7 @@ use eMacros\Environment\DefaultEnvironment;
 $program = new TextProgram(file_get_contents('arguments.em'));
 
 //run program
-$result = $program->executeWith(new DefaultEnvironment, array(1, "hello", 5.5));
+$result = $program->executeWith(new DefaultEnvironment, [1, "hello", 5.5]);
 
 //print results
 echo $result;
@@ -673,22 +673,22 @@ Sometimes two packages define the same symbol, so that the use of a function or 
 
 <br/>
 
-The *call-func* and *call-func-array* functions allow to invoke a function passed as argument.
+The *call* and *apply* functions allow to invoke a function passed as argument.
 
 ```lisp
 ; call_func.em
-; shows some examples of call-func
-(call-func "strtoupper" "hello world") ; returns "HELLO WORLD"
+; shows some examples of call
+(call "strtoupper" "hello world") ; returns "HELLO WORLD"
 
-(call-func Array::range 2 5) ; returns [2, 3, 4, 5]
+(call Array::range 2 5) ; returns [2, 3, 4, 5]
 ```
 
-The *call-func-array* function expects an array containing the list of arguments as a second parameter. This code uses *call-func-array* to sum all arguments ​​passed to a program.
+The *apply* function expects an array containing the list of arguments as a second parameter. This code uses *apply* to sum all arguments ​​passed to a program.
 
 ```lisp
 ; sigma.em
 ; calculates the sum of all arguments passed
-(call-func-array + (%_))
+(apply + (%_))
 ```
 
 <br/>

@@ -4,7 +4,7 @@ eMacros
 The Extensible Macros Library for PHP
 
 **Autor**: Emmanuel Antico<br/>
-**Ultima modificación**: 30/07/2014
+**Ultima modificación**: 03/10/2014
 
 <br/>
 
@@ -15,7 +15,7 @@ The Extensible Macros Library for PHP
 
 <br/>
 
-##Caraterísticas
+##Características
 <br/>
 
 A diferencia de *lisphp*, *eMacros* está orientada a aplicaciones embebidas dentro de PHP, por lo que no cuenta con un comando de consola. *eMacros* fue desarrollado con la idea de poder generar texto dinamicamente en los casos donde la funciones de formato de texto no fueran lo suficientemente complejas, pero puede resultar de utilidad en otros escenarios.
@@ -39,7 +39,7 @@ La instalación de *eMacros* se realiza a través de **Composer**. Agregar el si
 ```json
 {
     "require": {
-        "emacros/emacros": "1.0.*"
+        "emacros/emacros": "1.1.*"
     }
 }
 ```
@@ -52,11 +52,11 @@ El siguiente ejemplo muestra la implementación de un programa en *eMacros* senc
 ```php
 include 'vendor/autoload.php';
 
-use eMacros\Program\SimpleProgram;
+use eMacros\Program\Program;
 use eMacros\Environment\DefaultEnvironment;
 
 //instanciar programa
-$program = new SimpleProgram('(+ 3 7)');
+$program = new Program('(+ 3 7)');
 
 //ejecutar programa
 $result = $program->execute(new DefaultEnvironment);
@@ -67,13 +67,13 @@ echo $result; //imprime el número 10 por pantalla
 Este script comienza creando una nueva instancia de programa a la cual se le pasa el código a ser interpretado. Para realizar la ejecución de un programa es necesario definir el entorno donde se ejecutará. El método *execute* realiza la ejecución de un programa en el entorno pasado como parámetro. El valor generado es luego devuelto.
 
 <br/>
-Existen varios tipos de programas, cada uno de estos programas puede generar distintos tipos de resultados de acuerdo a las instrucciones ejecutadas. La clase *SimpleProgram* define el tipo más sencillo de programa. Esta clase devuelve el resultado de la última instrucción ejecutada. En caso de que hubieramos instanciado el programa de la siguiente manera el resultado hubiera sido diferente.
+Existen varios tipos de programas, cada uno de estos programas puede generar distintos tipos de resultados de acuerdo a las instrucciones ejecutadas. La clase *Program* define el tipo más sencillo de programa. Esta clase devuelve el resultado de la última instrucción ejecutada. En caso de que hubieramos instanciado el programa de la siguiente manera el resultado hubiera sido diferente.
 
 ```php
-$program = new SimpleProgram('(+ 3 7)(- 6 3)');
+$program = new Program('(+ 3 7)(- 6 3)');
 ```
 
-Dado que *SimpleProgram* obtiene siempre el último valor generado, en lugar de 10 la ejecución hubiera mostrado un 3, es decir, el resultado de restar 3 a 6.
+Dado que *Program* obtiene siempre el último valor generado, en lugar de 10 la ejecución hubiera mostrado un 3, es decir, el resultado de restar 3 a 6.
 
 <br/>
 En caso de que se quiera almacenar todos los resultados obtenidos de cada expresión podemos utilizar la clase *ListProgram*. Esta clase va almacenando cada resultado generado en un arreglo. El resultado obtenido de ejecutar un *ListProgram* es un arreglo con tantos valores como expresiones (no anidadas) se hayan evaluado.
@@ -343,7 +343,7 @@ Como se observa, la funcionalidad de este paquete es muy básica por lo que se r
 ##Variables
 
 <br/>
-La declaración de una variable agrega un símbolo a la tabla del símbolos del entono de ejecución. Para agregar una variable con un valor de inicialización utilizamos el operador de asignación.
+La declaración de una variable agrega un símbolo a la tabla del símbolos del entono de ejecución. Para agregar una variable con un valor de inicialización utilizamos el operador **:=**.
 
 
 ```lisp
@@ -669,22 +669,22 @@ En ocasiones 2 paquetes definen el mismo símbolo haciendo que la utilización d
 
 <br/>
 
-Las funciones *call-func* y *call-func-array* permiten invocar una función pasada como parámetro.
+Las funciones *call* y *apply* permiten invocar una función pasada como parámetro.
 
 ```lisp
 ; call_func.em
-; muestra ejemplos de invocación utilizando call-func
+; muestra ejemplos de invocación utilizando call
 (call-func "strtoupper" "hello world") ; retorna "HELLO WORLD"
 
-(call-func Array::range 2 5) ; retorna [2, 3, 4, 5]
+(call Array::range 2 5) ; retorna [2, 3, 4, 5]
 ```
 
-La función *call-func-array* espera un arreglo conteniendo el listado de argumentos como segundo parámetro. Este ejemplo realiza la suma de todos los valores pasados al programa.
+La función *apply* espera un arreglo conteniendo el listado de argumentos como segundo parámetro. Este ejemplo realiza la suma de todos los valores pasados al programa.
 
 ```lisp
 ; sigma.em
 ; calcula la suma de todos los valores pasados como parámetro
-(call-func-array + (%_))
+(apply + (%_))
 ```
 
 <br/>

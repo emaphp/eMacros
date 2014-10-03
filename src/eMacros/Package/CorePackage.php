@@ -47,7 +47,7 @@ use eMacros\Runtime\Symbol\SymbolSet;
 use eMacros\Runtime\Symbol\SymbolLookup;
 use eMacros\Runtime\Symbol\SymbolExists;
 use eMacros\Runtime\Callback\CallFunction;
-use eMacros\Runtime\Callback\CallFunctionArray;
+use eMacros\Runtime\Callback\ApplyFunction;
 use eMacros\Runtime\Property\PropertyAssign;
 use eMacros\Runtime\Property\PropertyExists;
 use eMacros\Runtime\Property\PropertyGet;
@@ -108,8 +108,8 @@ class CorePackage extends Package {
 		/**
 		 * CUSTOM INVOKE
 		 */
-		$this['call-func'] = new CallFunction();
-		$this['call-func-array'] = new CallFunctionArray();
+		$this['call'] = new CallFunction();
+		$this['apply'] = new ApplyFunction();
 		
 		/**
 		 * KEY FUNCTIONS

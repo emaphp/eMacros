@@ -3,7 +3,7 @@ namespace eMacros;
 
 use eMacros\Program\TextProgram;
 use eMacros\Program\ListProgram;
-use eMacros\Program\SimpleProgram;
+use eMacros\Program\Program;
 use Acme\Environment\CustomEnvironment;
 
 /**
@@ -202,7 +202,7 @@ class ExamplesTest extends eMacrosTest {
 	}
 	
 	public function testSigma() {
-		$program = new SimpleProgram(file_get_contents(__DIR__ . '/source/sigma.em'));
+		$program = new Program(file_get_contents(__DIR__ . '/source/sigma.em'));
 		$result = $program->execute(self::$env, 1, 2, 3, 4, 5);
 		$this->assertEquals(15, $result);
 	}

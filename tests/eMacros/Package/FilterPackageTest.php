@@ -2,7 +2,7 @@
 namespace eMacros;
 
 use eMacros\Package\FilterPackage;
-use eMacros\Program\SimpleProgram;
+use eMacros\Program\Program;
 
 /**
  * 
@@ -61,19 +61,19 @@ class FilterPackageTest extends eMacrosTest {
 	}
 	
 	public function testHasVar() {
-		$program = new SimpleProgram('(Filter::has-var Filter::INPUT_GET "id")');
+		$program = new Program('(Filter::has-var Filter::INPUT_GET "id")');
 		$result = $program->execute(self::$xenv);
 		$this->assertFalse($result);
 	}
 	
 	public function testVar2() {
-		$program = new SimpleProgram('(Filter::var "bob@example.com" Filter::VALIDATE_EMAIL)');
+		$program = new Program('(Filter::var "bob@example.com" Filter::VALIDATE_EMAIL)');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals('bob@example.com', $result);
 	}
 	
 	public function testVar3() {
-		$program = new SimpleProgram('(Filter::var "http://example.com" Filter::VALIDATE_URL Filter::FLAG_PATH_REQUIRED)');
+		$program = new Program('(Filter::var "http://example.com" Filter::VALIDATE_URL Filter::FLAG_PATH_REQUIRED)');
 		$result = $program->execute(self::$xenv);
 		$this->assertFalse($result);
 	}
@@ -88,19 +88,19 @@ class FilterPackageTest extends eMacrosTest {
 				'flags' => FILTER_FLAG_ALLOW_OCTAL,
 		);
 		
-		$program = new SimpleProgram('(Filter::var "0755" Filter::VALIDATE_INT (%0))');
+		$program = new Program('(Filter::var "0755" Filter::VALIDATE_INT (%0))');
 		$result = $program->execute(self::$xenv, $options);
 		$this->assertEquals(493, $result);
 	}
 	
 	public function testVar5() {
-		$program = new SimpleProgram('(Filter::var "oops" Filter::VALIDATE_BOOLEAN Filter::NULL_ON_FAILURE)');
+		$program = new Program('(Filter::var "oops" Filter::VALIDATE_BOOLEAN Filter::NULL_ON_FAILURE)');
 		$result = $program->execute(self::$xenv);
 		$this->assertNull($result);		
 	}
 	
 	public function testVar6() {
-		$program = new SimpleProgram('(Filter::var "oops" Filter::VALIDATE_BOOLEAN (array ("flags" Filter::NULL_ON_FAILURE)))');
+		$program = new Program('(Filter::var "oops" Filter::VALIDATE_BOOLEAN (array ("flags" Filter::NULL_ON_FAILURE)))');
 		$result = $program->execute(self::$xenv);
 		$this->assertNull($result);
 	}
@@ -133,19 +133,19 @@ class FilterPackageTest extends eMacrosTest {
 		
 		);
 		
-		$program = new SimpleProgram('(Filter::var-array (%0) (%1))');
+		$program = new Program('(Filter::var-array (%0) (%1))');
 		$result = $program->execute(self::$xenv, $data, $args);
 		$this->assertEquals(filter_var_array($data, $args), $result);
 	}
 	
 	public function testFilterId() {
-		$program = new SimpleProgram('(Filter::id "boolean")');
+		$program = new Program('(Filter::id "boolean")');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals(258, $result);
 	}
 	
 	public function testFilterList() {
-		$program = new SimpleProgram('(Filter::list)');
+		$program = new Program('(Filter::list)');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals(filter_list(), $result);
 	}

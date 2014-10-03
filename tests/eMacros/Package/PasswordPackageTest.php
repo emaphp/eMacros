@@ -1,7 +1,7 @@
 <?php
 namespace eMacros;
 
-use eMacros\Program\SimpleProgram;
+use eMacros\Program\Program;
 use eMacros\Package\PasswordPackage;
 
 /**
@@ -26,7 +26,7 @@ class PasswordPackageTest extends eMacrosTest {
 			$this->markTestSkipped("MD5 algorithm not found");
 		}
 		
-		$program = new SimpleProgram('(Password::crypt "abc" "$1$hellow$")');
+		$program = new Program('(Password::crypt "abc" "$1$hellow$")');
 		$result = $program->execute(self::$xenv);
 		$this->assertTrue(is_string($result));
 		$this->assertEquals(32, strlen($result));
@@ -37,7 +37,7 @@ class PasswordPackageTest extends eMacrosTest {
 			$this->markTestSkipped("PasswordPackage requires PHP 5.5 or older");
 		}
 		
-		$program = new SimpleProgram('(Password::hash "qwerty" Password::PASSWORD_DEFAULT)');
+		$program = new Program('(Password::hash "qwerty" Password::PASSWORD_DEFAULT)');
 		$result = $program->execute(self::$xenv);
 		$this->assertTrue(is_string($result));
 		$this->assertEquals(60, strlen($result));
@@ -48,7 +48,7 @@ class PasswordPackageTest extends eMacrosTest {
 			$this->markTestSkipped("PasswordPackage requires PHP 5.5 or older");
 		}
 	
-		$program = new SimpleProgram('(Password::hash "qwerty" Password::PASSWORD_DEFAULT)');
+		$program = new Program('(Password::hash "qwerty" Password::PASSWORD_DEFAULT)');
 		$result = $program->execute(self::$xenv);
 		$this->assertTrue(is_string($result));
 		$this->assertEquals(60, strlen($result));
@@ -59,10 +59,10 @@ class PasswordPackageTest extends eMacrosTest {
 			$this->markTestSkipped("PasswordPackage requires PHP 5.5 or older");
 		}
 	
-		$program = new SimpleProgram('(Password::hash "qwerty" Password::PASSWORD_DEFAULT)');
+		$program = new Program('(Password::hash "qwerty" Password::PASSWORD_DEFAULT)');
 		$result1 = $program->execute(self::$xenv);
 		
-		$program = new SimpleProgram('(Password::hash "qwerty" Password::PASSWORD_BCRYPT)');
+		$program = new Program('(Password::hash "qwerty" Password::PASSWORD_BCRYPT)');
 		$result2 = $program->execute(self::$xenv);
 		
 		$this->assertNotEquals($result1, $result2);
@@ -73,7 +73,7 @@ class PasswordPackageTest extends eMacrosTest {
 			$this->markTestSkipped("PasswordPackage requires PHP 5.5 or older");
 		}
 		
-		$program = new SimpleProgram('(Password::get-info (Password::hash "qwerty" Password::PASSWORD_DEFAULT))');
+		$program = new Program('(Password::get-info (Password::hash "qwerty" Password::PASSWORD_DEFAULT))');
 		$result = $program->execute(self::$xenv);
 		$this->assertTrue(is_array($result));
 		$this->assertArrayHasKey('algo', $result);
@@ -87,7 +87,7 @@ class PasswordPackageTest extends eMacrosTest {
 			$this->markTestSkipped("PasswordPackage requires PHP 5.5 or older");
 		}
 	
-		$program = new SimpleProgram('(Password::get-info (Password::hash "qwerty" Password::PASSWORD_BCRYPT))');
+		$program = new Program('(Password::get-info (Password::hash "qwerty" Password::PASSWORD_BCRYPT))');
 		$result = $program->execute(self::$xenv);
 		$this->assertTrue(is_array($result));
 		$this->assertArrayHasKey('algo', $result);
@@ -102,7 +102,7 @@ class PasswordPackageTest extends eMacrosTest {
 		}
 		
 		//From DOCS: Returns TRUE if the hash should be rehashed to match the given algo and options, or FALSE otherwise.
-		$program = new SimpleProgram('(Password::needs-rehash (Password::hash "qwerty" Password::PASSWORD_BCRYPT) Password::PASSWORD_BCRYPT (array ("cost" 10)))');
+		$program = new Program('(Password::needs-rehash (Password::hash "qwerty" Password::PASSWORD_BCRYPT) Password::PASSWORD_BCRYPT (array ("cost" 10)))');
 		$result = $program->execute(self::$xenv);
 		$this->assertFalse($result);
 	}
@@ -114,7 +114,7 @@ class PasswordPackageTest extends eMacrosTest {
 		
 		$password = 'qwerty123';
 		$hash = password_hash($password, PASSWORD_DEFAULT);
-		$program = new SimpleProgram('(Password::verify (%0) (%1))');
+		$program = new Program('(Password::verify (%0) (%1))');
 		$result = $program->execute(self::$xenv, $password, $hash);
 		$this->assertTrue($result);
 	}
@@ -126,7 +126,7 @@ class PasswordPackageTest extends eMacrosTest {
 	
 		$password = 'qwerty123';
 		$hash = password_hash($password, PASSWORD_DEFAULT);
-		$program = new SimpleProgram('(Password::verify "fakepass" (%1))');
+		$program = new Program('(Password::verify "fakepass" (%1))');
 		$result = $program->execute(self::$xenv, $password, $hash);
 		$this->assertFalse($result);
 	}

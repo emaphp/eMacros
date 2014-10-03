@@ -2,7 +2,7 @@
 namespace eMacros;
 
 use eMacros\Package\HTMLPackage;
-use eMacros\Program\SimpleProgram;
+use eMacros\Program\Program;
 
 /**
  * 
@@ -27,7 +27,7 @@ class HTMLPackageTest extends eMacrosTest {
 	
 	public function testNl2Br() {
 		$str = "foo isn't\n bar";
-		$program = new SimpleProgram('(HTML::nl2br (%0))');
+		$program = new Program('(HTML::nl2br (%0))');
 		$result = $program->execute(self::$xenv, $str);
 		$this->assertEquals(nl2br($str), $result);
 	}
@@ -36,54 +36,54 @@ class HTMLPackageTest extends eMacrosTest {
 	 * @expectedException BadFunctionCallException
 	 */
 	public function testParseString0() {
-		$program = new SimpleProgram('(HTML::parse-string)');
+		$program = new Program('(HTML::parse-string)');
 		$result = $program->execute(self::$xenv);
 	}
 	
 	public function testParseString1() {
-		$program = new SimpleProgram('(HTML::parse-string "first=value&arr[]=foo+bar&arr[]=baz")');
+		$program = new Program('(HTML::parse-string "first=value&arr[]=foo+bar&arr[]=baz")');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals(array('first' => 'value', 'arr' => array('foo bar', 'baz')), $result);
 	}
 	
 	public function testHTMLSpecialChars() {
-		$program = new SimpleProgram('(HTML::special-chars "<a href=\'test\'>Test</a>" HTML::ENT_QUOTES)');
+		$program = new Program('(HTML::special-chars "<a href=\'test\'>Test</a>" HTML::ENT_QUOTES)');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals("&lt;a href=&#039;test&#039;&gt;Test&lt;/a&gt;", $result);
 	}
 	
 	public function testHTMLSpecialCharsDecode() {
-		$program = new SimpleProgram('(HTML::special-chars-decode "<p>this -&gt; &quot;</p>" HTML::ENT_NOQUOTES)');
+		$program = new Program('(HTML::special-chars-decode "<p>this -&gt; &quot;</p>" HTML::ENT_NOQUOTES)');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals('<p>this -> &quot;</p>', $result);
 	}
 	
 	public function testHTMLEntities1() {
-		$program = new SimpleProgram('(HTML::entities "A \'quote\' is <b>bold</b>")');
+		$program = new Program('(HTML::entities "A \'quote\' is <b>bold</b>")');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals("A 'quote' is &lt;b&gt;bold&lt;/b&gt;", $result);
 	}
 	
 	public function testHTMLEntities2() {
-		$program = new SimpleProgram('(HTML::entities "A \'quote\' is <b>bold</b>" HTML::ENT_QUOTES)');
+		$program = new Program('(HTML::entities "A \'quote\' is <b>bold</b>" HTML::ENT_QUOTES)');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals("A &#039;quote&#039; is &lt;b&gt;bold&lt;/b&gt;", $result);
 	}
 	
 	public function testHTMLEntityDecode() {
-		$program = new SimpleProgram('(HTML::entity-decode "the &lt;b&gt;dog&lt;/b&gt; now")');
+		$program = new Program('(HTML::entity-decode "the &lt;b&gt;dog&lt;/b&gt; now")');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals("the <b>dog</b> now", $result);
 	}
 	
 	public function testStripTags1() {
-		$program = new SimpleProgram('(HTML::strip-tags "<p>Test paragraph.</p><!-- Comment --> <a href=\"#fragment\">Other text</a>")');
+		$program = new Program('(HTML::strip-tags "<p>Test paragraph.</p><!-- Comment --> <a href=\"#fragment\">Other text</a>")');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals("Test paragraph. Other text", $result);
 	}
 	
 	public function testStripTags2() {
-		$program = new SimpleProgram('(HTML::strip-tags "<p>Test paragraph.</p><!-- Comment --> <a href=\"#fragment\">Other text</a>" "<p><a>")');
+		$program = new Program('(HTML::strip-tags "<p>Test paragraph.</p><!-- Comment --> <a href=\"#fragment\">Other text</a>" "<p><a>")');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals('<p>Test paragraph.</p> <a href="#fragment">Other text</a>', $result);
 	}

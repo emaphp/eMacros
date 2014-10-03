@@ -2,27 +2,27 @@
 namespace eMacros;
 
 use eMacros\Program\TextProgram;
-use eMacros\Program\SimpleProgram;
+use eMacros\Program\Program;
 /**
  * 
  * @author emaphp
  * @group program
  */
 class ProgramTest extends eMacrosTest {
-	public function testSimpleProgram1() {
-		$program = new SimpleProgram('(+ 3 (* 4 7))');
+	public function testProgram1() {
+		$program = new Program('(+ 3 (* 4 7))');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(31, $result);
 	}
 	
-	public function testSimpleProgram2() {
-		$program = new SimpleProgram('(+ (%0) (* (%1) (%2)))');
+	public function testProgram2() {
+		$program = new Program('(+ (%0) (* (%1) (%2)))');
 		$result = $program->execute(self::$env, 3, 4, 7);
 		$this->assertEquals(31, $result);
 	}
 	
-	public function testSimpleProgram3() {
-		$program = new SimpleProgram('(+ (%0) (* (%1) (%2)))');
+	public function testProgram3() {
+		$program = new Program('(+ (%0) (* (%1) (%2)))');
 		$result = $program->executeWith(self::$env, array(3, 4, 7));
 		$this->assertEquals(31, $result);
 	}

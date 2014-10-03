@@ -2,7 +2,7 @@
 namespace eMacros;
 
 use eMacros\Package\BufferPackage;
-use eMacros\Program\SimpleProgram;
+use eMacros\Program\Program;
 
 /**
  * 
@@ -29,25 +29,25 @@ class BufferPackageTest extends eMacrosTest {
 	}
 	
 	public function testStart1() {
-		$program = new SimpleProgram('(Buffer::start)(echo "Hello")(:= _contents (Buffer::get-contents))(Buffer::end-clean)(<- _contents)');
+		$program = new Program('(Buffer::start)(echo "Hello")(:= _contents (Buffer::get-contents))(Buffer::end-clean)(<- _contents)');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals("Hello", $result);
 	}
 	
 	public function testStart2() {
-		$program = new SimpleProgram('(Buffer::start)(echo "Hello")(:= _contents (Buffer::get-clean))(<- _contents)');
+		$program = new Program('(Buffer::start)(echo "Hello")(:= _contents (Buffer::get-clean))(<- _contents)');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals("Hello", $result);
 	}
 	
 	public function testGetLength() {
-		$program = new SimpleProgram('(Buffer::start)(echo "Hello")(:= _length (Buffer::get-length))(:= _contents (Buffer::get-clean))(<- _length)');
+		$program = new Program('(Buffer::start)(echo "Hello")(:= _length (Buffer::get-length))(:= _contents (Buffer::get-clean))(<- _length)');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals(5, $result);
 	}
 	
 	public function testGetStatus() {
-		$program = new SimpleProgram('(Buffer::start)(echo "Hello")(:= _status (Buffer::get-status))(Buffer::end-clean)(<- _status)');
+		$program = new Program('(Buffer::start)(echo "Hello")(:= _status (Buffer::get-status))(Buffer::end-clean)(<- _status)');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals('default output handler', $result['name']);
 		$this->assertEquals(5, $result['buffer_used']);
@@ -55,19 +55,19 @@ class BufferPackageTest extends eMacrosTest {
 	}
 	
 	public function testGetLevel() {
-		$program = new SimpleProgram('(Buffer::start)(Buffer::start)(:= _level (Buffer::get-level))(Buffer::end-clean)(Buffer::end-clean)(<- _level)');
+		$program = new Program('(Buffer::start)(Buffer::start)(:= _level (Buffer::get-level))(Buffer::end-clean)(Buffer::end-clean)(<- _level)');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals(3, $result);
 	}
 	
 	public function testClean() {
-		$program = new SimpleProgram('(Buffer::start)(echo "Hello")(Buffer::clean)(echo "World")(:= _contents (Buffer::get-contents))(Buffer::end-clean)(<- _contents)');
+		$program = new Program('(Buffer::start)(echo "Hello")(Buffer::clean)(echo "World")(:= _contents (Buffer::get-contents))(Buffer::end-clean)(<- _contents)');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals("World", $result);
 	}
 	
 	public function testListHandlers() {
-		$program = new SimpleProgram('(Buffer::list-handlers)');
+		$program = new Program('(Buffer::list-handlers)');
 		$result = $program->execute(self::$xenv);
 		$this->assertEquals(ob_list_handlers(), $result);
 	}

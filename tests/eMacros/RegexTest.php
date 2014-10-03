@@ -8,7 +8,7 @@ use eMacros\Package\FilterPackage;
 use eMacros\Package\HashPackage;
 use eMacros\Package\StringPackage;
 use eMacros\Package\RequestPackage;
-use eMacros\Program\SimpleProgram;
+use eMacros\Program\Program;
 use eMacros\Package\FilePackage;
 use eMacros\Package\MathPackage;
 use eMacros\Package\PasswordPackage;
@@ -239,7 +239,7 @@ class RegexTest extends eMacrosTest {
 	 * @expectedException UnexpectedValueException
 	 */
 	public function testSymbolEval0() {
-		$program = new SimpleProgram('(core::test)');
+		$program = new Program('(core::test)');
 		$result = $program->execute(self::$env);
 	}
 	
@@ -247,24 +247,24 @@ class RegexTest extends eMacrosTest {
 	 * @expectedException UnexpectedValueException
 	 */
 	public function testSymbolEval1() {
-		$program = new SimpleProgram('(core::;test)');
+		$program = new Program('(core::;test)');
 		$result = $program->execute(self::$env);
 	}
 		
 	public function testCommentRegex() {
-		$program = new SimpleProgram(file_get_contents(__DIR__ . '/source/comments.em'));
+		$program = new Program(file_get_contents(__DIR__ . '/source/comments.em'));
 		$result = $program->execute(self::$env);
 	}
 	
 	public function testNs0() {
-		$program = new SimpleProgram('(string::shuffle)');
+		$program = new Program('(string::shuffle)');
 		$form = $program->expressions[0];
 		$this->assertEquals('string', $form[0]->package);
 		$this->assertEquals('shuffle', $form[0]->symbol);
 	}
 	
 	public function testNs1() {
-		$program = new SimpleProgram('(shuffle);no namespace');
+		$program = new Program('(shuffle);no namespace');
 		$form = $program->expressions[0];
 		$this->assertEquals(null, $form[0]->package);
 		$this->assertEquals('shuffle', $form[0]->symbol);
@@ -274,7 +274,7 @@ class RegexTest extends eMacrosTest {
 	 * @expectedException UnexpectedValueException
 	 */
 	public function testNs2() {
-		$program = new SimpleProgram('(string::)');
+		$program = new Program('(string::)');
 	}
 }
 ?>

@@ -108,7 +108,7 @@ class PasswordPackageTest extends eMacrosTest {
 	}
 	
 	public function testVerify1() {
-		if (phpversion() <= '5.4') {
+		if (!function_exists('password_hash')) {
 			$this->markTestSkipped("PasswordPackage requires PHP 5.5 or older");
 		}
 		
@@ -120,7 +120,7 @@ class PasswordPackageTest extends eMacrosTest {
 	}
 	
 	public function testVerify2() {
-		if (phpversion() <= '5.4') {
+		if (!function_exists('password_hash')) {
 			$this->markTestSkipped("PasswordPackage requires PHP 5.5 or older");
 		}
 	

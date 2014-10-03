@@ -3,6 +3,8 @@ eMacros
 
 The Extensible Macros Library for PHP
 
+[![Build Status](https://travis-ci.org/emaphp/eMacros.svg?branch=master)](https://travis-ci.org/emaphp/eMacros)
+
 **Author**: Emmanuel Antico<br/>
 **Last Modification**: 03/10/2014
 

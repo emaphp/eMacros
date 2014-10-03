@@ -11,12 +11,11 @@ use eMacros\Package\PasswordPackage;
  */
 class PasswordPackageTest extends eMacrosTest {
 	public function testPackage() {
-		$package = new PasswordPackage();
-		
-		if (phpversion() <= '5.4') {
+		if (!function_exists('password_hash')) {
 			$this->markTestSkipped("PasswordPackage requires PHP 5.5 or older");
 		}
 		
+		$package = new PasswordPackage();
 		$this->assertEquals(PASSWORD_DEFAULT, $package->offsetGet('PASSWORD_DEFAULT'));
 		$this->assertEquals(PASSWORD_BCRYPT, $package->offsetGet('PASSWORD_BCRYPT'));
 	}
@@ -33,7 +32,7 @@ class PasswordPackageTest extends eMacrosTest {
 	}
 	
 	public function testHash1() {
-		if (phpversion() <= '5.4') {
+		if (!function_exists('password_hash')) {
 			$this->markTestSkipped("PasswordPackage requires PHP 5.5 or older");
 		}
 		
@@ -44,7 +43,7 @@ class PasswordPackageTest extends eMacrosTest {
 	}
 	
 	public function testHash2() {
-		if (phpversion() <= '5.4') {
+		if (!function_exists('password_hash')) {
 			$this->markTestSkipped("PasswordPackage requires PHP 5.5 or older");
 		}
 	
@@ -55,7 +54,7 @@ class PasswordPackageTest extends eMacrosTest {
 	}
 	
 	public function testHash3() {
-		if (phpversion() <= '5.4') {
+		if (!function_exists('password_hash')) {
 			$this->markTestSkipped("PasswordPackage requires PHP 5.5 or older");
 		}
 	
@@ -69,7 +68,7 @@ class PasswordPackageTest extends eMacrosTest {
 	}
 	
 	public function testGetInfo1() {
-		if (phpversion() <= '5.4') {
+		if (!function_exists('password_hash')) {
 			$this->markTestSkipped("PasswordPackage requires PHP 5.5 or older");
 		}
 		
@@ -83,7 +82,7 @@ class PasswordPackageTest extends eMacrosTest {
 	}
 	
 	public function testGetInfo2() {
-		if (phpversion() <= '5.4') {
+		if (!function_exists('password_hash')) {
 			$this->markTestSkipped("PasswordPackage requires PHP 5.5 or older");
 		}
 	
@@ -97,7 +96,7 @@ class PasswordPackageTest extends eMacrosTest {
 	}
 	
 	public function testNeedsRehash() {
-		if (phpversion() <= '5.4') {
+		if (!function_exists('password_hash')) {
 			$this->markTestSkipped("PasswordPackage requires PHP 5.5 or older");
 		}
 		

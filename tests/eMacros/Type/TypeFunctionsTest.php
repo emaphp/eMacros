@@ -17,90 +17,90 @@ class TypeFunctionsTest extends eMacrosTest {
 	 * @expectedException BadFunctionCallException
 	 */
 	public function testIsEmpty0 () {
-		$program = new Program('(empty)');
+		$program = new Program('(empty?)');
 		$result = $program->execute(self::$env);
 	}
 	
 	public function testIsEmpty1 () {
-		$program = new Program('(empty 0)');
+		$program = new Program('(empty? 0)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(true, $result);
 	}
 	
 	public function testIsEmpty2 () {
-		$program = new Program('(empty 1)');
+		$program = new Program('(empty? 1)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(false, $result);
 	}
 	
 	public function testIsEmpty3 () {
-		$program = new Program('(empty 0.0)');
+		$program = new Program('(empty? 0.0)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(true, $result);
 	}
 	
 	public function testIsEmpty4 () {
-		$program = new Program('(empty 4.0)');
+		$program = new Program('(empty? 4.0)');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(false, $result);
 	}
 	
 	public function testIsEmpty5() {
-		$program = new Program('(empty "")');
+		$program = new Program('(empty? "")');
 		$result = $program->execute(self::$env);
 		$this->assertEquals(true, $result);
 	}
 	
 	public function testIsEmpty6() {
-		$program = new Program("(empty '')");
+		$program = new Program("(empty? '')");
 		$result = $program->execute(self::$env);
 		$this->assertEquals(true, $result);
 	}
 	
 	public function testIsEmpty7() {
-		$program = new Program("(empty '0')");
+		$program = new Program("(empty? '0')");
 		$result = $program->execute(self::$env);
 		$this->assertEquals(true, $result);
 	}
 	
 	public function testIsEmpty8() {
-		$program = new Program("(empty '0.0')");
+		$program = new Program("(empty? '0.0')");
 		$result = $program->execute(self::$env);
 		$this->assertEquals(false, $result);
 	}
 	
 	public function testIsEmpty9() {
-		$program = new Program("(empty 'false')");
+		$program = new Program("(empty? 'false')");
 		$result = $program->execute(self::$env);
 		$this->assertEquals(false, $result);
 	}
 	
 	public function testIsEmpty10() {
-		$program = new Program("(empty true)");
+		$program = new Program("(empty? true)");
 		$result = $program->execute(self::$env);
 		$this->assertEquals(false, $result);
 	}
 	
 	public function testIsEmpty11() {
-		$program = new Program("(empty false)");
+		$program = new Program("(empty? false)");
 		$result = $program->execute(self::$env);
 		$this->assertEquals(true, $result);
 	}
 	
 	public function testIsEmpty12() {
-		$program = new Program("(empty null)");
+		$program = new Program("(empty? null)");
 		$result = $program->execute(self::$env);
 		$this->assertEquals(true, $result);
 	}
 	
 	public function testIsEmpty13() {
-		$program = new Program("(empty undefined)");
+		$program = new Program("(empty? undefined)");
 		$result = $program->execute(self::$env);
 		$this->assertEquals(true, $result);
 	}
 	
 	public function testIsEmpty14() {
-		$program = new Program("(Core::empty undefined)");
+		$program = new Program("(Core::empty? undefined)");
 		$result = $program->execute(self::$env);
 		$this->assertEquals(true, $result);
 	}

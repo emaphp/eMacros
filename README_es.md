@@ -6,7 +6,7 @@ The Extensible Macros Library for PHP
 [![Build Status](https://travis-ci.org/emaphp/eMacros.svg?branch=master)](https://travis-ci.org/emaphp/eMacros)
 
 **Autor**: Emmanuel Antico<br/>
-**Ultima modificación**: 03/10/2014
+**Ultima modificación**: 07/01/2015
 
 <br/>
 
@@ -295,9 +295,9 @@ Como se observa, la funcionalidad de este paquete es muy básica por lo que se r
 (int? 5 3 "x") ; false
 
 ; vacio
-(empty "") ; true
-(empty 1) ; false
-(empty false 0) ; true
+(empty? "") ; true
+(empty? 1) ; false
+(empty? false 0) ; true
 ```
 
 

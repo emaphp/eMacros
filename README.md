@@ -6,7 +6,7 @@ The Extensible Macros Library for PHP
 [![Build Status](https://travis-ci.org/emaphp/eMacros.svg?branch=master)](https://travis-ci.org/emaphp/eMacros)
 
 **Author**: Emmanuel Antico<br/>
-**Last Modification**: 03/10/2014
+**Last Modification**: 07/01/2015
 
 <br/>
 
@@ -295,9 +295,9 @@ As noted, the functionality of this package is very critical so it is recommende
 (int? 5 3 "x") ; false
 
 ; empty
-(empty "") ; true
-(empty 1) ; false
-(empty false 0) ; true
+(empty? "") ; true
+(empty? 1) ; false
+(empty? false 0) ; true
 ```
 
 

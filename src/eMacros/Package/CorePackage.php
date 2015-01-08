@@ -213,10 +213,10 @@ class CorePackage extends Package {
 		
 		/**
 		 * Determines if a given values evaluates to 'empty'
-		 * Examples: (empty (array)) (empty 0) (empty null) (empty _var)
+		 * Examples: (empty? (array)) (empty? 0) (empty? null) (empty? _var)
 		 * Returns: Boolean
 		 */
-		$this['empty'] = new IsEmpty();
+		$this['empty?'] = new IsEmpty();
 		
 		/**
 		 * Determines if a given value is an instance of a given class (class is passed as string)
